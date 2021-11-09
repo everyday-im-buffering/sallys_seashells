@@ -1,58 +1,148 @@
-'use strict'
+const { green, red } = require("chalk");
+const {
+  db,
+  moderls: { Shell },
+} = require("../server/db");
 
-const {db, models: {User} } = require('../server/db')
+//  this is  not completed
 
-/**
- * seed - this function clears the database, updates tables to
- *      match the models, and populates the database.
- */
-async function seed() {
-  await db.sync({ force: true }) // clears db and matches models to tables
-  console.log('db synced!')
+const shells = [
+  {
+    name: "Grey Channeled Whelk",
+    marineType: "gastropda",
+    color: "grey",
+    waterType: "marine",
+    quantity: 2,
+    price: 10.0,
+    imageUrl:
+      "https://i.pinimg.com/originals/ca/ab/50/caab50438784d40ab67def790929d4c9.jpg",
+  },
+  {
+    name: "Tan Channeled Whelk",
+    marineType: "gastropda",
+    color: "brown",
+    waterType: "marine",
+    quantity: 7,
+    price: 10.0,
+    imageUrl:
+      "http://thchanneledwhelk.weebly.com/uploads/1/7/0/8/17085520/9516195.jpg",
+  },
+  {
+    name: "Common Tower Shell",
+    marineType: "gastropda",
+    color: "brown",
+    waterType: "marine",
+    quantity: 32,
+    price: 7.99,
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Turritella_communis_fossiel.jpg/440px-Turritella_communis_fossiel.jpg",
+  },
+  {
+    name: "False Margined Cowry",
+    marineType: "gastropda",
+    color: "brown",
+    pattern: "spotted",
+    waterType: "marine",
+    quantity: 25,
+    price: 5.0,
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/a/a6/Cypraea_nebrites.jpg",
+  },
+  {
+    name: "Precious Wentletrap",
+    marineType: "gastropda",
+    color: "white",
+    waterType: "marine",
+    quantity: 8,
+    price: 30.25,
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Epitonium_scalare_shell.jpg/440px-Epitonium_scalare_shell.jpg",
+  },
+  {
+    name: "Giant Clam",
+    marineType: "bivalvia",
+    color: "grey",
+    waterType: "marine",
+    quantity: 1,
+    price: 199.99,
+    imageUrl: "https://i.ebayimg.com/images/g/iyIAAOSwSbZevvrm/s-l400.jpg",
+  },
+  {
+    name: "Sword Razor",
+    marineType: "bivalvia",
+    color: "brown",
+    pattern: "striped",
+    waterType: "marine",
+    quantity: 20,
+    price: 12.0,
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ensis_ensis_%28Baix_Ebre%29.jpg/440px-Ensis_ensis_%28Baix_Ebre%29.jpg",
+  },
+  {
+    name: "Cuttlebone",
+    marineType: "cephalopoda",
+    color: "white",
+    waterType: "marine",
+    quantity: 12,
+    price: 16.99,
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Cuttlefish-Cuttlebone2.jpg/440px-Cuttlefish-Cuttlebone2.jpg",
+  },
+  {
+    name: "Black Leather Chiton",
+    marineType: "polyplacophora",
+    color: "multi",
+    waterType: "marine",
+    quantity: 8,
+    price: 20.0,
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Katharina_tunicata_2.jpg/1920px-Katharina_tunicata_2.jpg",
+  },
+  {
+    name: "Blue Lined Chiton",
+    marineType: "polyplacophora",
+    color: "multi",
+    pattern: "striped",
+    waterType: "marine",
+    quantity: 15,
+    price: 20.0,
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/9/9e/Tonicella-lineata.jpg",
+  },
+  {
+    name: "Gumboot Chiton",
+    marineType: "polyplacophora",
+    color: "red",
+    waterType: "marine",
+    quantity: 10,
+    price: 20.0,
+    imageUrl: "https://i.redd.it/nqwye0cohom21.jpg",
+  },
+];
 
-  // Creating Users
-  const users = await Promise.all([
-    User.create({ username: 'cody', password: '123' }),
-    User.create({ username: 'murphy', password: '123' }),
-  ])
-
-  console.log(`seeded ${users.length} users`)
-  console.log(`seeded successfully`)
-  return {
-    users: {
-      cody: users[0],
-      murphy: users[1]
-    }
-  }
-}
-
-/*
- We've separated the `seed` function from the `runSeed` function.
- This way we can isolate the error handling and exit trapping.
- The `seed` function is concerned only with modifying the database.
-*/
-async function runSeed() {
-  console.log('seeding...')
+const seed = async () => {
   try {
-    await seed()
+    await db.sync({ force: true });
+    await Promise.all(
+      shells.map((shell) => {
+        return Shell.create(shell);
+      })
+    );
   } catch (err) {
-    console.error(err)
-    process.exitCode = 1
-  } finally {
-    console.log('closing db connection')
-    await db.close()
-    console.log('db connection closed')
+    console.log(red(err));
   }
-}
+};
 
-/*
-  Execute the `seed` function, IF we ran this module directly (`node seed`).
-  `Async` functions always return a promise, so we can use `catch` to handle
-  any errors that might occur inside of `seed`.
-*/
-if (module === require.main) {
-  runSeed()
+module.exports = seed;
+if (require.main === module) {
+  seed()
+    .then(() => {
+      console.log(green("Seeding success!"));
+      db.close();
+    })
+    .catch((err) => {
+      console.error(red("Oops! Something went wrong!"));
+      console.error(err);
+      db.close();
+    });
 }
-
-// we export the seed function for testing purposes (see `./seed.spec.js`)
-module.exports = seed
