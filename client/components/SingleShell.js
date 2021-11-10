@@ -1,5 +1,4 @@
 import React from 'react';
-import {useEffect, useState} from 'react';
 import { fetchSingleShell } from '../store/singleShell';
 import {connect} from 'react-redux'
 

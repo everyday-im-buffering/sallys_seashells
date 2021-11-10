@@ -42,7 +42,7 @@ class Routes extends Component {
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
           <Route exact path="/products" component={AllProducts} />
-          {/* <Route path="/products/:id" component={SingleShell} /> */}
+          <Route path="/products/:id" component={SingleShell} /> 
         </Switch>
       </div>
     );
