@@ -44,7 +44,14 @@ class AllProducts extends React.Component {
   }
 
   render() {
-    const shells = []; // data to be brought in from redux store via mapState and mapDispatch
+    let shells = []; // data to be brought in from redux store via mapState and mapDispatch
+
+    if (this.state.waterType) {
+      shells = shells.filter(
+        (shell) => shell.waterType === this.state.waterType
+      );
+    }
+
     return (
       <div>
         <h1>Shells</h1>
