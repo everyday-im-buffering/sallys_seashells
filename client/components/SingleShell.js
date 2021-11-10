@@ -23,8 +23,15 @@ import {connect} from 'react-redux'
         console.log(singleShell)
         return (
     
-            // <div>{singleShell.color}</div>
-            <div>hi</div>
+            <div>
+            <h1>{singleShell.name}</h1>
+            <li>{singleShell.marineType}</li>
+            <li>{singleShell.color}</li>
+            <li>{singleShell.pattern}</li>
+            <li>{singleShell.price}</li>
+            </div>
+
+        
             
         )
     }
