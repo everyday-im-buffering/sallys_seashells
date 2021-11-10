@@ -37,10 +37,15 @@ class AllProducts extends React.Component {
   // more filtering capabilities to be added in this component, sorting too if we get there
 
   filterWater(event) {
-    // need to check if "value={null}" works
-    this.setState({
-      waterType: event.target.value,
-    });
+    if (event.target.value === "all") {
+      this.setState({
+        waterType: null,
+      });
+    } else {
+      this.setState({
+        waterType: event.target.value,
+      });
+    }
   }
 
   render() {
@@ -57,7 +62,7 @@ class AllProducts extends React.Component {
         <h1>Shells</h1>
         <div id="shell-filters">
           <select id="water-filter" onChange={this.filterWater}>
-            <option value={null}>-- select water type --</option>
+            <option value="all">-- select water type --</option>
             <option value="freshwater">Freshwater</option>
             <option value="marine">Marine</option>
           </select>
