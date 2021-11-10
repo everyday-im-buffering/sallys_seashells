@@ -1,12 +1,12 @@
 'use strict'
 
-const {db, models: {User, Shell} } = require('../server/db')
+const { db, models: { User, Shell } } = require('../server/db')
 
 /**
  * seed - this function clears the database, updates tables to
  *      match the models, and populates the database.
  */
- const shells = [
+const shells = [
   {
     name: "Grey Channeled Whelk",
     marineType: "gastropda",
@@ -122,13 +122,13 @@ const {db, models: {User, Shell} } = require('../server/db')
 
 
 async function seed() {
-  await db.sync({ force: true }) // clears db and matches models to tables
+  await db.sync() // clears db and matches models to tables
   console.log('db synced!')
 
   // Creating Users
   const users = await Promise.all([
-    User.create({ email: 'cody', password: '123', cart:{products:['sundial'], total:80.00}, isAdmin:true}),
-    User.create({ email: 'murphy', password: '123', cart:{products:['abalone', 'conche'],total:40.00}}),
+    User.create({ email: 'cody', password: '123', cart: { products: ['sundial'], total: 80.00 }, isAdmin: true }),
+    User.create({ email: 'murphy', password: '123', cart: { products: ['abalone', 'conche'], total: 40.00 } }),
   ])
 
   //creating shells

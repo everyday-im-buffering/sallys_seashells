@@ -22,8 +22,8 @@ if (process.env.DATABASE_URL) {
 
 const db = new Sequelize(
   // process.env.DATABASE_URL || `postgres://localhost:5432/${process.env.DATABASE_NAME}`, config
-  
-  'postgres://localhost:5432/grace_shopper'
-  )
 
-  module.exports = db
+  'postgres://localhost:5432/grace_shopper'
+)
+
+module.exports = db
