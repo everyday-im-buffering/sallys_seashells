@@ -5,6 +5,8 @@ import { Login, Signup } from "./components/AuthForm";
 import Home from "./components/Home";
 import SingleShell from "./components/SingleShell";
 import { me } from "./store";
+import AllProducts from "./components/AllProducts.js";
+import  SingleShell from "./components/SingleShell";
 
 /**
  * COMPONENT
@@ -36,11 +38,12 @@ class Routes extends Component {
         */}
         <Switch>
           <Route path="/home" component={Home} />
-         
+          {/* <Redirect to="/home" /> */}
           <Route path="/" exact component={Login} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
-          <Route path="/singleShell/:id" component={SingleShell} /> 
+          <Route exact path="/products" component={AllProducts} />
+          {/* <Route path="/products/:id" component={SingleShell} /> */}
         </Switch>
       </div>
     );
