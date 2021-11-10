@@ -1,9 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { fetchAllShells } from "../store/allProducts";
 // import relevant thunks from reducer
 
-const IndivdidualShell = () => {
+const IndivdidualShell = (props) => {
   const shell = props.shell;
   // shell is an object, as fetched from the DB via Redux
   // button needs to connect to Single Product view (<Link to={}>)
@@ -31,6 +32,7 @@ class AllProducts extends React.Component {
 
   componentDidMount() {
     // fetch all products using mapDispatch
+    this.props.getAllShells();
     window.scrollTo(0, 0);
   }
 
@@ -49,7 +51,7 @@ class AllProducts extends React.Component {
   }
 
   render() {
-    let shells = []; // data to be brought in from redux store via mapState and mapDispatch
+    let shells = this.props.allShells || []; // data to be brought in from redux store via mapState and mapDispatch
 
     if (this.state.waterType) {
       shells = shells.filter(
@@ -77,8 +79,12 @@ class AllProducts extends React.Component {
   }
 }
 
-const mapState = (state) => {};
+const mapState = (state) => ({
+  allShells: state.allShells
+});
 
-const mapDispatch = (dispatch) => {};
+const mapDispatch = (dispatch) => ({
+  getAllShells: () => dispatch(fetchAllShells())
+});
 
-export default AllProducts; // update to connected component once Redux is built out
+export default connect(mapState, mapDispatch)(AllProducts); // update to connected component once Redux is built out
