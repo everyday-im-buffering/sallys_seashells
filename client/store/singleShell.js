@@ -29,7 +29,7 @@ export default function singleShellReducer(state = {}, action){
     switch(action.type){
         case SET_SINGLE_SHELL:
             return action.singleShell
-            default:
+        default:
                 return state
     }
 }
