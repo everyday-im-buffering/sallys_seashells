@@ -4,7 +4,7 @@ import { withRouter, Route, Switch, Redirect } from "react-router-dom";
 import { Login, Signup } from "./components/AuthForm";
 import Home from "./components/Home";
 import { me } from "./store";
-import AllProducts from "./components/AllProducts.js";
+import AllShells from "./components/AllShells.js";
 import SingleShell from "./components/SingleShell";
 
 /**
@@ -41,8 +41,8 @@ class Routes extends Component {
           <Route path="/" exact component={Login} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
-          <Route exact path="/products" component={AllProducts} />
-          <Route path="/products/:id" component={SingleShell} /> 
+          <Route exact path="/shop" component={AllShells} />
+          <Route path="/shop/:id" component={SingleShell} />
         </Switch>
       </div>
     );
