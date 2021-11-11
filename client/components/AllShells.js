@@ -7,20 +7,19 @@ import { fetchAllShells } from "../store/allProducts";
 const IndivdidualShell = (props) => {
   const shell = props.shell;
   // shell is an object, as fetched from the DB via Redux
-  // button needs to connect to Single Product view (<Link to={}>)
-  // quick add to cart? or only from Single Product view?
 
   return (
     <div className="single-shell-list">
       <img src={shell.imageUrl} />
       <h3>{shell.name}</h3>
       <p>{shell.price}</p>
-      <button>Details</button>
+      <Link to={`/shop/${shell.id}`}>Details</Link>
+      <button>Add to Cart</button>
     </div>
   );
 };
 
-class AllProducts extends React.Component {
+class AllShells extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -31,7 +30,6 @@ class AllProducts extends React.Component {
   }
 
   componentDidMount() {
-    // fetch all products using mapDispatch
     this.props.getAllShells();
     window.scrollTo(0, 0);
   }
@@ -51,7 +49,7 @@ class AllProducts extends React.Component {
   }
 
   render() {
-    let shells = this.props.allShells || []; // data to be brought in from redux store via mapState and mapDispatch
+    let shells = this.props.allShells || [];
 
     if (this.state.waterType) {
       shells = shells.filter(
@@ -80,11 +78,11 @@ class AllProducts extends React.Component {
 }
 
 const mapState = (state) => ({
-  allShells: state.allShells
+  allShells: state.allShells,
 });
 
 const mapDispatch = (dispatch) => ({
-  getAllShells: () => dispatch(fetchAllShells())
+  getAllShells: () => dispatch(fetchAllShells()),
 });
 
-export default connect(mapState, mapDispatch)(AllProducts); // update to connected component once Redux is built out
+export default connect(mapState, mapDispatch)(AllShells);
