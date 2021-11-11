@@ -50,7 +50,7 @@ const Shell = db.define("shell", {
     },
   },
   price: {
-    type: Sequelize.FLOAT,
+    type: Sequelize.INTEGER,
     validate: {
       min: 0,
     },
