@@ -2,7 +2,7 @@
 
 const {
   db,
-  models: { User, Shell },
+  models: { User, Shell, Order, Order_Details },
 } = require("../server/db");
 
 /**
@@ -121,10 +121,20 @@ const shells = [
     price: 2000,
     imageUrl: "https://i.redd.it/nqwye0cohom21.jpg",
   },
+  {
+    name: "River Mussel",
+    marineType: "bivalvia",
+    color: "brown",
+    waterType: "freshwater",
+    quantity: 15,
+    price: 2299,
+    imageUrl:
+      "https://i.natgeofe.com/n/19f0dcb3-a4df-44fe-bd64-d0f58b419981/01-mussel-die-off-nationalgeographic_1436176.jpg",
+  },
 ];
 
 async function seed() {
-  await db.sync(); // clears db and matches models to tables
+  await db.sync({ force: true }); // clears db and matches models to tables
   console.log("db synced!");
 
   // Creating Users
@@ -142,12 +152,21 @@ async function seed() {
     }),
   ]);
 
+  const oneOrder = await Promise.all([
+    Order.create({
+      isComplete: false,
+    }),
+  ]);
+
   //creating shells
-  await Promise.all(
+  const shellsToCreate = await Promise.all(
     shells.map((shell) => {
       return Shell.create(shell);
     })
   );
+  // create associations
+  users[1].addOrder(oneOrder);
+  oneOrder[0].addShells([shellsToCreate[0], shellsToCreate[2]]);
 
   console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);
