@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const axios = require("axios");
 
 const SALT_ROUNDS = 5;
-console.log('jwt secret', process.env.JWT_SECRET)
+console.log("jwt secret", process.env.JWT_SECRET);
 
 const User = db.define("user", {
   email: {
@@ -15,9 +15,6 @@ const User = db.define("user", {
   },
   password: {
     type: Sequelize.STRING,
-  },
-  cart: {
-    type: Sequelize.JSONB,
   },
   isAdmin: {
     type: Sequelize.BOOLEAN,
