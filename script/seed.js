@@ -11,39 +11,67 @@ const userData = require("./seedData/users");
  *      match the models, and populates the database.
  */
 
+let users = [
+  {
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+    // has a 50 and 30% chance of getting assigned to true
+    isLoggedIn: Math.random() < 0.5,
+    isAdmin: Math.random() < 0.3,
+  },
+  {
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+    // has a 50 and 30% chance of getting assigned to true
+    isLoggedIn: Math.random() < 0.5,
+    isAdmin: Math.random() < 0.3,
+  },
+  {
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+    // has a 50 and 30% chance of getting assigned to true
+    isLoggedIn: Math.random() < 0.5,
+    isAdmin: Math.random() < 0.3,
+  },
+];
+
+let orders = [
+  {
+    isComplete: false,
+  },
+  {
+    isComplete: true,
+  },
+  {
+    isComplete: false,
+  },
+];
+
 async function seed() {
   await db.sync({ force: true }); // clears db and matches models to tables
   console.log("db synced!");
 
-  const newUsers = await Promise.all([
-    User.create({
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-      email: faker.internet.email(),
-      password: faker.internet.password(),
-      // has a 50 and 30% chance of getting assigned to true
-      isLoggedIn: Math.random() < 0.5,
-      isAdmin: Math.random() < 0.3,
-    }),
-    User.create({
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-      email: faker.internet.email(),
-      password: faker.internet.password(),
-      isLoggedIn: Math.random() < 0.5,
-      isAdmin: Math.random() < 0.3,
-    }),
-    User.create({
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-      email: faker.internet.email(),
-      password: faker.internet.password(),
-      isLoggedIn: Math.random() < 0.5,
-      isAdmin: Math.random() < 0.3,
-    }),
-  ]);
+  // creating Users
+  const newUsers = await Promise.all(
+    users.map((users) => {
+      return User.create(users);
+    })
+  );
 
-  //creating shells
+  //creating Orders
+  const newOrders = await Promise.all(
+    orders.map((order) => {
+      return Order.create(order);
+    })
+  );
+
+  //creating Shells
   await Promise.all(
     shells.map((shell) => {
       return Shell.create(shell);
@@ -51,9 +79,12 @@ async function seed() {
   );
   console.log(`seeded ${newUsers.length} users`);
   console.log(`seeded successfully`);
-  // Creating Users
-  return [...newUsers];
+ 
+  // await newUsers[0].addOrder([newOrders[1]])
+ console.log(newOrders[0])
 }
+
+async function createAssoc() {}
 
 /*
  We've separated the `seed` function from the `runSeed` function.

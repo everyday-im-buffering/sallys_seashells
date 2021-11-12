@@ -13,8 +13,8 @@ User.hasMany(Order)
 Shell.belongsToMany(Order, { through: Order_Details })
 Order.belongsToMany(Shell, { through: Order_Details})
 
-Order.belongsTo(User)
-User.hasMany(Order)
+// Order.belongsTo(User)
+// User.hasMany(Order)
 
 Order.hasMany(Order_Details)
 Order_Details.belongsTo(Order)
