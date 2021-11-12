@@ -43,48 +43,54 @@ let users = [
 
 let orders = [
   {
-    isComplete: false,
+    isFulfilled: false,
+    subTotal: 500,
+    numberOfItems: 2
   },
   {
-    isComplete: true,
+    isFulfilled: true,
+    subTotal: 2000,
+    numberOfItems: 3
   },
   {
-    isComplete: false,
+    isFulfilled: false,
+    subTotal: 1000,
+    numberOfItems: 2
   },
 ];
 
 async function seed() {
-  await db.sync({ force: true }); // clears db and matches models to tables
+  await db.sync({force:true}); // clears db and matches models to tables
   console.log("db synced!");
 
   // creating Users
-  const newUsers = await Promise.all(
+  const [user1, user2, user3] = await Promise.all(
     users.map((users) => {
       return User.create(users);
     })
   );
 
   //creating Orders
-  const newOrders = await Promise.all(
+  const [order1, order2, order3] = await Promise.all(
     orders.map((order) => {
       return Order.create(order);
     })
   );
 
   //creating Shells
-  await Promise.all(
+  const [shell1, shell2, shell3] = await Promise.all(
     shells.map((shell) => {
       return Shell.create(shell);
     })
   );
-  console.log(`seeded ${newUsers.length} users`);
+  console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);
- 
-  // await newUsers[0].addOrder([newOrders[1]])
- console.log(newOrders[0])
+
+  await user2.addOrder(order1)
+  await order1.addShell(shell2)
 }
 
-async function createAssoc() {}
+
 
 /*
  We've separated the `seed` function from the `runSeed` function.

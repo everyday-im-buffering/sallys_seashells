@@ -1,7 +1,7 @@
 module.exports = [
     {
       name: "Grey Channeled Whelk",
-      marineType: "gastropda",
+      marineType: "gastropoda",
       color: "grey",
       waterType: "marine",
       quantity: 2,
@@ -11,7 +11,7 @@ module.exports = [
     },
     {
       name: "Tan Channeled Whelk",
-      marineType: "gastropda",
+      marineType: "gastropoda",
       color: "brown",
       waterType: "marine",
       quantity: 7,
@@ -21,7 +21,7 @@ module.exports = [
     },
     {
       name: "Common Tower Shell",
-      marineType: "gastropda",
+      marineType: "gastropoda",
       color: "brown",
       waterType: "marine",
       quantity: 32,
@@ -31,7 +31,7 @@ module.exports = [
     },
     {
       name: "False Margined Cowry",
-      marineType: "gastropda",
+      marineType: "gastropoda",
       color: "brown",
       pattern: "spotted",
       waterType: "marine",
@@ -42,7 +42,7 @@ module.exports = [
     },
     {
       name: "Precious Wentletrap",
-      marineType: "gastropda",
+      marineType: "gastropoda",
       color: "white",
       waterType: "marine",
       quantity: 8,

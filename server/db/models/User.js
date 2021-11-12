@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 const axios = require("axios");
 
 const SALT_ROUNDS = 5;
-console.log("jwt secret", process.env.JWT_SECRET);
 
 const User = db.define("user", {
   email: {
