@@ -6,20 +6,31 @@ const ADD_SHELL = 'ADD_SHELL'
 const MINUS_SHELL = 'MINUS_SHELL'
 const REMOVE_SHELL = 'REMOVE_SHELL'
 
-export const addShellToCart = (id) => {
+//inital state is set as localestorage state.
+
+
+//setting the shell
+//findorcreate -> check orders for existing order
+ // if
+export const addShellToCart = (shell) => {
   return {
     type: 'ADD_SHELL_TO_CART',
-    id
+    shell
   }
 }
 
-export const addShell = (id) => {
-  return {
-    type: 'ADD_SHELL',
-    id
-  }
-}
+// export const addShell = (id) => {
+//   return {
+//     type: 'ADD_SHELL',
+//     id
+//   }
+// }
 
+
+
+
+
+//decrement
 export const minusShellQuantity = (id) => {
   return {
     type: 'MINUS_SHELL',
@@ -34,15 +45,15 @@ export const removeShell = (id) => {
   }
 }
 
-export const addShellToCart = (id) => {
+export const fetchShell = (orderId,userId) => {
   return async (dispatch) => {
     try {
-      const added = axios.post(`/api/orderShells/${id}`)
+      const added = axios.put(`/api/orders/${orderId}/${userId}`)
       //do we need to check if the order id already exists?
       //also make a hashed order id 
       //is this a put route to update a cart or a post route ? since the user starts out with 0 items
       //magic method like addShell in the api for the
-      dispatch(addShellToCart(added))
+      dispatch(addShellToCart(shell))
     } catch (e) {
       console.log(e)
     }
