@@ -11,14 +11,16 @@ const Order_Details = require('./models/OrderDetails')
 Order.belongsTo(User)
 User.hasMany(Order)
 
-Shell.belongsToMany(Order, { through: Order_Details })
-Order.belongsToMany(Shell, { through: Order_Details})
+// Shell.belongsToMany(Order, { through: Order_Details })
+// Order.belongsToMany(Shell, { through: Order_Details })
 
-Order.hasMany(Order_Details)
-Order_Details.belongsTo(Order)
+// Order.hasMany(Order_Details)
+// Order_Details.belongsTo(Order)
 
-Shell.hasMany(Order_Details)
-Order_Details.belongsTo(Shell)
+// Shell.hasMany(Order_Details)
+// Order_Details.belongsTo(Shell)
+
+// console.log("order from db/index.js", Order.prototype)
 
 module.exports = {
   db,

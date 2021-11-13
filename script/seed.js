@@ -60,7 +60,7 @@ let orders = [
 ];
 
 async function seed() {
-  await db.sync({force:true}); // clears db and matches models to tables
+  await db.sync({ force: true }); // clears db and matches models to tables
   console.log("db synced!");
 
   // creating Users
@@ -83,11 +83,16 @@ async function seed() {
       return Shell.create(shell);
     })
   );
+  console.log('shell2: ', shell2)
+  await user2.addOrder(order1)
+  await order1.addToCart(shell2)
+  // await order1.addToCart(shell2)
+
+
   console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);
 
-  await user2.addOrder(order1)
-  await order1.addShell(shell2)
+
 }
 
 
