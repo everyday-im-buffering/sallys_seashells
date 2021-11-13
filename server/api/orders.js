@@ -1,5 +1,6 @@
 const ordersRouter = require("express").Router();
 const Order = require("../db/models/Order");
+const Shell = require("../db/models/Shell");
 
 // res.cookie("orderNumber", "359ABC", {
 //   maxAge: 900000,
@@ -47,9 +48,14 @@ ordersRouter.post("/", async (req, res, next) => {
       });
       res.json(newOrder);
     } else {
-      const foundOrder = await Order.findOne({ where: { id: orderCookie } });
+     const foundOrder = await Order.findOne({ where: { id: orderCookie } }); 
+
+      console.log("foundOrder", foundOrder.prototype);
+      //find Shell
+      const shell = await Shell.findByPk(req.body.shellId)
+      //add to order details.
+      await foundOrder.addShell(shell)
       res.json(foundOrder);
-      console.log("foundOrder", foundOrder);
     }
   } catch (err) {
     next(err);
