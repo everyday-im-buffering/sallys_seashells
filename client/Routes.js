@@ -32,42 +32,32 @@ class Routes extends Component {
 
     return (
       <div>
-        {/*
         {isLoggedIn ? (
           <Switch>
             <Route path="/home" component={Home} />
-            <Redirect to="/home" />
+            <Route exact path="/account" component={AccountDetails} />
+            <Route exact path="/cart" component={Cart} />
+            <Route exact path="/checkout" component={CheckOut} />
+            <Route
+              exact
+              path="/checkout/order-confirmation"
+              component={OrderConfirmation}
+            />
           </Switch>
         ) : (
           <Switch>
-            <Route path='/' exact component={ Login } />
+            <Route exact path="/about" component={About} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-            
+            <Route exact path="/shop" component={AllShells} />
+            <Route path="/shop/:id" component={SingleShell} />
+            <Route exact path="/cart" component={Cart} />
           </Switch>
         )}
-        */}
+
         <Switch>
-          <Route path="/home" component={Home} />
-          {/* <Redirect to="/home" /> */}
-          <Route path="/" exact component={Login} />
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={Signup} />
-          <Route exact path="/shop" component={AllShells} />
-          <Route path="/shop/:id" component={SingleShell} />
           <Route path="/admin/shop/:id/edit" component={EditShell} />
           <Route exact path="/admin" component={AdminDash} />
-          <Route exact path="/cart" component={Cart} />
-          <Route exact path="/checkout" component={CheckOut} />
-          <Route
-            exact
-            path="/checkout/order-confirmation"
-            component={OrderConfirmation}
-          />
-          <Route exact path="/about" component={About} />
-          <Route exact path="/login" component={LogIn} />
-          <Route exact path="/signup" component={SignUp} />
-          <Route exact path="/account" component={AccountDetails} />
         </Switch>
       </div>
     );

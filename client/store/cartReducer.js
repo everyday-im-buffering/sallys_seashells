@@ -21,11 +21,10 @@ export const addShellToCart = (shell) => {
 // }
 
 //decrement
-export const minusShellQuantity = (id) => {
+export const minusShellQuantity = (id) => ({
     type: 'ADD_SHELL_TO_CART',
     id
-  }
-}
+})
 
 export const addShell = (id) => {
   return {
@@ -69,31 +68,31 @@ export const fetchShell = (shellId, shellPrice, shellQuantity) => {
   };
 };
 
-export const minusShell = (id) => {
-  try {
-    return async (dispatch) => {
-      const minus = axios.put(`/api/orderShells/${id}`);
-      //magic method that minus price and quantity to the quantity section
+// export const minusShell = (id) => {
+//   try {
+//     return async (dispatch) => {
+//       const minus = axios.put(`/api/orderShells/${id}`);
+//       //magic method that minus price and quantity to the quantity section
 
-      dispatch(minusShell(minus));
-    };
-  } catch (e) {
-    console.log(e);
-  }
-};
+//       dispatch(minusShell(minus));
+//     };
+//   } catch (e) {
+//     console.log(e);
+//   }
+// };
 
-export const removeShell = (id) => { //remove row or entire cart 
-  try {
-    return async (dispatch) => {
-      const remove = axios.delete(`/api/orderShells/${id}`)
-      //magic method that adds price to the quantity section
+// export const removeShell = (id) => { //remove row or entire cart 
+//   try {
+//     return async (dispatch) => {
+//       const remove = axios.delete(`/api/orderShells/${id}`)
+//       //magic method that adds price to the quantity section
 
-        dispatch(removeShell(remove))
-      }
-    } catch (e) {
-       console.log(e)
-     }
-   }
+//         dispatch(removeShell(remove))
+//       }
+//     } catch (e) {
+//        console.log(e)
+//      }
+//    }
 
 const initialState = {
   shells: [],
