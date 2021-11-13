@@ -9,7 +9,6 @@ module.exports = app
 app.use(cookieParser("secret"))
 
 
-
 // app.use(function (req, res, next) {
 //   // check if client sent cookie
 //   var cookie = req.cookies.cookieName;
