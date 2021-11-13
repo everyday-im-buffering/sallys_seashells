@@ -1,8 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
-const Shell = require('./Shell');
-const Order_Details = require('./OrderDetails');
-
+const Shell = require("./Shell");
+const Order_Details = require("./OrderDetails");
 
 // associations from db/index need to be imported here
 
@@ -27,34 +26,50 @@ const Order = db.define("order", {
   },
 });
 
-Shell.belongsToMany(Order, { through: Order_Details })
-Order.belongsToMany(Shell, { through: Order_Details })
+Shell.belongsToMany(Order, { through: Order_Details });
+Order.belongsToMany(Shell, { through: Order_Details });
 
-Order.hasMany(Order_Details)
-Order_Details.belongsTo(Order)
+Order.hasMany(Order_Details);
+Order_Details.belongsTo(Order);
 
-Shell.hasMany(Order_Details)
-Order_Details.belongsTo(Shell)
+Shell.hasMany(Order_Details);
+Order_Details.belongsTo(Shell);
 
-// console.log(Order.prototype)
-
-// update order_details based on shell first then update order based on order_details
 Order.prototype.addToCart = async function (shell) {
-  // creating line in order_details with shellId and orderId 
+  // creating line in order_details with shellId and orderId
   // check if this shell already exists
-  console.log('order beofre adding shell: ', this)
-  const shellDetails = await this.addShell(shell.id)
 
-  // console.log('shell arg', shell)
-  // console.log('added shell: ', shellDetails)
-  await this.update(
-    {
-      numberOfItems: this.numberOfItems + 1,
-      subTotal: this.subTotal += shell.price
-    }
-  )
-  console.log('order after adding shell: ', this)
+  const exists = await this.hasShell(shell.id);
+  let orderDetails;
+  const allDetails = await this.getOrder_details();
+  if (!exists) {
+    orderDetails = await this.addShell(shell.id);
+  } else {
+    orderDetails = allDetails.filter(
+      (info) => info.dataValues.shellId === shell.id
+    );
+  }
+  const info = orderDetails[0].dataValues;
+
+  // Sequelize Query through table  where shellId and orderId match
+  // then update that with info variable
+  const lineToUpdate = await Order_Details.findOne({
+    where: {
+      shellId: shell.id,
+      orderId: this.id,
+    },
+  });
+
+  await lineToUpdate.update({
+    numberOfItems: info.numberOfItems + 1,
+    totalPrice: (info.totalPrice += shell.price),
+  });
+
+  await this.update({
+    numberOfItems: this.numberOfItems + 1,
+    subTotal: (this.subTotal += shell.price),
+  });
   return this;
-}
+};
 
 module.exports = Order;
