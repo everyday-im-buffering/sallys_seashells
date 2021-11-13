@@ -20,7 +20,7 @@ export const addShell = (id) => {
   }
 }
 
-export const minusShellQuantity = (id) => {
+export const minusShell = (id) => {
   return {
     type: 'MINUS_SHELL',
     id
@@ -37,11 +37,13 @@ export const removeShell = (id) => {
 export const addShellToCart = (id) => {
   return async (dispatch) => {
     try {
-      const added = axios.post(`/api/orderShells/${id}`)
+      const added = axios.post(`/api/orderDetails/${id}`) //probably a put route 
+      //find or create is going to check the order details for product id
       //do we need to check if the order id already exists?
       //also make a hashed order id 
       //is this a put route to update a cart or a post route ? since the user starts out with 0 items
       //magic method like addShell in the api for the
+      //logic around checking if an order is new or not
       dispatch(addShellToCart(added))
     } catch (e) {
       console.log(e)
@@ -62,7 +64,7 @@ export const minusShell = (id) => {
   }
 }
 
-export const removeShell = (id) => {
+export const removeShell = (id) => { //remove row or entire cart 
   try {
     return async (dispatch) => {
       const remove = axios.delete(`/api/orderShells/${id}`)
@@ -79,7 +81,7 @@ export const removeShell = (id) => {
 
 //do we need to query order_shells to grab order_id and shell_id to find a specific shells quantitiy
 
-initialState = {
+initialState = { //use local state if there is no user id associated with a order id
   shells: [],
   total: 0,
   totalQuantity: 0 //shells represents our cart, and each item needs to be in an object with its own quantity, price 
