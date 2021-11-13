@@ -2,10 +2,12 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchAllShells } from "../store/allProducts";
+
 // import relevant thunks from reducer
 
 const IndivdidualShell = (props) => {
   const shell = props.shell;
+  const userId = props.userId
   // shell is an object, as fetched from the DB via Redux
 
   return (
@@ -79,6 +81,7 @@ class AllShells extends React.Component {
 
 const mapState = (state) => ({
   allShells: state.allShells,
+
 });
 
 const mapDispatch = (dispatch) => ({
