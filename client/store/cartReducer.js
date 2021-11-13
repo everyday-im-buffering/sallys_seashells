@@ -6,11 +6,6 @@ const MINUS_SHELL = "MINUS_SHELL";
 const REMOVE_SHELL = "REMOVE_SHELL";
 const SET_ORDER_COOKIE = "SET_ORDER_COOKIE";
 
-//inital state is set as localestorage state.
-
-//setting the shell
-//findorcreate -> check orders for existing order
-// if
 export const addShellToCart = (shell) => {
   return {
     type: "ADD_SHELL_TO_CART",
@@ -24,13 +19,6 @@ export const addShellToCart = (shell) => {
 //     id
 //   }
 // }
-
-// export const setOrderNumberCookie = (orderCookie) => {
-//   return {
-//     type: "SET_ORDER_COOKIE",
-//     orderCookie,
-//   };
-// };
 
 //decrement
 export const minusShellQuantity = (id) => {
@@ -47,12 +35,13 @@ export const removeShell = (id) => {
   };
 };
 
-export const fetchShell = (shellId, shellPrice, userId) => {
+export const fetchShell = (shellId, shellPrice, shellQuantity) => {
   return async (dispatch) => {
     try {
       const productInfo = {
         shellId: shellId,
         shellPrice: shellPrice,
+        shellQuantity
       };
       const res = await axios.post("/api/orders/", productInfo);
       //do we need to check if the order id already exists?
@@ -92,9 +81,6 @@ export const minusShell = (id) => {
 //   }
 // }
 
-//we need to grab our state from our orderDetails model
-
-//do we need to query order_shells to grab order_id and shell_id to find a specific shells quantitiy
 
 const initialState = {
   shells: [],

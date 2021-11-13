@@ -2,23 +2,6 @@ const ordersRouter = require("express").Router();
 const Order = require("../db/models/Order");
 const Shell = require("../db/models/Shell");
 
-// res.cookie("orderNumber", "359ABC", {
-//   maxAge: 900000,
-//   httpOnly: true,
-//   signed: true,
-// });
-
-//find or create order
-// ordersRouter.put('/:orderId/:userId', async (req, res, next) => {
-//     let orderId = req.params.orderId
-//     const [order, created] = await Order.findOrCreate({
-//         where: { id: userId },
-//       });
-//       // returns true if newly created and false if already existed
-//       if(created){
-//           console.log('created!')
-//       }
-// })
 ordersRouter.get("/", async (req, res, next) => {
   try {
     const allOrders = await Order.findAll({});
@@ -31,7 +14,7 @@ ordersRouter.get("/", async (req, res, next) => {
   }
 });
 ordersRouter.post("/", async (req, res, next) => {
-    const orderCookie = req.signedCookies['orderNumber'] || undefined
+  const orderCookie = req.signedCookies["orderNumber"] || undefined;
   try {
     console.log("the Body", req.body);
 
@@ -55,7 +38,6 @@ ordersRouter.post("/", async (req, res, next) => {
       res.status(201).send(newOrder);
       console.log("new Order created!");
     } else {
-      
       const foundOrder = await Order.findOne({ where: { id: orderCookie } });
 
       console.log("foundOrder", foundOrder);
@@ -75,8 +57,6 @@ ordersRouter.post("/", async (req, res, next) => {
     next(err);
   }
 
-  //         newOrder.addProductToCart(req.params.productId)
-  //   }
 });
 
 module.exports = ordersRouter;

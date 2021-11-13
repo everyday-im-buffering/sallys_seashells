@@ -13,10 +13,9 @@ class SingleShell extends React.Component {
     }
   }
 
-  addToCart(shellId, shellPrice) {
-      //check if loggedIn?
-      console.log('clicked')
-      this.props.fetchShell(shellId,shellPrice, this.props.userId)
+  addToCart(shellId, shellPrice, shellQuantity) {
+      //check if this.props.userId exists
+      this.props.fetchShell(shellId,shellPrice, shellQuantity)
   }
 
   render() {
@@ -30,7 +29,7 @@ class SingleShell extends React.Component {
         <li>{singleShell.color}</li>
         <li>{singleShell.pattern}</li>
         <li>{singleShell.price}</li>
-        <button onClick={() => this.addToCart(singleShell.id, singleShell.price)}>
+        <button onClick={() => this.addToCart(singleShell.id, singleShell.price, singleShell.quantity)}>
           Add To Cart
         </button>
       </div>
