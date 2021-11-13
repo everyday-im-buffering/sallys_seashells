@@ -13,8 +13,9 @@ class SingleShell extends React.Component {
     }
   }
 
-  addToCart(shellId, userId, ) {
-      // this.props.addToCart(shellId,userId)
+  addToCart(shellId, shellPrice, ) {
+      //check if loggedIn?
+      this.props.addToCart(shellId,shellPrice, this.props.userId)
   }
 
   render() {
@@ -28,7 +29,7 @@ class SingleShell extends React.Component {
         <li>{singleShell.color}</li>
         <li>{singleShell.pattern}</li>
         <li>{singleShell.price}</li>
-        <button onClick={this.addToCart(singleShell.id, userId)}>
+        <button onClick={this.addToCart(singleShell.id, singleShell.price)}>
           Add To Cart
         </button>
       </div>
@@ -46,7 +47,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     loadSingleShell: (id) => dispatch(fetchSingleShell(id)),
-    addToCart: (shellId,userId) => dispatch(fetchShell(shellId,userId))
+    addToCart: (shellId,shellPrice,userId) => dispatch(fetchShell(shellId,shellPrice,userId))
   };
 };
 
