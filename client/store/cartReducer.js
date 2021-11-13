@@ -53,7 +53,7 @@ export const fetchShell = (orderId,userId) => {
       //also make a hashed order id 
       //is this a put route to update a cart or a post route ? since the user starts out with 0 items
       //magic method like addShell in the api for the
-      dispatch(addShellToCart(shell))
+      dispatch(addShellToCart(added))
     } catch (e) {
       console.log(e)
     }
@@ -73,24 +73,24 @@ export const minusShell = (id) => {
   }
 }
 
-export const removeShell = (id) => {
-  try {
-    return async (dispatch) => {
-      const remove = axios.delete(`/api/orderShells/${id}`)
-      //magic method that adds price to the quantity section
+// export const removeShell = (id) => {
+//   try {
+//     return async (dispatch) => {
+//       const remove = axios.delete(`/api/orderShells/${id}`)
+//       //magic method that adds price to the quantity section
 
-      dispatch(removeShell(remove))
-    }
-  } catch (e) {
-    console.log(e)
-  }
-}
+//       dispatch(removeShell(remove))
+//     }
+//   } catch (e) {
+//     console.log(e)
+//   }
+// }
 
 //we need to grab our state from our orderDetails model
 
 //do we need to query order_shells to grab order_id and shell_id to find a specific shells quantitiy
 
-initialState = {
+const initialState = {
   shells: [],
   total: 0,
   totalQuantity: 0 //shells represents our cart, and each item needs to be in an object with its own quantity, price 

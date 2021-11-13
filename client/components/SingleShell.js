@@ -14,13 +14,13 @@ class SingleShell extends React.Component {
   }
 
   addToCart(shellId, userId, ) {
-      this.props.addToCart(shellId,userId)
+      // this.props.addToCart(shellId,userId)
   }
 
   render() {
     const singleShell = this.props.singleShell;
     const userId = this.props.userId;
-    console.log(singleShell);
+
     return (
       <div>
         <h1>{singleShell.name}</h1>

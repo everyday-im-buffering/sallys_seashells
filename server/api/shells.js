@@ -20,7 +20,8 @@ productsRouter.get('/', async (_req, res, next) => {
 productsRouter.get('/:id', async (req, res, next) =>{
   try{
       const shell = await Shell.findByPk(req.params.id)
-      console.log(shell, 'shell');
+     let cookie = req.signedCookies['orderNumber']
+     console.log('signedcookie',cookie)
       res.json(shell);
   }catch(e){
       next(e)
