@@ -40,7 +40,12 @@ ordersRouter.post("/", async (req, res, next) => {
         subTotal: req.body.shellPrice,
         numberOfItems: 1,
       });
-
+      
+      //find shell
+      const shell = await Shell.findByPk(req.body.shellId);
+      //add to order details
+      await newOrder.addShell(shell);
+      
       res.cookie("orderNumber", newOrder.id, {
         maxAge: 900000,
         httpOnly: true,
@@ -59,7 +64,7 @@ ordersRouter.post("/", async (req, res, next) => {
       await foundOrder.addShell(shell);
         //increment in Order model
       Order.increment({ subTotal: req.body.shellPrice, numberOfItems: 1}, { by: 2, where: { id: orderCookie } });
-        foundOrder.save()
+       await foundOrder.save()
       res.send(foundOrder);
     }
   } catch (err) {
