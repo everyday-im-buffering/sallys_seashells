@@ -37,25 +37,30 @@ ordersRouter.post("/", async (req, res, next) => {
     console.log("theCookie", orderCookie);
     if (orderCookie === undefined) {
       const newOrder = await Order.create({
-        subTotal: req.body.price,
+        subTotal: req.body.shellPrice,
         numberOfItems: 1,
       });
-      newOrder.save();
+
       res.cookie("orderNumber", newOrder.id, {
-        maxAge: 90000,
+        maxAge: 900000,
         httpOnly: true,
         // signed: true,
       });
-      res.json(newOrder);
-    } else {
-     const foundOrder = await Order.findOne({ where: { id: orderCookie } }); 
 
-      console.log("foundOrder", foundOrder.prototype);
+      res.status(201).send(newOrder);
+      console.log("new Order created!");
+    } else {
+      const foundOrder = await Order.findOne({ where: { id: orderCookie } });
+     
+      console.log("foundOrder", foundOrder);
       //find Shell
-      const shell = await Shell.findByPk(req.body.shellId)
+      const shell = await Shell.findByPk(req.body.shellId);
       //add to order details.
-      await foundOrder.addShell(shell)
-      res.json(foundOrder);
+      await foundOrder.addShell(shell);
+        //increment in Order model
+      Order.increment({ subTotal: req.body.shellPrice, numberOfItems: 1}, { by: 2, where: { id: orderCookie } });
+        foundOrder.save()
+      res.send(foundOrder);
     }
   } catch (err) {
     next(err);
