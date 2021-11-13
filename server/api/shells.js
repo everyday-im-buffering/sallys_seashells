@@ -20,7 +20,6 @@ productsRouter.get('/', async (_req, res, next) => {
 productsRouter.get('/:id', async (req, res, next) =>{
   try{
       const shell = await Shell.findByPk(req.params.id)
-      console.log(shell, 'shell');
       res.json(shell);
   }catch(e){
       next(e)
