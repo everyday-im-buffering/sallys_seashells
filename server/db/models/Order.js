@@ -1,7 +1,13 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
 
+
 const Order = db.define("order", {
+  id: {
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4,
+    primaryKey:true
+  },
   isFulfilled: {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
@@ -21,5 +27,7 @@ const Order = db.define("order", {
     },
   },
 });
+
+
 
 module.exports = Order;

@@ -3,8 +3,10 @@ const { models: { User } } = require('../db')
 module.exports = router
 
 router.post('/login', async (req, res, next) => {
+  
   try {
-    res.cookie('orderNumber', '359', {signed: true})
+    
+    res.cookie('orderNumber', '359ABC', {maxAge: 900000,httpOnly: true,signed: true})
     res.send({ token: await User.authenticate(req.body) });
   } catch (err) {
     next(err)
