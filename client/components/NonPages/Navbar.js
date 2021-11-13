@@ -5,26 +5,41 @@ import { logout } from "../../store";
 
 const Navbar = ({ handleClick, isLoggedIn }) => (
   <div>
-    <h1>FS-App-Template</h1>
-    <nav>
-      {isLoggedIn ? (
-        <div>
-          {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
-            Logout
+    <head>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    </head>
+    <body>
+      <nav class="navbar navbar-light bg-light">
+        <ul class="nav justify-content-center">
+          <a class="navbar-brand" href="#">
+            seashore
           </a>
-        </div>
-      ) : (
-        <div>
-          {/* The navbar will show these links before you log in */}
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-        </div>
-      )}
-    </nav>
-    <hr />
-  </div>
+        </ul>
+
+        {isLoggedIn ? (
+          <div class="container-fluid">
+            {/* The navbar will show these links after you log in */}
+            <Link to="/home">Home</Link>
+            <a href="#" onClick={handleClick}>
+              Logout
+            </a>
+          </div>
+        ) : (
+          <ul class="nav justify-content-end">
+            {/* The navbar will show these links before you log in */}
+            <li class="navbar-text">
+              <a class="nav-link active" href="/login">login</a>
+            </li>
+            <li class="navbar-text">
+              <a class="nav-link active" href="/signup">sign up</a>
+            </li>
+          </ul>
+        )}
+
+      </nav>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+  </div >
 );
 
 /**
