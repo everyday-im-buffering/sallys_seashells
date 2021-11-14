@@ -47,13 +47,12 @@ export const removeShell = (id) => {
   };
 };
 
-export const fetchShell = (shellId, shellPrice, shellQuantity) => {
+export const fetchShell = (shell, newQuantity) => {
   return async (dispatch) => {
     try {
       const productInfo = {
-        shellId: shellId,
-        shellPrice: shellPrice,
-        shellQuantity: shellQuantity
+       ...shell,
+        newQuantity
       };
       const res = await axios.post("/api/orders/", productInfo);
       //do we need to check if the order id already exists?

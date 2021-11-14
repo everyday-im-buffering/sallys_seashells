@@ -20,8 +20,8 @@ ordersRouter.post("/", async (req, res, next) => {
 
     if (orderCookie === undefined) {
       const newOrder = await Order.create({
-        subTotal: req.body.shellPrice,
-        numberOfItems: req.body.shellQuantiy
+        subTotal: req.body.price,
+        numberOfItems: req.body.newQuantity
     
       });
 
