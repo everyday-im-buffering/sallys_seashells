@@ -21,14 +21,15 @@ ordersRouter.post("/", async (req, res, next) => {
     if (orderCookie === undefined) {
       const newOrder = await Order.create({
         subTotal: req.body.shellPrice,
-        numberOfItems: 1,
+        numberOfItems: req.body.shellQuantiy
+    
       });
 
-      //find shell
-      const shell = await Shell.findByPk(req.body.shellId);
-      //add to order details
-      await newOrder.addShell(shell);
-
+    //   //find shell
+    //   const shell = await Shell.findByPk(req.body.shellId);
+    //   //add to order details
+    //   await newOrder.addShell(shell);
+        
       res.cookie("orderNumber", newOrder.id, {
         maxAge: 900000,
         httpOnly: true,
