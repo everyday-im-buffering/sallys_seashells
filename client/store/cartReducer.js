@@ -13,17 +13,15 @@ export const addShellToCart = (shell) => {
   };
 };
 
-//decrement
+export const addShell = (id) => {
+  return {
+    type: 'ADD_SHELL',
+    id
+  }
+}
 export const minusShellQuantity = (id) => {
   return {
     type: "ADD_SHELL_TO_CART",
-    id,
-  };
-};
-
-export const addShell = (id) => {
-  return {
-    type: "ADD_SHELL",
     id,
   };
 };
@@ -42,13 +40,12 @@ export const _removeShell = (id) => {
   };
 };
 
-export const fetchShell = (shellId, shellPrice, shellQuantity) => {
+export const fetchShell = (shell, newQuantity) => {
   return async (dispatch) => {
     try {
       const productInfo = {
-        shellId: shellId,
-        shellPrice: shellPrice,
-        shellQuantity,
+       ...shell,
+        newQuantity
       };
       const res = await axios.post("/api/orders/", productInfo);
       //do we need to check if the order id already exists?
@@ -62,7 +59,6 @@ export const fetchShell = (shellId, shellPrice, shellQuantity) => {
     }
   };
 };
-
 export const minusShell = (id) => {
   try {
     return async (dispatch) => {

@@ -22,7 +22,7 @@ const Order = db.define("order", {
   },
   numberOfItems: {
     type: Sequelize.INTEGER,
-    allowNull: false,
+    // allowNull: false,
     validate: {
       min: 0,
     },
@@ -41,7 +41,7 @@ Order_Details.belongsTo(Shell);
 Order.prototype.addToCart = async function (shell) {
   // creating line in order_details with shellId and orderId
   // check if this shell already exists
-
+  let newQuantity = shell.newQuantity || 1
   const exists = await this.hasShell(shell.id);
   let orderDetails;
   const allDetails = await this.getOrder_details();
@@ -64,13 +64,13 @@ Order.prototype.addToCart = async function (shell) {
   });
 
   await lineToUpdate.update({
-    numberOfItems: info.numberOfItems + 1,
-    totalPrice: (info.totalPrice += shell.price),
+    numberOfItems: info.numberOfItems + newQuantity,
+    totalPrice: (info.totalPrice += (newQuantity *shell.price)),
   });
 
   await this.update({
-    numberOfItems: this.numberOfItems + 1,
-    subTotal: (this.subTotal += shell.price),
+    numberOfItems: this.numberOfItems + newQuantity,
+    subTotal: (this.subTotal += (newQuantity * shell.price)),
   });
   return this;
 };
