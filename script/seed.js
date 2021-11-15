@@ -60,7 +60,7 @@ let orders = [
 ];
 
 async function seed() {
-  await db.sync({force:true}); // clears db and matches models to tables
+  await db.sync({ force: true }); // clears db and matches models to tables
   console.log("db synced!");
 
   // creating Users
