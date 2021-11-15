@@ -4,6 +4,19 @@
 const router = require("express").Router();
 const Shell = require("../db/models/Shell"); // server/db/models/Shell.js
 
+// test route, same as /shells API route
+router.get("/shells/", async (_req, res, next) => {
+  try {
+    const allProducts = await Shell.findAll({});
+    if (!allProducts) {
+      return res.status(404).send("No Products Found");
+    }
+    res.json(allProducts);
+  } catch (err) {
+    next(err);
+  }
+});
+
 // create new shell
 router.post("/shells/", async (req, res, next) => {
   try {
@@ -26,7 +39,7 @@ router.delete("/shells/:id", async (req, res, next) => {
 });
 
 // update a shell
-router.put("/shells/id", async (req, res, next) => {
+router.put("/shells/:id", async (req, res, next) => {
   try {
     const shell = await Shell.findByPk(req.params.id);
     res.json(await shell.update(req.body));
@@ -34,5 +47,7 @@ router.put("/shells/id", async (req, res, next) => {
     next(err);
   }
 });
+
+// "/admin/users/:id routes" if admins have the ability to edit user info
 
 module.exports = router;

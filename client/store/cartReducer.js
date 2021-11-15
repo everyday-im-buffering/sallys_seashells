@@ -22,26 +22,27 @@ export const addShellToCart = (shell) => {
 
 //decrement
 export const minusShellQuantity = (id) => {
-    type: 'ADD_SHELL_TO_CART',
-    id
-  }
-}
+  return {
+    type: "ADD_SHELL_TO_CART",
+    id,
+  };
+};
 
 export const addShell = (id) => {
   return {
-    type: 'ADD_SHELL',
-    id
-  }
-}
+    type: "ADD_SHELL",
+    id,
+  };
+};
 
-export const minusShell = (id) => {
+export const _minusShell = (id) => {
   return {
     type: "MINUS_SHELL",
     id,
   };
 };
 
-export const removeShell = (id) => {
+export const _removeShell = (id) => {
   return {
     type: "REMOVE_SHELL",
     id,
@@ -54,7 +55,7 @@ export const fetchShell = (shellId, shellPrice, shellQuantity) => {
       const productInfo = {
         shellId: shellId,
         shellPrice: shellPrice,
-        shellQuantity
+        shellQuantity,
       };
       const res = await axios.post("/api/orders/", productInfo);
       //do we need to check if the order id already exists?
@@ -75,25 +76,26 @@ export const minusShell = (id) => {
       const minus = axios.put(`/api/orderShells/${id}`);
       //magic method that minus price and quantity to the quantity section
 
-      dispatch(minusShell(minus));
+      dispatch(_minusShell(minus));
     };
   } catch (e) {
     console.log(e);
   }
 };
 
-export const removeShell = (id) => { //remove row or entire cart 
+export const removeShell = (id) => {
+  //remove row or entire cart
   try {
     return async (dispatch) => {
-      const remove = axios.delete(`/api/orderShells/${id}`)
+      const remove = axios.delete(`/api/orderShells/${id}`);
       //magic method that adds price to the quantity section
 
-        dispatch(removeShell(remove))
-      }
-    } catch (e) {
-       console.log(e)
-     }
-   }
+      dispatch(_removeShell(remove));
+    };
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 const initialState = {
   shells: [],
@@ -111,7 +113,7 @@ export default function cartReducer(shells = [], action) {
       return; //maps through the shells array and matches the action.id and decrements the quantity and price
     case REMOVE_SHELL:
       return; //destroy the shell
-   
+
     default:
       return state;
   }
