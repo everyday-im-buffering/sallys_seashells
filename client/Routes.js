@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
 import { Login, Signup } from "./components/NonPages/AuthForm";
-import Home from "./components/Home";
+import Home from "./components/OldHome";
 import { me } from "./store";
 import AllShells from "./components/AllShells.js";
 import SingleShell from "./components/SingleShell";

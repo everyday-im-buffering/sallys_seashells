@@ -31,7 +31,10 @@
     "morgan": "^1.9.1",
     "pg": "^8.5.1",
     "react-bootstrap": "^2.0.2",
-    "sequelize": "^6.3.5"
+    "react-icons": "^4.3.1",
+    "react-scroll": "^1.8.4",
+    "sequelize": "^6.3.5",
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
@@ -40,6 +43,7 @@
     "axios": "^0.21.4",
     "axios-mock-adapter": "^1.16.0",
     "babel-loader": "^8.2.2",
+    "babel-plugin-styled-components": "^1.13.3",
     "chai": "^4.2.0",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
@@ -47,7 +51,7 @@
     "faker": "^5.5.3",
     "mocha": "^6.2.3",
     "nodemon": "^1.19.4",
-    "react": "^16.8.6",
+    "react": "^16.14.0",
     "react-dom": "^16.8.6",
     "react-redux": "^7.0.1",
     "react-router-dom": "^5.0.0",
