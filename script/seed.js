@@ -44,18 +44,18 @@ let users = [
 let orders = [
   {
     isFulfilled: false,
-    subTotal: 500,
-    numberOfItems: 2
+    subTotal: 0,
+    numberOfItems: 0,
   },
   {
     isFulfilled: true,
     subTotal: 2000,
-    numberOfItems: 3
+    numberOfItems: 3,
   },
   {
     isFulfilled: false,
     subTotal: 1000,
-    numberOfItems: 2
+    numberOfItems: 2,
   },
 ];
 
@@ -83,14 +83,14 @@ async function seed() {
       return Shell.create(shell);
     })
   );
+  await user2.addOrder(order1);
+  await order1.addToCart(shell1);
+  await order1.addToCart(shell2);
+  await order1.addToCart(shell2);
+
   console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);
-
-  await user2.addOrder(order1)
-  await order1.addShell(shell2)
 }
-
-
 
 /*
  We've separated the `seed` function from the `runSeed` function.

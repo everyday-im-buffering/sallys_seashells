@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux'
 
-class Cart extends Component {
+class Cart extends React.Component {
   render() {
     //create an addShell props to map through
     return (

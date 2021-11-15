@@ -19,21 +19,12 @@ export const addShell = (id) => {
     id
   }
 }
-
-//decrement
-// export const minusShellQuantity = (id) => {
-//   return {
-//     type: 'ADD_SHELL_TO_CART',
-//     id
-//   }
-// }
-
-// export const addShellToCart = (id) => {
-//   return {
-//     type: 'ADD_SHELL',
-//     id
-//   }
-// }
+export const minusShellQuantity = (id) => {
+  return {
+    type: "ADD_SHELL_TO_CART",
+    id,
+  };
+};
 
 export const minusShellFromCart = (id) => {
   return {
@@ -42,20 +33,19 @@ export const minusShellFromCart = (id) => {
   };
 };
 
-export const removeShellRow = (id) => {
+export const _removeShell = (id) => {
   return {
     type: "REMOVE_SHELL",
     id,
   };
 };
 
-export const fetchShell = (shellId, shellPrice, shellQuantity) => {
+export const fetchShell = (shell, newQuantity) => {
   return async (dispatch) => {
     try {
       const productInfo = {
-        shellId: shellId,
-        shellPrice: shellPrice,
-        shellQuantity
+       ...shell,
+        newQuantity
       };
       const res = await axios.post("/api/orders/", productInfo);
       //do we need to check if the order id already exists?
@@ -69,13 +59,11 @@ export const fetchShell = (shellId, shellPrice, shellQuantity) => {
     }
   };
 };
-
 export const minusShell = (id) => {
   try {
     return async (dispatch) => {
       const minus = axios.put(`/api/orderShells/${id}`);
       //magic method that minus price and quantity to the quantity section
-
       dispatch(minusShellFromCart(minus));
     };
   } catch (e) {
@@ -83,19 +71,18 @@ export const minusShell = (id) => {
   }
 };
 
-export const removeShell = (id) => { //remove row or entire cart 
+export const removeShell = (id) => {
+  //remove all instances of this shell from entire cart
   try {
     return async (dispatch) => {
-      const remove = axios.delete(`/api/orderShells/${id}`)
+      const remove = axios.delete(`/api/orderShells/${id}`);
       //magic method that adds price to the quantity section
-
-      dispatch(removeShell(remove))
-    }
+      dispatch(_removeShell(remove));
+    };
   } catch (e) {
-    console.log(e)
+    console.log(e);
   }
-}
-
+};
 
 const initialState = {
   shells: [],
