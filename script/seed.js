@@ -88,8 +88,6 @@ async function seed() {
   await order1.addToCart(shell2);
   await order1.addToCart(shell2);
 
-  await order1.removeFromCart(shell2);
-
   console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);
 }
