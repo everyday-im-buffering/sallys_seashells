@@ -41,7 +41,7 @@ export const NavLogo = styled(LinkR)`
 `;
 
 export const MobileIcon = styled.div`
-    display: none;
+    display: inline;
     padding: 30px;
     color: white;
 
@@ -88,7 +88,7 @@ export const NavBtn = styled.nav`
     display: flex;
     border-radius: 20px;
     align-items: center;
-    padding: 20px 10px;
+    padding: 30px 10px;
     outline: none;
     cursor: pointer;
     border: none;
