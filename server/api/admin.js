@@ -5,17 +5,17 @@ const router = require("express").Router();
 const Shell = require("../db/models/Shell"); // server/db/models/Shell.js
 
 // test route, same as /shells API route
-router.get("/shells/", async (_req, res, next) => {
-  try {
-    const allProducts = await Shell.findAll({});
-    if (!allProducts) {
-      return res.status(404).send("No Products Found");
-    }
-    res.json(allProducts);
-  } catch (err) {
-    next(err);
-  }
-});
+// router.get("/shells/", async (_req, res, next) => {
+//   try {
+//     const allProducts = await Shell.findAll({});
+//     if (!allProducts) {
+//       return res.status(404).send("No Products Found");
+//     }
+//     res.json(allProducts);
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 // create new shell
 router.post("/shells/", async (req, res, next) => {
