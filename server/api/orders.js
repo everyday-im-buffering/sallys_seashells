@@ -1,6 +1,9 @@
 const ordersRouter = require("express").Router();
+// const { default: allShellsReducer } = require("../../client/store/allProducts");
 const Order = require("../db/models/Order");
 const Shell = require("../db/models/Shell");
+const OrderDetails = require("../db/models/OrderDetails")
+const User = require("../db/models/User")
 
 ordersRouter.get("/", async (req, res, next) => {
   try {
@@ -13,6 +16,38 @@ ordersRouter.get("/", async (req, res, next) => {
     next(err);
   }
 });
+
+//api route to query the order model, fetching the user's cart when they go to the cart component
+ordersRouter.get("/:id", async (req, res, next) => {
+  try {
+    //populate the cart by fetching the order details associated with the userId and one that isn't fufilled
+    //include the order details but is it a security issue to send back all of the attributes?
+    console.log(req.params);
+    //if the session id matches the user id or however we are verifying a logged in user else we just find by OrderId
+    //if auth, add the user to the Order with addUser
+    const getUsersOrder = await Order.findOne({
+      where: {
+        id: req.params.id,
+        isFulfilled: false
+      },
+      attributes: ['subTotal', 'numberOfItems'],
+      include: [
+        {
+          model: OrderDetails, attributes: ['numberOfItems', 'totalPrice'],
+          include: [
+            { model: Shell, attributes: ['name', 'imageUrl'] }
+          ]
+        }
+      ]
+      // ,
+    });
+    console.log(getUsersOrder)
+    res.send(getUsersOrder);
+  } catch (e) {
+    next(e)
+  }
+})
+
 ordersRouter.post("/", async (req, res, next) => {
   const orderCookie = req.signedCookies["orderNumber"] || undefined;
   try {
