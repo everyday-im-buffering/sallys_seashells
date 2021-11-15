@@ -7,7 +7,7 @@ const Order = db.define("order", {
   id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
-    primaryKey:true
+    primaryKey: true,
   },
   isFulfilled: {
     type: Sequelize.BOOLEAN,
@@ -38,10 +38,11 @@ Order_Details.belongsTo(Order);
 Shell.hasMany(Order_Details);
 Order_Details.belongsTo(Shell);
 
+// Adding a shell to the order
 Order.prototype.addToCart = async function (shell) {
   // creating line in order_details with shellId and orderId
   // check if this shell already exists
-  let newQuantity = shell.newQuantity || 1
+  const newQuantity = shell.newQuantity || 1;
   const exists = await this.hasShell(shell.id);
   let orderDetails;
   const allDetails = await this.getOrder_details();
@@ -65,14 +66,23 @@ Order.prototype.addToCart = async function (shell) {
 
   await lineToUpdate.update({
     numberOfItems: info.numberOfItems + newQuantity,
-    totalPrice: (info.totalPrice += (newQuantity *shell.price)),
+    totalPrice: (info.totalPrice += newQuantity * shell.price),
   });
 
   await this.update({
     numberOfItems: this.numberOfItems + newQuantity,
-    subTotal: (this.subTotal += (newQuantity * shell.price)),
+    subTotal: (this.subTotal += newQuantity * shell.price),
   });
   return this;
 };
+
+// update shell qty from order
+Order.prototype.updateCartQty = async function (shell) {
+  // like addToCart, shell will come with a qty property
+  const qty = shell.newQuantity || 1;
+};
+
+// Removing a shell from the order
+Order.prototype.removeFromCart = async function (shell) {};
 
 module.exports = Order;

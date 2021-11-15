@@ -1,12 +1,8 @@
 import React from "react";
-
+import { Signup } from "./NonPages/AuthForm";
 
 const SignUp = () => {
-    return (
-        <div>
-            <p> sign up </p>
-        </div>
-    )
+  return <Signup />;
 };
 
 export default SignUp;
