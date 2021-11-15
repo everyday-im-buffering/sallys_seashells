@@ -1,8 +1,6 @@
-const router = require("express").Router();
-const {
-  models: { User },
-} = require("../db");
-module.exports = router;
+const router = require('express').Router()
+const { models: { User } } = require('../db')
+module.exports = router
 
 // get all users
 router.get("/", async (req, res, next) => {
@@ -18,6 +16,34 @@ router.get("/", async (req, res, next) => {
     next(err);
   }
 });
+
+})
+//which route do we want our users cart to be on?
+// ordersRouter.get("/:userId", async (req, res, next) => {
+//   try {
+//     console.log(req.params.id)
+//     const getOrderByUserId = await Order.findOne({
+//       where: {
+//         userId: req.params.id,
+//         isFulfilled: false
+//       },
+//       attributes: ['subTotal', 'numberOfItems'],
+//       include: [
+//         {
+//           model: OrderDetails, attributes: ['numberOfItems', 'totalPrice'],
+//           include: [
+//             { model: Shell, attributes: ['name', 'imageUrl'] }
+//           ]
+//         }
+//       ]
+//     })
+//     res.send(getOrderByUserId);
+//   } catch (e) {
+//     console.log(e)
+//   }
+// })
+
+
 
 // get single user
 router.get("/:id", async (req, res, next) => {

@@ -13,13 +13,6 @@ export const addShellToCart = (shell) => {
   };
 };
 
-// export const addShell = (id) => {
-//   return {
-//     type: 'ADD_SHELL',
-//     id
-//   }
-// }
-
 //decrement
 export const minusShellQuantity = (id) => {
   return {
@@ -35,7 +28,7 @@ export const addShell = (id) => {
   };
 };
 
-export const _minusShell = (id) => {
+export const minusShellFromCart = (id) => {
   return {
     type: "MINUS_SHELL",
     id,
@@ -75,8 +68,7 @@ export const minusShell = (id) => {
     return async (dispatch) => {
       const minus = axios.put(`/api/orderShells/${id}`);
       //magic method that minus price and quantity to the quantity section
-
-      dispatch(_minusShell(minus));
+      dispatch(minusShellFromCart(minus));
     };
   } catch (e) {
     console.log(e);
@@ -84,12 +76,11 @@ export const minusShell = (id) => {
 };
 
 export const removeShell = (id) => {
-  //remove row or entire cart
+  //remove all instances of this shell from entire cart
   try {
     return async (dispatch) => {
       const remove = axios.delete(`/api/orderShells/${id}`);
       //magic method that adds price to the quantity section
-
       dispatch(_removeShell(remove));
     };
   } catch (e) {
