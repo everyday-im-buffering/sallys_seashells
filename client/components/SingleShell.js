@@ -4,47 +4,6 @@ import { fetchSingleShell } from "../store/singleShell";
 import { connect } from "react-redux";
 import { fetchShell } from "../store/cartReducer";
 
-// class SingleShell extends React.Component {
-//   componentDidMount() {
-//     try {
-//       const id = this.props.match.params.id;
-//       this.props.loadSingleShell(id);
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   }
-
-//   addToCart(shellId, shellPrice, shellQuantity) {
-//     //check if this.props.userId exists
-//     this.props.fetchShell(shellId, shellPrice, shellQuantity);
-//   }
-
-//   render() {
-//     const singleShell = this.props.singleShell;
-//     const userId = this.props.userId;
-
-//     return (
-//       <div>
-//         <h1>{singleShell.name}</h1>
-//         <li>{singleShell.marineType}</li>
-//         <li>{singleShell.color}</li>
-//         <li>{singleShell.pattern}</li>
-//         <li>{singleShell.price}</li>
-//         <button
-//           onClick={() =>
-//             this.addToCart(
-//               singleShell.id,
-//               singleShell.price,
-//               singleShell.quantity
-//             )
-//           }
-//         >
-//           Add To Cart
-//         </button>
-//       </div>
-//     );
-//   }
-// }
 
 const SingleShell = (props) => {
   //initial shell state

@@ -8,7 +8,7 @@ import AllShells from "./components/AllShells.js";
 import SingleShell from "./components/SingleShell";
 import AdminDash from "./components/Admin/AdminDash";
 import EditShell from "./components/Admin/EditShell";
-import Cart from "./components/Checkout/Cart";
+import Cart from "./components/Cart";
 import CheckOut from "./components/Checkout/CheckOut";
 import OrderConfirmation from "./components/Checkout/OrderConfirmation";
 import About from "./components/About";

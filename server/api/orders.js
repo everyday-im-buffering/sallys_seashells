@@ -34,19 +34,15 @@ ordersRouter.post("/", async (req, res, next) => {
       const foundOrder = await Order.findOne({ where: { id: orderCookie } });
 
       console.log("foundOrder", foundOrder);
-   
+
       //add to order details.
-      await foundOrder.addToCart(req.body)
+      await foundOrder.addToCart(req.body);
       res.send(foundOrder);
     }
   } catch (err) {
     next(err);
   }
 });
-
-// ordersRouter.post("/", async (req, res, next) => {
-
-// })
 
 function setOrderNumberCookie() {}
 
