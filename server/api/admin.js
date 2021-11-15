@@ -3,7 +3,7 @@
 
 const router = require("express").Router();
 const Shell = require("../db/models/Shell"); // server/db/models/Shell.js
-const User = require("..db/models/User");
+const User = require("../db/models/User");
 
 // test route, same as /shells API route
 // router.get("/shells/", async (_req, res, next) => {
