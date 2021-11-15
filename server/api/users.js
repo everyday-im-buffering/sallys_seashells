@@ -1,6 +1,8 @@
-const router = require('express').Router()
-const { models: { User } } = require('../db')
-module.exports = router
+const router = require("express").Router();
+const {
+  models: { User },
+} = require("../db");
+module.exports = router;
 
 // get all users
 router.get("/", async (req, res, next) => {
@@ -17,7 +19,6 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-})
 //which route do we want our users cart to be on?
 // ordersRouter.get("/:userId", async (req, res, next) => {
 //   try {
@@ -42,8 +43,6 @@ router.get("/", async (req, res, next) => {
 //     console.log(e)
 //   }
 // })
-
-
 
 // get single user
 router.get("/:id", async (req, res, next) => {

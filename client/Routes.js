@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
-import { Login, Signup } from "./components/NonPages/AuthForm";
-import Home from "./components/OldHome";
+import Home from "./components/Home";
 import { me } from "./store";
 import AllShells from "./components/AllShells.js";
 import SingleShell from "./components/SingleShell";
@@ -43,12 +42,16 @@ class Routes extends Component {
               path="/checkout/order-confirmation"
               component={OrderConfirmation}
             />
+            <Route exact path="/shop" component={AllShells} />
+            <Route path="/shop/:id" component={SingleShell} />
+            <Route path="/login" component={LogIn} />
+            <Route path="/signup" component={SignUp} />
           </Switch>
         ) : (
           <Switch>
             <Route exact path="/about" component={About} />
-            <Route path="/login" component={Login} />
-            <Route path="/signup" component={Signup} />
+            <Route path="/login" component={LogIn} />
+            <Route path="/signup" component={SignUp} />
             <Route exact path="/shop" component={AllShells} />
             <Route path="/shop/:id" component={SingleShell} />
             <Route exact path="/cart" component={Cart} />

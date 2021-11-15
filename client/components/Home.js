@@ -1,5 +1,5 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React from "react";
+import { connect } from "react-redux";
 // import Routes from "./Routes";
 // import Navbar from "./components/NonPages/Navbar";
 // import Footer from "./components/NonPages/Footer";
@@ -7,14 +7,16 @@ import { connect } from 'react-redux'
 /**
  * COMPONENT
  */
-export const Home = props => {
-  const { username } = props
+export const Home = (props) => {
+  const { username } = props;
 
   return (
     <div>
       <head>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+        />
       </head>
       <body>
         {/* <p class="lead">
@@ -23,16 +25,16 @@ export const Home = props => {
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
       </body>
     </div>
-  )
-}
+  );
+};
 
 /**
  * CONTAINER
  */
-const mapState = state => {
+const mapState = (state) => {
   return {
-    username: state.auth.username
-  }
-}
+    username: state.auth.username,
+  };
+};
 
-export default connect(mapState)(Home)
+export default connect(mapState)(Home);

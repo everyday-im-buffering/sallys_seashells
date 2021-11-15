@@ -1,12 +1,12 @@
 import React from "react";
-// import Routes from "./Routes";
+import { Login } from "./NonPages/AuthForm";
 
 const LogIn = () => {
-    return (
-        <div>
-            {/* <Routes /> */}
-        </div>
-    )
+  return (
+    <div>
+      <Login />
+    </div>
+  );
 };
 
 export default LogIn;
