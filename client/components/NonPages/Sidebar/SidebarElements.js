@@ -47,7 +47,7 @@ export const SidebarMenu = styled.ul`
      grid-template-rows: repeat(6, 60px);}
 `
 
-export const SidebarLink = styled(LinkS)`
+export const SidebarLink = styled(LinkR)`
     display: flex;
     align-items: center;
     justify-content: center;
