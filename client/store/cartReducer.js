@@ -19,14 +19,8 @@ export const addShellToUserCart = (shell) => {
     shell
   }
 }
-export const minusShellQuantity = (id) => {
-  return {
-    type: "ADD_SHELL_TO_CART",
-    id,
-  };
-};
 
-export const minusShellFromCart = (id) => {
+export const minusShellQuantity = (id) => {
   return {
     type: "MINUS_SHELL",
     id,
@@ -116,6 +110,7 @@ export default function cartReducer(shells = [], action) {
       return [...shells, action.id]; //return each shell as an object if it isn't already added, with a price and quantity property
     case ADD_SHELL_TO_USER_CART:
       return [...shells, action.shell]
+
     case MINUS_SHELL:
       return; //maps through the shells array and matches the action.id and decrements the quantity and price
     case REMOVE_SHELL:
