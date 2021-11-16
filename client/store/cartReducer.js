@@ -15,7 +15,6 @@ export const addShellToCart = (shell) => {
     shell,
   };
 };
-
 export const minusShellQuantity = (id) => {
   return {
     type: "MINUS_SHELL",
@@ -82,7 +81,7 @@ export const removeShell = (id) => {
     console.log(e);
   }
 };
-
+// * Every time an item is added to the cart we need to update local state with their cart details
 // const cookie = sessionStorage.getItem('orderNumber')) will give us order details
 export const getShellsInGuestCart = (orderId) => {
   // get shells in guest cart

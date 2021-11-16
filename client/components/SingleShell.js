@@ -30,7 +30,7 @@ const SingleShell = (props) => {
     }
   }
   function addToCart(shell, newQuantity) {
-    props.addShell(shell, newQuantity);
+    props.addShellToCart(shell, newQuantity);
   }
 
 
@@ -70,7 +70,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     loadSingleShell: (id) => dispatch(fetchSingleShell(id)),
-    addShell: (shell, newQuantity) =>
+    addShellToCart: (shell, newQuantity) =>
       dispatch(addShell(shell, newQuantity)),
   };
 };
