@@ -21,13 +21,6 @@ export const addShellToUserCart = (shell) => {
 }
 export const minusShellQuantity = (id) => {
   return {
-    type: "ADD_SHELL_TO_CART",
-    id,
-  };
-};
-
-export const minusShellFromCart = (id) => {
-  return {
     type: "MINUS_SHELL",
     id,
   };
