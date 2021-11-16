@@ -12,6 +12,12 @@ const GET_ALL_USERS = "GET_ALL_USERS";
 const GET_SINGLE_USER = "GET_SINGLE_USER";
 const UPDATE_USER = "UPDATE_USER";
 const DELETE_USER = "DELETE_USER";
+// if admins should be able to create new users, that would go here too
+
+// shell action types
+const UPDATE_SHELL = "UPDATE_SHELL";
+const CREATE_NEW_SHELL = "CREATE_NEW_SHELL";
+const DELETE_SHELL = "DELETE_SHELL";
 
 // user action creators
 const _getAllUsers = (users) => {
@@ -39,6 +45,28 @@ const _deleteUser = (user) => {
   return {
     type: DELETE_USER,
     user,
+  };
+};
+
+// shell action creators
+const _updateShell = (shell) => {
+  return {
+    type: UPDATE_SHELL,
+    shell,
+  };
+};
+
+const _createNewShell = (shell) => {
+  return {
+    type: CREATE_NEW_SHELL,
+    shell,
+  };
+};
+
+const _deleteShell = (shell) => {
+  return {
+    type: DELETE_SHELL,
+    shell,
   };
 };
 
@@ -92,6 +120,46 @@ export const deleteUser = (userId) => {
   };
 };
 
+// shell thunk creators
+export const updateShell = (shell) => {
+  return async (dispatch) => {
+    try {
+      const { data: updated } = await axios.put(
+        `/api/admin/shells/${shell.id}`,
+        user
+      );
+      dispatch(_updateShell(updated));
+    } catch (err) {
+      console.error("Oops! Error updating shell: ", err);
+    }
+  };
+};
+
+export const createNewShell = (shell) => {
+  return async (dispatch) => {
+    try {
+      const { data: created } = await axios.post(`/api/admin/shells`, shell);
+      dispatch(_createNewShell(created));
+    } catch (err) {
+      console.error("Oops! Error creating shell: ", err);
+    }
+  };
+};
+
+export const deleteShell = (shellId) => {
+  return async (dispatch) => {
+    try {
+      const { data: deleted } = await axios.delete(
+        `/api/admin/shells/${shellId}`
+      );
+      dispatch(_deleteShell(deleted));
+    } catch (err) {
+      console.error("Oops! Error deleting shell: ", err);
+    }
+  };
+};
+
+// doesn't include shell actions, but this needs to be split and moved into the users and shells reducers anyways
 export default function adminReducer(state = initialState, action) {
   switch (action.type) {
     case GET_ALL_USERS:
