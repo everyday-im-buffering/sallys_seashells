@@ -5,6 +5,8 @@ const ADD_SHELL = "ADD_SHELL";
 const MINUS_SHELL = "MINUS_SHELL";
 const REMOVE_SHELL = "REMOVE_SHELL";
 const ADD_SHELL_TO_USER_CART = "ADD_SHELL_TO_USER_CART";
+const SET_COMPLETE_ORDER = "SET_COMPLETE_ORDER";
+
 
 export const addShellToCart = (shell) => {
   return {
@@ -15,10 +17,24 @@ export const addShellToCart = (shell) => {
 
 export const addShellToUserCart = (shell) => {
   return {
+
+    type: "ADD_SHELL_TO_USER_CART",
+    shell,
+  };
+};
+
+export const setCompleteOrder = (order) => {
+  return {
+    type: SET_COMPLETE_ORDER,
+    order,
+  };
+};
+
     type: 'ADD_SHELL_TO_USER_CART',
     shell
   }
 }
+
 
 export const minusShellQuantity = (id) => {
   return {
@@ -38,8 +54,8 @@ export const fetchShell = (shell, newQuantity) => {
   return async (dispatch) => {
     try {
       const productInfo = {
-       ...shell,
-        newQuantity
+        ...shell,
+        newQuantity,
       };
       const res = await axios.post("/api/orders/", productInfo);
       //do we need to check if the order id already exists?
@@ -55,6 +71,33 @@ export const fetchShell = (shell, newQuantity) => {
 };
 
 export const findOrCreateUserOrder = (shell, newQuantity, userId) => {
+
+  return async (dispatch) => {
+    try {
+      let productInfo = {
+        ...shell,
+        newQuantity,
+        userId,
+      };
+      const res = await axios.post("/api/orders/userCart", productInfo);
+      dispatch(addShellToUserCart(res));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const markOrderAsComplete = (orderId) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.put(`/api/orders/confirmed/${orderId}`);
+      dispatch(setCompleteOrder(res));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
   return async(dispatch) => {
     try{  
       let productInfo = {
@@ -69,8 +112,6 @@ export const findOrCreateUserOrder = (shell, newQuantity, userId) => {
     }
   }
 }
-
-
 
 
 export const minusShell = (id) => {
@@ -109,13 +150,12 @@ export default function cartReducer(shells = [], action) {
     case ADD_SHELL_TO_CART:
       return [...shells, action.id]; //return each shell as an object if it isn't already added, with a price and quantity property
     case ADD_SHELL_TO_USER_CART:
-      return [...shells, action.shell]
+      return [...shells, action.shell];
 
     case MINUS_SHELL:
       return; //maps through the shells array and matches the action.id and decrements the quantity and price
     case REMOVE_SHELL:
       return; //destroy the shell
-
     default:
       return state;
   }
