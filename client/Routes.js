@@ -33,7 +33,7 @@ class Routes extends Component {
       <div>
         {isLoggedIn ? (
           <Switch>
-            <Route path="/home" component={Home} />
+            <Route exact path="/" component={Home} />
             <Route exact path="/account" component={AccountDetails} />
             <Route exact path="/cart" component={Cart} />
             <Route exact path="/checkout" component={CheckOut} />
@@ -42,6 +42,7 @@ class Routes extends Component {
               path="/checkout/order-confirmation"
               component={OrderConfirmation}
             />
+            <Route exact path="/" component={Home} />
             <Route exact path="/shop" component={AllShells} />
             <Route path="/shop/:id" component={SingleShell} />
             <Route path="/login" component={LogIn} />
