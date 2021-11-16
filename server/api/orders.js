@@ -101,6 +101,8 @@ ordersRouter.put("/confirmed/:orderId", async (req, res, next) => {
     })
     foundOrder.isFulfilled = true
     await foundOrder.save();
+    //clear any cookies in Browser.
+    res.clearCookie("orderNumber");
     res.status(201).send(foundOrder)
   } catch (err) {
     next(err);
