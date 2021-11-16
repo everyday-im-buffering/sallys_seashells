@@ -30,11 +30,6 @@ export const setCompleteOrder = (order) => {
   };
 };
 
-    type: 'ADD_SHELL_TO_USER_CART',
-    shell
-  }
-}
-
 
 export const minusShellQuantity = (id) => {
   return {
@@ -97,22 +92,6 @@ export const markOrderAsComplete = (orderId) => {
     }
   };
 };
-
-  return async(dispatch) => {
-    try{  
-      let productInfo = {
-        ...shell,
-        newQuantity,
-        userId
-      };
-      const res = await axios.post("/api/orders/userCart", productInfo);
-      dispatch(addShellToUserCart(res))
-    }catch(e){
-      console.log(e)
-    }
-  }
-}
-
 
 export const minusShell = (id) => {
   try {
