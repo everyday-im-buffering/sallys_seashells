@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const ADD_SHELL_TO_CART = "ADD_SHELL_TO_CART";
+const SET_GUEST_CART = "SET_GUEST_CART";
 const ADD_SHELL = "ADD_SHELL";
 const MINUS_SHELL = "MINUS_SHELL";
 const REMOVE_SHELL = "REMOVE_SHELL";
@@ -8,10 +8,10 @@ const ADD_SHELL_TO_USER_CART = "ADD_SHELL_TO_USER_CART";
 const SET_COMPLETE_ORDER = "SET_COMPLETE_ORDER";
 
 
-export const addShellToCart = (shell) => {
+export const setGuestCart = (order) => {
   return {
-    type: "ADD_SHELL_TO_CART",
-    shell,
+    type: "SET_GUEST_CART",
+    order,
   };
 };
 
@@ -45,7 +45,7 @@ export const _removeShell = (id) => {
   };
 };
 
-export const fetchShell = (shell, newQuantity) => {
+export const addShellToGuestCart = (shell, newQuantity) => {
   return async (dispatch) => {
     try {
       const productInfo = {
@@ -57,8 +57,6 @@ export const fetchShell = (shell, newQuantity) => {
       //also make a hashed order id
       //is this a put route to update a cart or a post route ? since the user starts out with 0 items
       //magic method like addShell in the api for the
-
-      dispatch(addShellToCart(res));
     } catch (e) {
       console.log(e);
     }
@@ -118,6 +116,20 @@ export const removeShell = (id) => {
   }
 };
 
+// const cookie = sessionStorage.getItem('orderNumber')) will give us order details
+export const getShellsInGuestCart = (orderId) => {
+  // get shells in guest cart
+  try {
+    return async (dispatch) => {
+      const { data: guestCart } = await axios.get(`/api/orders/guestCart`);
+      dispatch(setGuestCart(guestCart));
+      console.log('guest cart from route: ', guestCart)
+    };
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 const initialState = {
   shells: [],
   total: 0,
@@ -126,8 +138,8 @@ const initialState = {
 
 export default function cartReducer(shells = [], action) {
   switch (action.type) {
-    case ADD_SHELL_TO_CART:
-      return [...shells, action.id]; //return each shell as an object if it isn't already added, with a price and quantity property
+    case SET_GUEST_CART:
+      return [...shells, action.order]; //return each shell as an object if it isn't already added, with a price and quantity property
     case ADD_SHELL_TO_USER_CART:
       return [...shells, action.shell];
 
