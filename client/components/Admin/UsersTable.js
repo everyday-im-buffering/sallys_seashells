@@ -1,6 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-// will need to import thunks (from a separate admin reducer?) to fetch info from DB
+import {
+  getAllUsers,
+  getSingleUser,
+  updateUser,
+  deleteUser,
+} from "../../store/admin";
 
 const SingleUser = (props) => {
   const user = props.user;
@@ -17,8 +22,9 @@ const SingleUser = (props) => {
 
 class UsersTable extends React.Component {
   componentDidMount() {
-    // dispatch thunks for fetch info
+    this.props.getAll();
   }
+
   render() {
     let users = this.props.users || [];
     return (
@@ -38,8 +44,20 @@ class UsersTable extends React.Component {
   }
 }
 
-const mapState = (state) => {};
+const mapState = (state) => {
+  return {
+    users: state.admin.allUsers,
+    selected: state.admin.selectedUser,
+  };
+};
 
-const mapDispatch = (dispatch) => {};
+const mapDispatch = (dispatch) => {
+  return {
+    getAll: () => dispatch(getAllUsers()),
+    getOne: (id) => dispatch(getSingleUser(id)),
+    update: (user) => dispatch(updateUser(user)),
+    delete: (id) => dispatch(deleteUser(user)),
+  };
+};
 
 export default UsersTable; // change to connected componenet
