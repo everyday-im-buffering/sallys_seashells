@@ -5,7 +5,6 @@ const {
   models: { User, Shell, Order, Order_Details },
 } = require("../server/db");
 const shells = require("./seedData/shells");
-const userData = require("./seedData/users");
 /**
  * seed - this function clears the database, updates tables to
  *      match the models, and populates the database.
