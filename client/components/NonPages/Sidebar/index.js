@@ -9,18 +9,18 @@ const Sidebar = ({ isOpen, toggle }) => {
             </Icon>
             <SidebarWrapper>
                 <SidebarMenu>
-                    <SidebarLink to="About" onClick={toggle}>
+                    <SidebarLink to="/about" onClick={toggle}>
                         about
                     </SidebarLink>
-                    <SidebarLink to="/AllShells" onClick={toggle}>
+                    <SidebarLink to="/shop" onClick={toggle}>
                         shop all
                     </SidebarLink>
-                    <SidebarLink to="/Cart" onClick={toggle}>
+                    <SidebarLink to="/cart" onClick={toggle}>
                         view cart
                     </SidebarLink>
                 </SidebarMenu>
                 <SideBtnWrap>
-                    <SidebarRoute to='/SignUp'> sign up </SidebarRoute>
+                    <SidebarRoute to='/signup'> sign up </SidebarRoute>
                 </SideBtnWrap>
             </SidebarWrapper>
         </SidebarContainer>
