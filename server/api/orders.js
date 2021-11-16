@@ -92,4 +92,19 @@ ordersRouter.post("/userCart", async (req, res, next) => {
   }
 });
 
+ordersRouter.put("/confirmed/:orderId", async (req, res, next) => {
+  try {
+    const foundOrder = await Order.findOne({
+      where: {
+      id: req.params.orderId
+      }
+    })
+    foundOrder.isFulfilled = true
+    await foundOrder.save();
+    res.status(201).send(foundOrder)
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = ordersRouter;

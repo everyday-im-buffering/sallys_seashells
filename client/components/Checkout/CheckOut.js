@@ -1,17 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
 import history from "../../history";
+import { markOrderAsComplete } from "../../store/cartReducer";
 const CheckOut = (props) => {
     
 
     function confirmOrder(){
-        console.log('confirmed')
+       props.markOrderAsComplete("eaeeeb82-c27e-4d56-8600-410a4807b828")
         history.push("/checkout/order-confirmation")
     }
   return (
     <div>
       <h1>CheckOut</h1>
-      <button onClick={confirmOrder}>Submit Order</button>
+      <button onClick={()=>confirmOrder()}>Submit Order</button>
     </div>
   );
 };
@@ -21,4 +22,11 @@ const mapState = (state) => {
     userId: state.auth.id,
   };
 };
-export default connect(mapState)(CheckOut);
+
+const mapDispatch = (dispatch) => {
+    return{
+        markOrderAsComplete: (id) => dispatch(markOrderAsComplete(id))
+    }
+   
+}
+export default connect(mapState, mapDispatch)(CheckOut);
