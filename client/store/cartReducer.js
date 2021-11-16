@@ -1,11 +1,14 @@
 import axios from "axios";
 
+// Action Types
 const ADD_SHELL_TO_CART = "ADD_SHELL_TO_CART";
 const ADD_SHELL = "ADD_SHELL";
 const MINUS_SHELL = "MINUS_SHELL";
 const REMOVE_SHELL = "REMOVE_SHELL";
 const SET_ORDER_COOKIE = "SET_ORDER_COOKIE";
+const GET_ALL_SHELLS_IN_CART = "GET_ALL_SHELLS_IN_CART";
 
+// Action Creators
 export const addShellToCart = (shell) => {
   return {
     type: "ADD_SHELL_TO_CART",
@@ -13,20 +16,7 @@ export const addShellToCart = (shell) => {
   };
 };
 
-export const addShell = (id) => {
-  return {
-    type: 'ADD_SHELL',
-    id
-  }
-}
 export const minusShellQuantity = (id) => {
-  return {
-    type: "ADD_SHELL_TO_CART",
-    id,
-  };
-};
-
-export const minusShellFromCart = (id) => {
   return {
     type: "MINUS_SHELL",
     id,
@@ -40,11 +30,19 @@ export const _removeShell = (id) => {
   };
 };
 
-export const fetchShell = (shell, newQuantity) => {
+export const _getShellsInGuestCart = (orderId) => {
+  return {
+    type: "GET_ALL_SHELLS_IN_GUEST_CART",
+    orderId,
+  }
+}
+
+// Thunk Action Creators
+export const addShell = (shell, newQuantity) => {
   return async (dispatch) => {
     try {
       const productInfo = {
-       ...shell,
+        ...shell,
         newQuantity
       };
       const res = await axios.post("/api/orders/", productInfo);
@@ -59,10 +57,11 @@ export const fetchShell = (shell, newQuantity) => {
     }
   };
 };
+
 export const minusShell = (id) => {
   try {
     return async (dispatch) => {
-      const minus = axios.put(`/api/orderShells/${id}`);
+      const minus = await axios.put(`/api/orderShells/${id}`);
       //magic method that minus price and quantity to the quantity section
       dispatch(minusShellFromCart(minus));
     };
@@ -75,9 +74,23 @@ export const removeShell = (id) => {
   //remove all instances of this shell from entire cart
   try {
     return async (dispatch) => {
-      const remove = axios.delete(`/api/orderShells/${id}`);
+      const remove = await axios.delete(`/api/orderShells/${id}`);
       //magic method that adds price to the quantity section
       dispatch(_removeShell(remove));
+    };
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+// const cookie = sessionStorage.getItem('orderNumber')) will give us order details
+export const getShellsInGuestCart = (orderId) => {
+  // get shells in guest cart
+  try {
+    return async (dispatch) => {
+      const guestCart = await axios.get(`/api/orders/${orderId}`);
+      dispatch(_getShellsInGuestCart(guestCart));
+      console.log(guestCart)
     };
   } catch (e) {
     console.log(e);
@@ -94,13 +107,12 @@ export default function cartReducer(shells = [], action) {
   switch (action.type) {
     case ADD_SHELL_TO_CART:
       return [...shells, action.id]; //return each shell as an object if it isn't already added, with a price and quantity property
-    case ADD_SHELL:
-      return; //map throught the shells array and grab the shell that matches the action.id and increment the quantity and price
     case MINUS_SHELL:
       return; //maps through the shells array and matches the action.id and decrements the quantity and price
     case REMOVE_SHELL:
       return; //destroy the shell
-
+    case GET_ALL_SHELLS_IN_CART:
+      return action.orderId;
     default:
       return state;
   }

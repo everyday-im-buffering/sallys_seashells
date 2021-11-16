@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useIsMounted } from "./NonPages/useIsMounted";
 import { fetchSingleShell } from "../store/singleShell";
 import { connect } from "react-redux";
-import { fetchShell } from "../store/cartReducer";
+import { addShell } from "../store/cartReducer";
 
 
 const SingleShell = (props) => {
@@ -30,12 +30,12 @@ const SingleShell = (props) => {
     }
   }
   function addToCart(shell, newQuantity) {
-    props.fetchShell(shell, newQuantity);
+    props.addShell(shell, newQuantity);
   }
 
 
   return (
-    
+
     <div>
       <h1>{props.singleShell.name}</h1>
       <li>{props.singleShell.marineType}</li>
@@ -51,7 +51,7 @@ const SingleShell = (props) => {
       <button
         style={{ marginLeft: "5px" }}
         onClick={() => {
-          addToCart({...props.singleShell}, quantity);
+          addToCart({ ...props.singleShell }, quantity);
         }}
       >
         Add To Cart
@@ -70,8 +70,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     loadSingleShell: (id) => dispatch(fetchSingleShell(id)),
-    fetchShell: (shell, newQuantity) =>
-      dispatch(fetchShell(shell, newQuantity)),
+    addShell: (shell, newQuantity) =>
+      dispatch(addShell(shell, newQuantity)),
   };
 };
 

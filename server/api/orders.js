@@ -41,7 +41,7 @@ ordersRouter.get("/:id", async (req, res, next) => {
       ]
       // ,
     });
-    console.log(getUsersOrder)
+    // console.log(getUsersOrder)
     res.send(getUsersOrder);
   } catch (e) {
     next(e)

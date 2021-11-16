@@ -16,7 +16,7 @@ export const fetchAllShells = () => {
   return async (dispatch) => {
     try {
       const { data: allShells } = await axios.get('/api/shells')
-      console.log(allShells)
+      // console.log(allShells)
       dispatch(getAllShells(allShells))
     } catch (err) {
       console.log(err)

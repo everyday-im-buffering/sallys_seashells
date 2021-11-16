@@ -6,9 +6,9 @@ import { Nav, NavbarContainer, NavLogo, MobileIcon, NavMenu, NavItem, NavLinks, 
 
 const Navbar = ({ toggle }) => {
     return (
-    <>
-        <Nav>
-            <NavbarContainer>
+        <>
+            <Nav>
+                <NavbarContainer>
                     <NavLogo to='/'> seashore </NavLogo>
                     <MobileIcon onClick={toggle}>
                         <FaBars />
@@ -17,26 +17,26 @@ const Navbar = ({ toggle }) => {
                         <BsFillCartFill />
                     </MobileIcon>
                     <NavMenu>
-                    <NavItem>
-                        <NavLinks to='/About'> about </NavLinks>
-                    </NavItem>
-                    <NavItem>
-                        <NavLinks to='/AllShells'> shop all shells </NavLinks>
-                    </NavItem>
-                    <NavItem>
-                        <NavLinks to='/Signup'> signup </NavLinks>
-                    </NavItem>
-                    {/* <NavItem>
+                        <NavItem>
+                            <NavLinks to='/About'> about </NavLinks>
+                        </NavItem>
+                        <NavItem>
+                            <NavLinks to='/AllShells'> shop all shells </NavLinks>
+                        </NavItem>
+                        <NavItem>
+                            <NavLinks to='/Signup'> signup </NavLinks>
+                        </NavItem>
+                        {/* <NavItem>
                         <NavLinks to='/Cart'> cart </NavLinks>
                     </NavItem> */}
                     </NavMenu>
                     <NavBtn>
                         <NavBtnLink to='/Login'> Login </NavBtnLink>
                     </NavBtn>
-            </NavbarContainer> 
+                </NavbarContainer>
 
-        </Nav>
-    </>
+            </Nav>
+        </>
     )
 }
 
@@ -49,7 +49,7 @@ const Navbar = ({ toggle }) => {
 // const mapDispatch = (dispatch) => {
 //     return {
 //         handleClick() {
-//             dispatch(logout());
+//             dispatch(());
 //         },
 //     };
 // };
