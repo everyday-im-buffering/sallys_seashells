@@ -42,7 +42,7 @@ Order_Details.belongsTo(Shell);
 Order.prototype.addToCart = async function (shell) {
   // creating line in order_details with shellId and orderId
   // check if this shell already exists
-  const newQuantity = shell.newQuantity || 1;
+  const newQuantity = shell.newQuantity || 1; // defaults to adding 1 shell
   const exists = await this.hasShell(shell.id);
   let orderDetails;
   const allDetails = await this.getOrder_details();
@@ -79,10 +79,55 @@ Order.prototype.addToCart = async function (shell) {
 // update shell qty from order
 Order.prototype.updateCartQty = async function (shell) {
   // like addToCart, shell will come with a qty property
-  const qty = shell.newQuantity || 1;
+  const qty = shell.newQuantity || 1; // defaults to adding one shell
+  const allDetails = await this.getOrder_details();
+  const orderDetails = allDetails.filter(
+    (info) => info.dataValues.shellId === shell.id
+  );
+  const info = orderDetails[0].dataValues;
+
+  const lineToUpdate = await Order_Details.findOne({
+    where: {
+      shellId: shell.id,
+      orderId: this.id,
+    },
+  });
+
+  await lineToUpdate.update({
+    numberOfItems: info.numberOfItems + qty,
+    totalPrice: (info.totalPrice += qty * shell.price),
+  });
+
+  await this.update({
+    numberOfItems: this.numberOfItems + qty,
+    subTotal: (this.subTotal += qty * shell.price),
+  });
+  return this;
 };
 
 // Removing a shell from the order
-Order.prototype.removeFromCart = async function (shell) {};
+Order.prototype.removeFromCart = async function (shell) {
+  // pull qty + price in cart from Order_Details
+  const lineToRemove = await Order_Details.findOne({
+    where: {
+      shellId: shell.id,
+      orderId: this.id,
+    },
+  });
+
+  const qty = lineToRemove.numberOfItems;
+  const price = lineToRemove.totalPrice;
+
+  // destroy line in Order_Details
+  this.removeShell(shell.id);
+
+  // update Order qty + price to reflect removal
+  await this.update({
+    numberOfItems: this.numberOfItems - qty,
+    subTotal: this.subTotal - price,
+  });
+
+  return this;
+};
 
 module.exports = Order;
