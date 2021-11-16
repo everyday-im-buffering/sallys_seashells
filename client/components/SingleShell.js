@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useIsMounted } from "./NonPages/useIsMounted";
 import { fetchSingleShell } from "../store/singleShell";
 import { connect } from "react-redux";
-import { fetchShell } from "../store/cartReducer";
+import { fetchShell, findOrCreateUserOrder } from "../store/cartReducer";
 
 
 const SingleShell = (props) => {
@@ -33,6 +33,9 @@ const SingleShell = (props) => {
     props.fetchShell(shell, newQuantity);
   }
 
+  function addToUserCart(shell, newQuantity){
+    props.findOrCreateUserOrder(shell, newQuantity, props.userId)
+  }
 
   return (
     
@@ -48,14 +51,18 @@ const SingleShell = (props) => {
       <button style={{ marginLeft: "5px" }} onClick={increment}>
         +
       </button>
-      <button
+      {props.userId ? (<button style={{ marginLeft: "10px" }}
+      onClick={() => {
+        addToUserCart({...props.singleShell}, quantity);
+      }}>Add To Cart</button>): ( <button
         style={{ marginLeft: "5px" }}
         onClick={() => {
           addToCart({...props.singleShell}, quantity);
         }}
       >
         Add To Cart
-      </button>
+      </button> )}
+      
     </div>
   );
 };
@@ -72,6 +79,7 @@ const mapDispatch = (dispatch) => {
     loadSingleShell: (id) => dispatch(fetchSingleShell(id)),
     fetchShell: (shell, newQuantity) =>
       dispatch(fetchShell(shell, newQuantity)),
+      findOrCreateUserOrder: (shell, quantity, userId) => dispatch(findOrCreateUserOrder(shell, quantity, userId))
   };
 };
 

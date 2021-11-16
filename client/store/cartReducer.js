@@ -4,7 +4,7 @@ const ADD_SHELL_TO_CART = "ADD_SHELL_TO_CART";
 const ADD_SHELL = "ADD_SHELL";
 const MINUS_SHELL = "MINUS_SHELL";
 const REMOVE_SHELL = "REMOVE_SHELL";
-const SET_ORDER_COOKIE = "SET_ORDER_COOKIE";
+const ADD_SHELL_TO_USER_CART = "ADD_SHELL_TO_USER_CART";
 
 export const addShellToCart = (shell) => {
   return {
@@ -12,6 +12,14 @@ export const addShellToCart = (shell) => {
     shell,
   };
 };
+
+export const addShellToUserCart = (shell) => {
+  return {
+    type: 'ADD_SHELL_TO_USER_CART',
+    shell
+  }
+}
+
 export const minusShellQuantity = (id) => {
   return {
     type: "MINUS_SHELL",
@@ -45,6 +53,26 @@ export const fetchShell = (shell, newQuantity) => {
     }
   };
 };
+
+export const findOrCreateUserOrder = (shell, newQuantity, userId) => {
+  return async(dispatch) => {
+    try{  
+      let productInfo = {
+        ...shell,
+        newQuantity,
+        userId
+      };
+      const res = await axios.post("/api/orders/userCart", productInfo);
+      dispatch(addShellToUserCart(res))
+    }catch(e){
+      console.log(e)
+    }
+  }
+}
+
+
+
+
 export const minusShell = (id) => {
   try {
     return async (dispatch) => {
@@ -80,6 +108,9 @@ export default function cartReducer(shells = [], action) {
   switch (action.type) {
     case ADD_SHELL_TO_CART:
       return [...shells, action.id]; //return each shell as an object if it isn't already added, with a price and quantity property
+    case ADD_SHELL_TO_USER_CART:
+      return [...shells, action.shell]
+
     case MINUS_SHELL:
       return; //maps through the shells array and matches the action.id and decrements the quantity and price
     case REMOVE_SHELL:

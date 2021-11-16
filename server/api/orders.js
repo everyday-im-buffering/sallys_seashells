@@ -2,8 +2,8 @@ const ordersRouter = require("express").Router();
 // const { default: allShellsReducer } = require("../../client/store/allProducts");
 const Order = require("../db/models/Order");
 const Shell = require("../db/models/Shell");
-const OrderDetails = require("../db/models/OrderDetails")
-const User = require("../db/models/User")
+const OrderDetails = require("../db/models/OrderDetails");
+const User = require("../db/models/User");
 
 ordersRouter.get("/", async (req, res, next) => {
   try {
@@ -28,25 +28,24 @@ ordersRouter.get("/:id", async (req, res, next) => {
     const getUsersOrder = await Order.findOne({
       where: {
         id: req.params.id,
-        isFulfilled: false
+        isFulfilled: false,
       },
-      attributes: ['subTotal', 'numberOfItems'],
+      attributes: ["subTotal", "numberOfItems"],
       include: [
         {
-          model: OrderDetails, attributes: ['numberOfItems', 'totalPrice'],
-          include: [
-            { model: Shell, attributes: ['name', 'imageUrl'] }
-          ]
-        }
-      ]
+          model: OrderDetails,
+          attributes: ["numberOfItems", "totalPrice"],
+          include: [{ model: Shell, attributes: ["name", "imageUrl"] }],
+        },
+      ],
       // ,
     });
-    console.log(getUsersOrder)
+    console.log(getUsersOrder);
     res.send(getUsersOrder);
   } catch (e) {
-    next(e)
+    next(e);
   }
-})
+});
 
 ordersRouter.post("/", async (req, res, next) => {
   const orderCookie = req.signedCookies["orderNumber"] || undefined;
@@ -79,6 +78,18 @@ ordersRouter.post("/", async (req, res, next) => {
   }
 });
 
-function setOrderNumberCookie() {}
+ordersRouter.post("/userCart", async (req, res, next) => {
+  try {
+    let userId = parseInt(req.body.userId);
+    const [order, created] = await Order.findOrCreate({
+      where: { userId: userId, isFulfilled: false },
+    });
+    let newOrder = order;
+    await newOrder.addToCart(req.body);
+    res.status(201).send(order);
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = ordersRouter;
