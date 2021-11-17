@@ -24,24 +24,54 @@ const AuthForm = (props) => {
           .min(8, 'Must be at least 8 characters')
           .required('Required'),
       })}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
-      }}
+    // onSubmit={({ setSubmitting }) => {
+    //   setTimeout(() => {
+    //     // alert(JSON.stringify(values, null, 2));
+    //     console.log('is anything happening here?')
+    //     setSubmitting(false);
+    //     resetForm();
+    //   }, 400);
+    // }}
     >
-      <Form>
-        <label htmlFor="email">Email</label>
-        <Field name="email" type="text" />
-        <ErrorMessage name="email" />
-
-        <label htmlFor="password">Password</label>
-        <Field name="password" type="password" />
-        <ErrorMessage name="password" />
-
-        <button type="submit">{displayName}</button>
-      </Form>
+      {formik => (
+        <div>
+          <h1>{displayName}</h1>
+          <form onSubmit={handleSubmit} name={name}>
+            <div>
+              <label htmlFor="email">
+                <small>Email</small>
+              </label>
+              <input
+                name="email"
+                type="text"
+                // {...formik.getFieldProps("email")}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+              />
+              {formik.touched.email && formik.errors.email ? <div>{formik.errors.email}</div> : null}
+            </div>
+            <div>
+              <label htmlFor="password">
+                <small>Password</small>
+              </label>
+              <input
+                name="password"
+                type="password"
+                // {...formik.getFieldProps("password")}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur} // 
+                value={formik.values.password}
+              />
+              {formik.touched.password && formik.errors.password ? <div>{formik.errors.password}</div> : null}
+            </div>
+            <div>
+              <button type="submit">{displayName}</button>
+            </div>
+            {error && error.response && <div> {error.response.data} </div>}
+          </form>
+        </div>
+      )}
     </Formik>
   );
 };
@@ -76,6 +106,7 @@ const mapDispatch = (dispatch) => {
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
+      console.log(formName, email, password)
       dispatch(authenticate(email, password, formName));
     }
   }

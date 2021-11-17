@@ -3,7 +3,7 @@ const { models: { User } } = require('../db')
 module.exports = router
 
 router.post('/login', async (req, res, next) => {
-  
+
   try {
     res.send({ token: await User.authenticate(req.body) });
   } catch (err) {
@@ -14,6 +14,14 @@ router.post('/login', async (req, res, next) => {
 
 router.post('/signup', async (req, res, next) => {
   try {
+    const email = req.body.email;
+    const password = req.body.password;
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+      res.status(401).send('Invalid email');
+    }
+    if (password.length <= 8) {
+      res.status(401).send('Password must be at least 8 characters');
+    }
     const user = await User.create(req.body)
     res.send({ token: await user.generateToken() })
   } catch (err) {
