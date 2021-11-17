@@ -4,7 +4,7 @@ const User = require("../db/models/User");
 const { requireToken, isAdmin } = require("../auth/guardrails");
 
 // create new shell
-router.post("/shells/", async (req, res, next) => {
+router.post("/shells/", requireToken, isAdmin, async (req, res, next) => {
   try {
     const shell = await Shell.create(req.body);
     res.status(201).send(shell);
@@ -14,7 +14,7 @@ router.post("/shells/", async (req, res, next) => {
 });
 
 // remove a shell
-router.delete("/shells/:id", async (req, res, next) => {
+router.delete("/shells/:id", requireToken, isAdmin, async (req, res, next) => {
   try {
     const shell = await Shell.findByPk(req.params.id);
     await shell.destroy();
@@ -47,7 +47,7 @@ router.get("/users", requireToken, isAdmin, async (req, res, next) => {
 });
 
 // fetch all info a single user
-router.get("/users/:id", async (req, res, next) => {
+router.get("/users/:id", requireToken, isAdmin, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.id);
     res.json(user);
@@ -57,7 +57,7 @@ router.get("/users/:id", async (req, res, next) => {
 });
 
 // update a single user
-router.put("/users/:id", async (req, res, next) => {
+router.put("/users/:id", requireToken, isAdmin, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.id);
     res.json(await user.update(req.body));
@@ -67,7 +67,7 @@ router.put("/users/:id", async (req, res, next) => {
 });
 
 // delete a single user
-router.delete("/users/:id", async (req, res, next) => {
+router.delete("/users/:id", requireToken, isAdmin, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.id);
     await user.destroy();
