@@ -85,8 +85,8 @@ class CreateShell extends Component {
   }
 }
 
-const mapDispatch = (dispatch, { history }) => ({
-  create: (shell) => dispatch(createNewShell(shell, history)),
+const mapDispatch = (dispatch) => ({
+  create: (shell) => dispatch(createNewShell(shell)),
 });
 
 export default connect(null, mapDispatch)(CreateShell);
