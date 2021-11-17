@@ -1,16 +1,17 @@
-const express = require("express");
-const app = express();
-app.use(express.json());
-const User = require("../db/models/User");
+const {
+  models: { User },
+} = require("../db");
 
 const requireToken = async (req, res, next) => {
   try {
-    const token = req.headers.authorization;
-    const user = await User.byToken(token);
+    //const token = req.headers.authorization;
+    const user = await User.findByToken(req.headers.authorization);
+    // something is going wrong with findByToken
     req.user = user;
     next();
   } catch (err) {
-    res.status(400).send("Invalid token!");
+    // always ending up here WHY
+    res.status(401).send("Invalid token!");
   }
 };
 
