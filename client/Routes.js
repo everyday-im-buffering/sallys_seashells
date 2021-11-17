@@ -14,6 +14,7 @@ import About from "./components/About";
 import AccountDetails from "./components/AccountDetails";
 import LogIn from "./components/LogIn";
 import SignUp from "./components/SignUp";
+import EditUser from "./components/Admin/EditUser";
 
 // AccountDetails only viewable if signed in
 // Admin pages only viewable if an admin is mounted
@@ -62,6 +63,7 @@ class Routes extends Component {
         <Switch>
           <Route path="/admin/shop/:id/edit" component={EditShell} />
           <Route exact path="/admin" component={AdminDash} />
+          <Route path="/admin/users/:id" component={EditUser} />
         </Switch>
       </div>
     );
