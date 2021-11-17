@@ -20,10 +20,8 @@ ordersRouter.get("/", async (req, res, next) => {
 //api route to query the order model, fetching the user's cart when they go to the cart component
 ordersRouter.get("/guestCart", async (req, res, next) => {
   try {
-
-    const orderCookie = req.signedCookies["orderNumber"]
+    const orderCookie = req.signedCookies["orderNumber"];
     const guestCart = await Order.findOne({
-     
       where: {
         id: orderCookie,
         isFulfilled: false,
@@ -32,7 +30,7 @@ ordersRouter.get("/guestCart", async (req, res, next) => {
       include: [
         {
           model: OrderDetails,
-          attributes: ["numberOfItems", "totalPrice"],
+          attributes: ["numberOfItems", "totalPrice", "shellId"],
           include: [{ model: Shell, attributes: ["name", "imageUrl"] }],
         },
       ],
@@ -50,9 +48,8 @@ ordersRouter.get("/:userId", async (req, res, next) => {
     //include the order details but is it a security issue to send back all of the attributes?
     //if the session id matches the user id or however we are verifying a logged in user else we just find by OrderId
     //if auth, add the user to the Order with addUser
-    
+
     const userCart = await Order.findOne({
-     
       where: {
         userId: req.params.userId,
         isFulfilled: false,
@@ -72,8 +69,6 @@ ordersRouter.get("/:userId", async (req, res, next) => {
     next(err);
   }
 });
-
-
 
 ordersRouter.post("/", async (req, res, next) => {
   const orderCookie = req.signedCookies["orderNumber"] || undefined;
@@ -98,9 +93,33 @@ ordersRouter.post("/", async (req, res, next) => {
       console.log("foundOrder", foundOrder);
 
       //add to order details.
+
       await foundOrder.addToCart(req.body);
       res.send(foundOrder);
     }
+  } catch (err) {
+    next(err);
+  }
+});
+
+ordersRouter.put("/updateCartQuantity", async (req, res, next) => {
+  try {
+   let info = {
+    userId:req.body.userId,
+    id: req.body.shellId,
+    price: req.body.totalPrice,
+    newQuantity: req.body.newQuantity
+  
+  }
+  
+    console.log("req.body", info);
+    const orderCookie = req.signedCookies["orderNumber"] || undefined;
+    //check if guest or user
+
+    const orderInstance = await Order.findOne({ where: { id: orderCookie } });
+    await orderInstance.updateCartQty(info)
+
+    res.send(orderInstance);
   } catch (err) {
     next(err);
   }
@@ -124,18 +143,17 @@ ordersRouter.put("/confirmed/:orderId", async (req, res, next) => {
   try {
     const foundOrder = await Order.findOne({
       where: {
-        id: req.params.orderId
-      }
-    })
-    foundOrder.isFulfilled = true
+        id: req.params.orderId,
+      },
+    });
+    foundOrder.isFulfilled = true;
     await foundOrder.save();
     //clear any cookies in Browser.
     res.clearCookie("orderNumber");
-    res.status(201).send(foundOrder)
+    res.status(201).send(foundOrder);
   } catch (err) {
     next(err);
   }
 });
-
 
 module.exports = ordersRouter;

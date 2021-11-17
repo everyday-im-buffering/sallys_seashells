@@ -58,6 +58,28 @@ export const addShellToGuestCart = (shell, newQuantity) => {
 };
 
 
+export const updateCartQuantity = (shell, newQuantity, userId) => {
+  return async(dispatch) => {
+    try{
+      const productInfo = {
+        ...shell,
+        newQuantity,
+        userId
+      };
+      const res = await axios.put("/api/orders/updateCartQuantity", productInfo)
+      if(userId){
+        //dispatch get shells in user cart
+      }else{
+        dispatch(getShellsInGuestCart())
+      }
+
+    }catch(e){
+      console.log(e)
+    }
+  }
+}
+
+
 
 export const markOrderAsComplete = (orderId) => {
   return async (dispatch) => {
