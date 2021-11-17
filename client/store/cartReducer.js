@@ -53,6 +53,7 @@ export const addShellToGuestCart = (shell, newQuantity) => {
         newQuantity,
       };
       const res = await axios.post("/api/orders/", productInfo);
+
       //do we need to check if the order id already exists?
       //also make a hashed order id
       //is this a put route to update a cart or a post route ? since the user starts out with 0 items
@@ -131,17 +132,14 @@ export const getShellsInGuestCart = (orderId) => {
 };
 
 const initialState = {
-  shells: [],
-  total: 0,
-  quantity:0 //shells represents our cart, and each item needs to be in an object with its own quantity, price
+
 };
 
 export default function cartReducer(state = initialState, action) {
   switch (action.type) {
     case SET_GUEST_CART:
-      const orderShells = [...state.shells]
-      orderShells.push(action.order)
-      return {...state, shells:[...orderShells]}; 
+   
+      return action.order
     case ADD_SHELL_TO_USER_CART:
       return [...shells, action.shell];
 

@@ -19,15 +19,27 @@ const Cart = (props) => {
   }, []);
 
   //create an addShell props to map through
-  const guestCart = props.guestCart[0]
+  const guestCart = props.guestCart
+  const cartItems = guestCart.order_details || []
   // const shells = guestCart.shells
   console.log("guestCart:",guestCart)
+
   
   return (
 
       <div>
-        <p> is this working </p>
+        <h2>Cart</h2>
      
+        {cartItems.map((Item, Index) => (
+          <div key={Index}>
+          <ul>
+          <li>Quantity: {Item.numberOfItems}</li>
+          <li>Name: {Item.shell.name}</li>
+          <img width="120" height="100" src={Item.shell.imageUrl} />
+          </ul>
+          </div>
+        ))}
+        <p>SubTotal: {guestCart.subTotal}</p>
       </div>
 
   )
@@ -35,7 +47,7 @@ const Cart = (props) => {
 
 const mapState = (state) => {
   return {
-    guestCart: state.cart.shells
+    guestCart: state.cart
   }
 }
 
