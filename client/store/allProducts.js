@@ -8,10 +8,10 @@ const DELETE_SHELL = "DELETE_SHELL";
 
 
 // Action Creators
-const getAllShells = (shells) => {
+const getAllShells = (allShells) => {
   return {
     type: GET_ALL_SHELLS,
-    shells
+    allShells
   }
 }
 
@@ -63,11 +63,13 @@ export const updateShell = (shell) => {
   };
 };
 
-export const createNewShell = (shell) => {
+export const createNewShell = (shell, history) => {
   return async (dispatch) => {
     try {
+      console.log('thunked on em')
       const { data: created } = await axios.post(`/api/admin/shells`, shell);
       dispatch(_createNewShell(created));
+      history.push('/admin')
     } catch (err) {
       console.error("Oops! Error creating shell: ", err);
     }
@@ -91,7 +93,7 @@ export const deleteShell = (shellId) => {
 export default function allShellsReducer(state = [], action) {
   switch (action.type) {
     case GET_ALL_SHELLS:
-      return action.shells
+      return action.allShells
     case UPDATE_SHELL:
       return state.map((shell) => {shell.id === action.shell.id ? action.shell : shell})
     case CREATE_NEW_SHELL:

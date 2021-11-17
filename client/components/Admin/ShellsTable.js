@@ -8,13 +8,21 @@ import {
   createNewShell,
 } from "../../store/allProducts";
 
-const SingleShell= (props) => {
+const SingleShells= (props) => {
+
   const shell = props.shell;
+  console.log(props.shells, 'shell')
   return (
+    <tbody>
     <tr>
+     <td>{shell.id}</td>
       <td>{shell.name}</td>
       <td>{shell.marineType}</td>
+      <td>{shell.color}</td>
+      <td>{shell.pattern}</td>
+      <td>{shell.waterType}</td>
     </tr>
+    </tbody>
   );
 };
 
@@ -24,18 +32,23 @@ class ShellsTable extends React.Component {
   }
 
   render() {
-    let shells = this.props.shells || [];
+    let allShells = this.props.allShells || [];
+    console.log(this.props, 'props');
     return (
       <table>
+          <thead>
         <tr>
-          <th>Id</th>
-          <th>Email</th>
-          <th>Password</th>
-          <th>Admin</th>
+        <th>id</th>
+          <th>shell name</th>
+          <th>marine type</th>
+          <th>color</th>
+          <th>pattern</th>
+          <th>water type</th>
         </tr>
-        {shells.map((shell) => (
-          <SingleShell key={shell.id} shell={shell} />
+        {allShells.map((shell) => (
+          <SingleShells key={shell.id} shell={shell} />
         ))}
+        </thead>
       </table>
     );
   }
@@ -43,7 +56,7 @@ class ShellsTable extends React.Component {
 
 const mapState = (state) => {
   return {
-    shells: state.shells
+    allShells: state.allShells
   };
 };
 
@@ -52,7 +65,6 @@ const mapDispatch = (dispatch) => {
     getAll: () => dispatch(fetchAllShells()),
     update: (shell) => dispatch(updateShell(shell)),
     delete: (id) => dispatch(deleteShell(id)),
-    create: (shell) => dispatch(createNewShell(shell))
   };
 };
 
