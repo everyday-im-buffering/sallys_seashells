@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getSingleUser } from "../../store/singleUser";
-import { deleteUser, updateUser } from "../../store/users";
+import { updateUser } from "../../store/users";
+import { Link } from "react-router-dom";
 
 class EditUser extends React.Component {
   constructor() {
@@ -63,7 +64,7 @@ class EditUser extends React.Component {
           </select>
           <button type="submit">Update</button>
         </form>
-        <button type="button">Delete User</button>
+        <Link to="/admin">Back to Dash</Link>
       </div>
     );
   }
@@ -79,7 +80,6 @@ const mapDispatch = (dispatch) => {
   return {
     getUser: (id) => dispatch(getSingleUser(id)),
     update: (user) => dispatch(updateUser(user)),
-    delete: (id) => dispatch(deleteUser(id)),
   };
 };
 

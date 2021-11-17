@@ -1,10 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getAllUsers, updateUser, deleteUser } from "../../store/users";
+import { getAllUsers, deleteUser } from "../../store/users";
 import { Link } from "react-router-dom";
 
 const SingleUser = (props) => {
   const user = props.user;
+  const deleteUser = props.delete;
   return (
     <tr>
       <td>{user.id}</td>
@@ -12,6 +13,22 @@ const SingleUser = (props) => {
       <td>{user.isAdmin ? "Admin" : "Customer"}</td>
       <td>
         <Link to={`/admin/users/${user.id}`}>Edit</Link>
+      </td>
+      <td>
+        <button
+          type="button"
+          onClick={() => {
+            if (
+              window.confirm(
+                "Are you sure you wish to delete this user's account?"
+              )
+            ) {
+              deleteUser(user.id);
+            }
+          }}
+        >
+          Delete
+        </button>
       </td>
     </tr>
   );
@@ -26,8 +43,8 @@ class UsersTable extends React.Component {
     this.props.getAll();
   }
 
-  handleDelete(event) {
-    this.props.delete(event.target.value);
+  handleDelete(id) {
+    this.props.delete(id);
   }
 
   render() {
@@ -45,7 +62,7 @@ class UsersTable extends React.Component {
         </thead>
         <tbody>
           {users.map((user) => (
-            <SingleUser key={user.id} user={user} />
+            <SingleUser key={user.id} user={user} delete={this.handleDelete} />
           ))}
         </tbody>
       </table>
