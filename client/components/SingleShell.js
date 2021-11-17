@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useIsMounted } from "./NonPages/useIsMounted";
 import { fetchSingleShell } from "../store/singleShell";
 import { connect } from "react-redux";
-import { fetchShell, findOrCreateUserOrder } from "../store/cartReducer";
+import { addShellToGuestCart} from "../store/cartReducer";
+import {findOrCreateUserOrder } from "../store/userCart"
 
 import history from "../history";
 
@@ -31,15 +32,15 @@ const SingleShell = (props) => {
     }
   }
   function addToCart(shell, newQuantity) {
-    props.fetchShell(shell, newQuantity);
+    props.addShellToGuestCart(shell, newQuantity);
   }
 
-  function addToUserCart(shell, newQuantity){
+  function addToUserCart(shell, newQuantity) {
     props.findOrCreateUserOrder(shell, newQuantity, props.userId)
   }
 
   return (
-    
+
     <div>
       <h1>{props.singleShell.name}</h1>
       <li>{props.singleShell.marineType}</li>
@@ -53,17 +54,17 @@ const SingleShell = (props) => {
         +
       </button>
       {props.userId ? (<button style={{ marginLeft: "10px" }}
-      onClick={() => {
-        addToUserCart({...props.singleShell}, quantity);
-      }}>Add To Cart</button>): ( <button
-        style={{ marginLeft: "5px" }}
         onClick={() => {
-          addToCart({...props.singleShell}, quantity);
-        }}
-      >
-        Add To Cart
-      </button> )}
-      
+          addToUserCart({ ...props.singleShell }, quantity);
+        }}>Add To Cart</button>) : (<button
+          style={{ marginLeft: "5px" }}
+          onClick={() => {
+            addToCart({ ...props.singleShell }, quantity);
+          }}
+        >
+          Add To Cart
+        </button>)}
+
     </div>
   );
 };
@@ -78,9 +79,9 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     loadSingleShell: (id) => dispatch(fetchSingleShell(id)),
-    fetchShell: (shell, newQuantity) =>
-      dispatch(fetchShell(shell, newQuantity)),
-      findOrCreateUserOrder: (shell, quantity, userId) => dispatch(findOrCreateUserOrder(shell, quantity, userId))
+    addShellToGuestCart: (shell, newQuantity) =>
+      dispatch(addShellToGuestCart(shell, newQuantity)),
+    findOrCreateUserOrder: (shell, quantity, userId) => dispatch(findOrCreateUserOrder(shell, quantity, userId))
   };
 };
 

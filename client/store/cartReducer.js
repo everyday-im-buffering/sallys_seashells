@@ -1,27 +1,20 @@
 import axios from "axios";
 
-const ADD_SHELL_TO_CART = "ADD_SHELL_TO_CART";
+const SET_GUEST_CART = "SET_GUEST_CART";
 const ADD_SHELL = "ADD_SHELL";
 const MINUS_SHELL = "MINUS_SHELL";
 const REMOVE_SHELL = "REMOVE_SHELL";
-const ADD_SHELL_TO_USER_CART = "ADD_SHELL_TO_USER_CART";
+
 const SET_COMPLETE_ORDER = "SET_COMPLETE_ORDER";
 
 
-export const addShellToCart = (shell) => {
+export const setGuestCart = (order) => {
   return {
-    type: "ADD_SHELL_TO_CART",
-    shell,
+    type: "SET_GUEST_CART",
+    order,
   };
 };
 
-export const addShellToUserCart = (shell) => {
-  return {
-
-    type: "ADD_SHELL_TO_USER_CART",
-    shell,
-  };
-};
 
 export const setCompleteOrder = (order) => {
   return {
@@ -45,7 +38,7 @@ export const _removeShell = (id) => {
   };
 };
 
-export const fetchShell = (shell, newQuantity) => {
+export const addShellToGuestCart = (shell, newQuantity) => {
   return async (dispatch) => {
     try {
       const productInfo = {
@@ -53,34 +46,18 @@ export const fetchShell = (shell, newQuantity) => {
         newQuantity,
       };
       const res = await axios.post("/api/orders/", productInfo);
+      dispatch(getShellsInGuestCart())
       //do we need to check if the order id already exists?
       //also make a hashed order id
       //is this a put route to update a cart or a post route ? since the user starts out with 0 items
       //magic method like addShell in the api for the
-
-      dispatch(addShellToCart(res));
     } catch (e) {
       console.log(e);
     }
   };
 };
 
-export const findOrCreateUserOrder = (shell, newQuantity, userId) => {
 
-  return async (dispatch) => {
-    try {
-      let productInfo = {
-        ...shell,
-        newQuantity,
-        userId,
-      };
-      const res = await axios.post("/api/orders/userCart", productInfo);
-      dispatch(addShellToUserCart(res));
-    } catch (e) {
-      console.log(e);
-    }
-  };
-};
 
 export const markOrderAsComplete = (orderId) => {
   return async (dispatch) => {
@@ -118,19 +95,28 @@ export const removeShell = (id) => {
   }
 };
 
-const initialState = {
-  shells: [],
-  total: 0,
-  totalQuantity: 0, //shells represents our cart, and each item needs to be in an object with its own quantity, price
+// const cookie = sessionStorage.getItem('orderNumber')) will give us order details
+export const getShellsInGuestCart = (orderId) => {
+  // get shells in guest cart
+  try {
+    return async (dispatch) => {
+      const { data: guestCart } = await axios.get(`/api/orders/guestCart`);
+      dispatch(setGuestCart(guestCart));
+      console.log('guest cart from route: ', guestCart)
+    };
+  } catch (e) {
+    console.log(e);
+  }
 };
 
-export default function cartReducer(shells = [], action) {
-  switch (action.type) {
-    case ADD_SHELL_TO_CART:
-      return [...shells, action.id]; //return each shell as an object if it isn't already added, with a price and quantity property
-    case ADD_SHELL_TO_USER_CART:
-      return [...shells, action.shell];
+const initialState = {
 
+};
+
+export default function cartReducer(state = initialState, action) {
+  switch (action.type) {
+    case SET_GUEST_CART:
+      return action.order
     case MINUS_SHELL:
       return; //maps through the shells array and matches the action.id and decrements the quantity and price
     case REMOVE_SHELL:
