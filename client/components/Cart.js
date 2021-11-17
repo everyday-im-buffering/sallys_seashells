@@ -16,11 +16,9 @@ const Cart = (props) => {
   const dispatch = useDispatch();
 
   //local state
-  const [quantity, setQuantity] = useState();
+  const [quantity, setQuantity] = useState(0);
 
   const isMounted = useIsMounted();
-
-
 
   useEffect(() => {
     if (userId) {
@@ -36,13 +34,8 @@ const Cart = (props) => {
     }
   }, [isMounted.current]);
 
-
-  function updateOrder(shell, ){
-    dispatch(updateCartQuantity(shell, userId))
-  }
-
-  function increment(){
-    setQuantity((prevQuantity) => prevQuantity + 1);
+  function updateOrder(shell, category) {
+    dispatch(updateCartQuantity(shell, category, userId));
   }
 
   console.log("Before:", isMounted.current);
@@ -50,7 +43,7 @@ const Cart = (props) => {
   const isUser = userId;
   const cartItems = guestCart.order_details || [];
   const _usercartItems = userCart.order_details || [];
-  console.log("cartItems", cartItems)
+  console.log("cartItems", cartItems);
   console.log("guestCart:", guestCart);
   console.log("userCart", userCart);
 
@@ -64,11 +57,21 @@ const Cart = (props) => {
                 <li>Quantity: {Item.numberOfItems}</li>
                 <li>Name: {Item.shell.name}</li>
                 <img width="120" height="100" src={Item.shell.imageUrl} />
-                <button onClick={() => {
-                  updateOrder({...Item} )
-                }}
+                <li>Item Number:{Item.shellId} </li>
+                <li>Price:{Item.totalPrice}</li>
+                <button
+                  onClick={() => {
+                    updateOrder({ ...Item }, 'increment');
+                  }}
                 >
-                +
+                  +1
+                </button>
+                <button
+                  onClick={() => {
+                    updateOrder({ ...Item }, 'decrement');
+                  }}
+                >
+                  -1
                 </button>
               </ul>
             </div>
@@ -87,12 +90,19 @@ const Cart = (props) => {
                 <li>Item Number:{Item.shellId} </li>
                 <li>Price:{Item.totalPrice}</li>
                 <img width="120" height="100" src={Item.shell.imageUrl} />
-                <button onClick={() => {
-                  updateOrder({...Item} )
-
-                }}
+                <button
+                  onClick={() => {
+                    updateOrder({ ...Item }, 'increment');
+                  }}
                 >
-                +
+                  +1
+                </button>
+                <button
+                  onClick={() => {
+                    updateOrder({ ...Item }, 'decrement');
+                  }}
+                >
+                  -1
                 </button>
               </ul>
             </div>

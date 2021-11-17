@@ -38,7 +38,7 @@ Order_Details.belongsTo(Order);
 
 Shell.hasMany(Order_Details);
 Order_Details.belongsTo(Shell);
-console.log("orderProto", Order.prototype)
+// console.log("orderProto", Order.prototype)
 // console.log("order_DetailProto", Order_Details.prototype)
 // Adding a shell to the order
 Order.prototype.addToCart = async function (shell) {

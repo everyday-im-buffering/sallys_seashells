@@ -58,7 +58,7 @@ ordersRouter.get("/:userId", async (req, res, next) => {
       include: [
         {
           model: OrderDetails,
-          attributes: ["numberOfItems", "totalPrice"],
+          attributes: ["numberOfItems", "totalPrice", "shellId"],
           include: [{ model: Shell, attributes: ["name", "imageUrl"] }],
         },
       ],
@@ -107,31 +107,45 @@ ordersRouter.put("/updateCartQuantity", async (req, res, next) => {
     let info = {
       userId: req.body.userId,
       id: req.body.shellId,
-      price: req.body.totalPrice,
+      price: (req.body.totalPrice /req.body.numberOfItems),
+      category: req.body.category
     };
     const orderCookie = req.signedCookies["orderNumber"] || undefined;
 
     if (info.userId) {
-      let userOrderInstance = await Order.findOne({
+     const userOrderInstance = await Order.findOne({
         where: {
           userId: info.userId,
           isFulfilled: false,
         },
+        attributes: ["id"]
       });
-   
-      let od = await userOrderInstance.getOrder_details();
-  
-      console.log("od", od);
+      
+      let orderId = userOrderInstance.dataValues.id
+      const orderDetailsInstanceByUser = await OrderDetails.findOne({
+        where: {
+          shellId: info.id,
+          orderId:orderId
+        },
+      })
+
+     let userResult = await orderDetailsInstanceByUser.increment_or_decrement_quant_price(info.price, info.category)
+      res.send(userResult);
     } else {
+
       const orderDetailsInstance = await OrderDetails.findOne({
         where: {
           shellId: info.id,
           orderId: orderCookie,
         },
+
       });
+
+      const result = await orderDetailsInstance.increment_or_decrement_quant_price(info.price, info.category)
+      res.send(result);
     }
 
-    res.send("orderUpdate");
+    
   } catch (err) {
     next(err);
   }

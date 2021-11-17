@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { getShellsInUserCart } from "./userCart";
 const SET_GUEST_CART = "SET_GUEST_CART";
 const ADD_SHELL = "ADD_SHELL";
 const MINUS_SHELL = "MINUS_SHELL";
@@ -58,16 +58,17 @@ export const addShellToGuestCart = (shell, newQuantity) => {
 };
 
 
-export const updateCartQuantity = (shell, userId) => {
+export const updateCartQuantity = (shell, category,userId) => {
   return async(dispatch) => {
     try{
       const productInfo = {
         ...shell,
+        category,
         userId
       };
       const res = await axios.put("/api/orders/updateCartQuantity", productInfo)
       if(userId){
-        //dispatch get shells in user cart
+       dispatch(getShellsInUserCart(userId))
       }else{
         dispatch(getShellsInGuestCart())
       }
