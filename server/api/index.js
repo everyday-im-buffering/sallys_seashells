@@ -1,9 +1,10 @@
 const router = require("express").Router();
+const { requireToken, isAdmin } = require("../auth/guardrails");
 
 router.use("/users", require("./users"));
 router.use("/shells", require("./shells"));
 router.use("/orders", require("./orders"));
-router.use("/admin", require("./admin"));
+router.use("/admin", requireToken, isAdmin, require("./admin"));
 
 router.use((req, res, next) => {
   const error = new Error("Not Found");
