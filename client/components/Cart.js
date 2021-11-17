@@ -32,7 +32,7 @@ const Cart = (props) => {
 
 // const mapState = (state) => {
 //   return {
-//     shells
+//     shells: state.cart
 //   }
 // }
 

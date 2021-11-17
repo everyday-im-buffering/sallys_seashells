@@ -6,12 +6,14 @@ import auth from "./auth";
 import singleShell from "./singleShell";
 import allProducts from "./allProducts";
 import adminReducer from "./admin";
+import cartReducer from "./cartReducer";
 
 const reducer = combineReducers({
   auth: auth,
   singleShell: singleShell,
   allShells: allProducts,
   admin: adminReducer,
+  cart: cartReducer,
 });
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))

@@ -136,7 +136,7 @@ const initialState = {
   totalQuantity: 0, //shells represents our cart, and each item needs to be in an object with its own quantity, price
 };
 
-export default function cartReducer(shells = [], action) {
+export default function cartReducer(state = [], action) {
   switch (action.type) {
     case SET_GUEST_CART:
       return [...shells, action.order]; //return each shell as an object if it isn't already added, with a price and quantity property
