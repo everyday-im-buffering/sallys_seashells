@@ -2,10 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import {
   getAllUsers,
-  getSingleUser,
   updateUser,
   deleteUser,
-} from "../../store/admin";
+} from "../../store/users";
 
 const SingleUser = (props) => {
   const user = props.user;
@@ -14,8 +13,7 @@ const SingleUser = (props) => {
       <td>{user.id}</td>
       <td>{user.email}</td>
       <td>{user.password}</td>
-      <td>{user.isAdmin}</td>
-      <td>{user.isLoggedIn}</td>
+      <td>{`${user.isAdmin}`}</td>
     </tr>
   );
 };
@@ -34,7 +32,6 @@ class UsersTable extends React.Component {
           <th>Email</th>
           <th>Password</th>
           <th>Admin</th>
-          <th>Logged In</th>
         </tr>
         {users.map((user) => (
           <SingleUser key={user.id} user={user} />
@@ -46,18 +43,16 @@ class UsersTable extends React.Component {
 
 const mapState = (state) => {
   return {
-    users: state.admin.allUsers,
-    selected: state.admin.selectedUser,
+    users: state.users
   };
 };
 
 const mapDispatch = (dispatch) => {
   return {
     getAll: () => dispatch(getAllUsers()),
-    getOne: (id) => dispatch(getSingleUser(id)),
     update: (user) => dispatch(updateUser(user)),
-    delete: (id) => dispatch(deleteUser(user)),
+    delete: (id) => dispatch(deleteUser(id)),
   };
 };
 
-export default UsersTable; // change to connected componenet
+export default connect(mapState, mapDispatch)(UsersTable); // change to connected componenet
