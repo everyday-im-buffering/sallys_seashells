@@ -51,7 +51,7 @@ const mapDispatch = (dispatch) => {
   return {
     getAll: () => dispatch(getAllUsers()),
     update: (user) => dispatch(updateUser(user)),
-    delete: (id) => dispatch(deleteUser(user)),
+    delete: (id) => dispatch(deleteUser(id)),
   };
 };
 

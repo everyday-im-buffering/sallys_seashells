@@ -8,53 +8,52 @@ import {
   createNewShell,
 } from "../../store/allProducts";
 
-// const SingleUser = (props) => {
-//   const user = props.user;
-//   return (
-//     <tr>
-//       <td>{user.id}</td>
-//       <td>{user.email}</td>
-//       <td>{user.password}</td>
-//       <td>{`${user.isAdmin}`}</td>
-//     </tr>
-//   );
-// };
+const SingleShell= (props) => {
+  const shell = props.shell;
+  return (
+    <tr>
+      <td>{shell.name}</td>
+      <td>{shell.marineType}</td>
+    </tr>
+  );
+};
 
-// class ShellsTable extends React.Component {
-//   componentDidMount() {
-//     this.props.getAll();
-//   }
+class ShellsTable extends React.Component {
+  componentDidMount() {
+    this.props.getAll();
+  }
 
-//   render() {
-//     let users = this.props.users || [];
-//     return (
-//       <table>
-//         <tr>
-//           <th>Id</th>
-//           <th>Email</th>
-//           <th>Password</th>
-//           <th>Admin</th>
-//         </tr>
-//         {users.map((user) => (
-//           <SingleUser key={user.id} user={user} />
-//         ))}
-//       </table>
-//     );
-//   }
-// }
+  render() {
+    let shells = this.props.shells || [];
+    return (
+      <table>
+        <tr>
+          <th>Id</th>
+          <th>Email</th>
+          <th>Password</th>
+          <th>Admin</th>
+        </tr>
+        {shells.map((shell) => (
+          <SingleShell key={shell.id} shell={shell} />
+        ))}
+      </table>
+    );
+  }
+}
 
-// const mapState = (state) => {
-//   return {
-//     users: state.users
-//   };
-// };
+const mapState = (state) => {
+  return {
+    shells: state.shells
+  };
+};
 
-// const mapDispatch = (dispatch) => {
-//   return {
-//     getAll: () => dispatch(getAllUsers()),
-//     update: (user) => dispatch(updateUser(user)),
-//     delete: (id) => dispatch(deleteUser(user)),
-//   };
-// };
+const mapDispatch = (dispatch) => {
+  return {
+    getAll: () => dispatch(fetchAllShells()),
+    update: (shell) => dispatch(updateShell(shell)),
+    delete: (id) => dispatch(deleteShell(id)),
+    create: (shell) => dispatch(createNewShell(shell))
+  };
+};
 
-// export default connect(mapState, mapDispatch)(ShellsTable); // change to connected componenet
+export default connect(mapState, mapDispatch)(ShellsTable); // change to connected componenet
