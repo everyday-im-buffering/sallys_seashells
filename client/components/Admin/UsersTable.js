@@ -1,10 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import {
-  getAllUsers,
-  updateUser,
-  deleteUser,
-} from "../../store/users";
+import { getAllUsers, updateUser, deleteUser } from "../../store/users";
+import { Link } from "react-router-dom";
 
 const SingleUser = (props) => {
   const user = props.user;
@@ -13,7 +10,10 @@ const SingleUser = (props) => {
       <td>{user.id}</td>
       <td>{user.email}</td>
       <td>{user.password}</td>
-      <td>{`${user.isAdmin}`}</td>
+      <td>{user.isAdmin ? "Admin" : "Customer"}</td>
+      <td>
+        <Link to={`/admin/users/${user.id}`}>Edit</Link>
+      </td>
     </tr>
   );
 };
@@ -27,15 +27,20 @@ class UsersTable extends React.Component {
     let users = this.props.users || [];
     return (
       <table>
-        <tr>
-          <th>Id</th>
-          <th>Email</th>
-          <th>Password</th>
-          <th>Admin</th>
-        </tr>
-        {users.map((user) => (
-          <SingleUser key={user.id} user={user} />
-        ))}
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Status</th>
+            <th>Manage</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <SingleUser key={user.id} user={user} />
+          ))}
+        </tbody>
       </table>
     );
   }
@@ -43,7 +48,7 @@ class UsersTable extends React.Component {
 
 const mapState = (state) => {
   return {
-    users: state.users
+    users: state.users,
   };
 };
 
