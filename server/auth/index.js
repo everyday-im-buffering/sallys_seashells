@@ -5,7 +5,12 @@ module.exports = router
 router.post('/login', async (req, res, next) => {
 
   try {
-    res.send({ token: await User.authenticate(req.body) });
+    const email = req.body.email;
+    const exists = await User.findOne({ where: { email: email } })
+    if (exists) {
+      res.send({ token: await User.authenticate(req.body) });
+    }
+    res.status(404).send('User Not Found');
   } catch (err) {
     next(err)
   }
