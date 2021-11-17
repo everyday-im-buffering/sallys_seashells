@@ -9,7 +9,6 @@ const SingleUser = (props) => {
     <tr>
       <td>{user.id}</td>
       <td>{user.email}</td>
-      <td>{user.password}</td>
       <td>{user.isAdmin ? "Admin" : "Customer"}</td>
       <td>
         <Link to={`/admin/users/${user.id}`}>Edit</Link>
@@ -19,8 +18,16 @@ const SingleUser = (props) => {
 };
 
 class UsersTable extends React.Component {
+  constructor() {
+    super();
+    this.handleDelete = this.handleDelete.bind(this);
+  }
   componentDidMount() {
     this.props.getAll();
+  }
+
+  handleDelete(event) {
+    this.props.delete(event.target.value);
   }
 
   render() {
@@ -29,11 +36,11 @@ class UsersTable extends React.Component {
       <table>
         <thead>
           <tr>
-            <th>Id</th>
+            <th>ID</th>
             <th>Email</th>
-            <th>Password</th>
             <th>Status</th>
             <th>Manage</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -55,7 +62,6 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     getAll: () => dispatch(getAllUsers()),
-    update: (user) => dispatch(updateUser(user)),
     delete: (id) => dispatch(deleteUser(id)),
   };
 };
