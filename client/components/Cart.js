@@ -15,6 +15,9 @@ const Cart = (props) => {
 
   const dispatch = useDispatch();
 
+  //local state
+  const [quantity, setQuantity] = useState();
+
   const isMounted = useIsMounted();
 
 
@@ -34,10 +37,13 @@ const Cart = (props) => {
   }, [isMounted.current]);
 
 
-  function updateOrder(shell, newQuantity){
-    dispatch(updateCartQuantity(shell, newQuantity))
+  function updateOrder(shell, ){
+    dispatch(updateCartQuantity(shell, userId))
   }
 
+  function increment(){
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  }
 
   console.log("Before:", isMounted.current);
   console.log("userId:", userId);
@@ -58,6 +64,12 @@ const Cart = (props) => {
                 <li>Quantity: {Item.numberOfItems}</li>
                 <li>Name: {Item.shell.name}</li>
                 <img width="120" height="100" src={Item.shell.imageUrl} />
+                <button onClick={() => {
+                  updateOrder({...Item} )
+                }}
+                >
+                +
+                </button>
               </ul>
             </div>
           ))}
@@ -76,8 +88,8 @@ const Cart = (props) => {
                 <li>Price:{Item.totalPrice}</li>
                 <img width="120" height="100" src={Item.shell.imageUrl} />
                 <button onClick={() => {
-                  updateOrder({...Item}, 2 )
-                ;
+                  updateOrder({...Item} )
+
                 }}
                 >
                 +

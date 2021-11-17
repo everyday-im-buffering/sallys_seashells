@@ -29,6 +29,7 @@ const Order = db.define("order", {
   },
 });
 
+
 Shell.belongsToMany(Order, { through: Order_Details });
 Order.belongsToMany(Shell, { through: Order_Details });
 
@@ -37,7 +38,8 @@ Order_Details.belongsTo(Order);
 
 Shell.hasMany(Order_Details);
 Order_Details.belongsTo(Shell);
-
+console.log("orderProto", Order.prototype)
+// console.log("order_DetailProto", Order_Details.prototype)
 // Adding a shell to the order
 Order.prototype.addToCart = async function (shell) {
   // creating line in order_details with shellId and orderId
@@ -93,7 +95,7 @@ Order.prototype.updateCartQty = async function (shell) {
     (info) => info.dataValues.shellId === shell.id
   );
   const info = orderDetails[0].dataValues;
-
+    console.log("info",orderDetails )
   const lineToUpdate = await Order_Details.findOne({
     where: {
       shellId: shell.id,

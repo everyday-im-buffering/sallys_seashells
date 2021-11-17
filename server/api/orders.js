@@ -104,22 +104,34 @@ ordersRouter.post("/", async (req, res, next) => {
 
 ordersRouter.put("/updateCartQuantity", async (req, res, next) => {
   try {
-   let info = {
-    userId:req.body.userId,
-    id: req.body.shellId,
-    price: req.body.totalPrice,
-    newQuantity: req.body.newQuantity
-  
-  }
-  
-    console.log("req.body", info);
+    let info = {
+      userId: req.body.userId,
+      id: req.body.shellId,
+      price: req.body.totalPrice,
+    };
     const orderCookie = req.signedCookies["orderNumber"] || undefined;
-    //check if guest or user
 
-    const orderInstance = await Order.findOne({ where: { id: orderCookie } });
-    await orderInstance.updateCartQty(info)
+    if (info.userId) {
+      let userOrderInstance = await Order.findOne({
+        where: {
+          userId: info.userId,
+          isFulfilled: false,
+        },
+      });
+   
+      let od = await userOrderInstance.getOrder_details();
+  
+      console.log("od", od);
+    } else {
+      const orderDetailsInstance = await OrderDetails.findOne({
+        where: {
+          shellId: info.id,
+          orderId: orderCookie,
+        },
+      });
+    }
 
-    res.send(orderInstance);
+    res.send("orderUpdate");
   } catch (err) {
     next(err);
   }

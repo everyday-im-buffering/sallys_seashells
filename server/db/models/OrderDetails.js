@@ -12,6 +12,14 @@ const Order_Details = db.define("order_details", {
   },
 });
 
+Order_Details.prototype.incrementQuantAndPrice = async function (price) {
+  let updatedDetails = await orderDetailsInstance.increment({
+    numberOfItems: 1,
+    totalPrice: price,
+  });
+  return this;
+};
+
 //class Methods
 //calculate price and numofitems
 

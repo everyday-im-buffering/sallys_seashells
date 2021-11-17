@@ -58,12 +58,11 @@ export const addShellToGuestCart = (shell, newQuantity) => {
 };
 
 
-export const updateCartQuantity = (shell, newQuantity, userId) => {
+export const updateCartQuantity = (shell, userId) => {
   return async(dispatch) => {
     try{
       const productInfo = {
         ...shell,
-        newQuantity,
         userId
       };
       const res = await axios.put("/api/orders/updateCartQuantity", productInfo)
@@ -78,6 +77,7 @@ export const updateCartQuantity = (shell, newQuantity, userId) => {
     }
   }
 }
+
 
 
 
