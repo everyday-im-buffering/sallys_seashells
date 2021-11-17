@@ -15,7 +15,7 @@ const reducer = combineReducers({
   singleShell: singleShell,
   allShells: allProducts,
   cart: cartReducer,
-  userCart: userCartReducer
+  userCart: userCartReducer,
   users: userReducer,
   singleUser: singleUserReducer,
 });
