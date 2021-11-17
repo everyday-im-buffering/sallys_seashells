@@ -1,26 +1,14 @@
 //this is the access point for all things database related!
-const db = require('./db')
-const User = require('./models/User')
-const Shell = require('./models/Shell')
-const Order = require('./models/Order')
-const Order_Details = require('./models/OrderDetails')
+const db = require("./db");
+const User = require("./models/User");
+const Shell = require("./models/Shell");
+const Order = require("./models/Order");
+const Order_Details = require("./models/OrderDetails");
 
-//associations could go here!
-
-
-Order.belongsTo(User)
-User.hasMany(Order)
-
-// Shell.belongsToMany(Order, { through: Order_Details })
-// Order.belongsToMany(Shell, { through: Order_Details })
-
-// Order.hasMany(Order_Details)
-// Order_Details.belongsTo(Order)
-
-// Shell.hasMany(Order_Details)
-// Order_Details.belongsTo(Shell)
-
-// console.log("order from db/index.js", Order.prototype)
+// Do these associations need to be moved to Order.js
+// for when we implement associating an order and user?
+Order.belongsTo(User);
+User.hasMany(Order);
 
 module.exports = {
   db,
@@ -28,6 +16,6 @@ module.exports = {
     User,
     Shell,
     Order,
-    Order_Details
+    Order_Details,
   },
-}
+};

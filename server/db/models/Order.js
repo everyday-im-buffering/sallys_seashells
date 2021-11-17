@@ -73,6 +73,14 @@ Order.prototype.addToCart = async function (shell) {
     numberOfItems: this.numberOfItems + newQuantity,
     subTotal: (this.subTotal += newQuantity * shell.price),
   });
+
+  // update shell in Shell model to reflect inventory change
+  const inventoryShell = await Shell.findByPk(shell.id);
+
+  await inventoryShell.update({
+    quantity: inventoryShell.quantity - newQuantity,
+  });
+
   return this;
 };
 
@@ -102,6 +110,13 @@ Order.prototype.updateCartQty = async function (shell) {
     numberOfItems: this.numberOfItems + qty,
     subTotal: (this.subTotal += qty * shell.price),
   });
+
+  // update shell in Shell model to reflect inventory change
+  const inventoryShell = await Shell.findByPk(shell.id);
+
+  await inventoryShell.update({
+    quantity: inventoryShell.quantity + qty,
+  });
   return this;
 };
 
@@ -125,6 +140,13 @@ Order.prototype.removeFromCart = async function (shell) {
   await this.update({
     numberOfItems: this.numberOfItems - qty,
     subTotal: this.subTotal - price,
+  });
+
+  // update shell in Shell model to reflect inventory change
+  const inventoryShell = await Shell.findByPk(shell.id);
+
+  await inventoryShell.update({
+    quantity: inventoryShell.quantity + qty,
   });
 
   return this;
