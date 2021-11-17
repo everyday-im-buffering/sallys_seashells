@@ -1,45 +1,48 @@
 import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux'
 import { getShellsInGuestCart } from "../store/cartReducer";
+import { useIsMounted } from "./NonPages/useIsMounted";
 
 // NOT FUNCTIONAL YET
 
 const Cart = (props) => {
   // is this in form of integer or object? 
-  const [sessionData, setSessionData] = useState({});
-
+  // const [sessionData, setSessionData] = useState({});
+  const isMounted = useIsMounted()
+  console.log("Before:",isMounted.current)
   useEffect(() => {
-    console.log('props: ', props)
-    const guestCart = props.loadGuestCart();
-    console.log('guest cart: ', guestCart)
+
+    if(isMounted.current){
+     props.loadGuestCart();
+    }
 
   }, []);
 
   //create an addShell props to map through
+  const guestCart = props.guestCart[0]
+  // const shells = guestCart.shells
+  console.log("guestCart:",guestCart)
+  
   return (
-    <body>
-      {/* <img scr={shell.imageUrl} /> */}
 
       <div>
         <p> is this working </p>
-        {/* <p> {shell.name}</p>
-          <p> {shell.price}</p>
-          <p> {shell.quantity}</p> */}
+     
       </div>
-    </body>
+
   )
 };
 
-// const mapState = (state) => {
-//   return {
-//     shells: state.cart
-//   }
-// }
+const mapState = (state) => {
+  return {
+    guestCart: state.cart.shells
+  }
+}
 
 const mapDispatch = (dispatch) => {
   return {
 
-    loadGuestCart: (orderId) => dispatch(getShellsInGuestCart(orderId))
+    loadGuestCart: () => dispatch(getShellsInGuestCart())
   }
 }
-export default connect(null, mapDispatch)(Cart)
+export default connect(mapState, mapDispatch)(Cart)

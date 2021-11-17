@@ -133,13 +133,15 @@ export const getShellsInGuestCart = (orderId) => {
 const initialState = {
   shells: [],
   total: 0,
-  totalQuantity: 0, //shells represents our cart, and each item needs to be in an object with its own quantity, price
+  quantity:0 //shells represents our cart, and each item needs to be in an object with its own quantity, price
 };
 
-export default function cartReducer(state = [], action) {
+export default function cartReducer(state = initialState, action) {
   switch (action.type) {
     case SET_GUEST_CART:
-      return [...shells, action.order]; //return each shell as an object if it isn't already added, with a price and quantity property
+      const orderShells = [...state.shells]
+      orderShells.push(action.order)
+      return {...state, shells:[...orderShells]}; 
     case ADD_SHELL_TO_USER_CART:
       return [...shells, action.shell];
 
