@@ -20,13 +20,12 @@ ordersRouter.get("/", async (req, res, next) => {
 //api route to query the order model, fetching the user's cart when they go to the cart component
 ordersRouter.get("/guestCart", async (req, res, next) => {
   try {
-    //populate the cart by fetching the order details associated with the userId and one that isn't fufilled
-    //include the order details but is it a security issue to send back all of the attributes?
-    //if the session id matches the user id or however we are verifying a logged in user else we just find by OrderId
-    //if auth, add the user to the Order with addUser
+
+    const orderCookie = req.signedCookies["orderNumber"]
     const guestCart = await Order.findOne({
+     
       where: {
-        id: req.signedCookies["orderNumber"],
+        id: orderCookie,
         isFulfilled: false,
       },
       attributes: ["subTotal", "numberOfItems"],
@@ -37,7 +36,6 @@ ordersRouter.get("/guestCart", async (req, res, next) => {
           include: [{ model: Shell, attributes: ["name", "imageUrl"] }],
         },
       ],
-      // ,
     });
     console.log(guestCart);
     res.send(guestCart);
@@ -45,6 +43,37 @@ ordersRouter.get("/guestCart", async (req, res, next) => {
     next(err);
   }
 });
+
+ordersRouter.get("/:userId", async (req, res, next) => {
+  try {
+    //populate the cart by fetching the order details associated with the userId and one that isn't fufilled
+    //include the order details but is it a security issue to send back all of the attributes?
+    //if the session id matches the user id or however we are verifying a logged in user else we just find by OrderId
+    //if auth, add the user to the Order with addUser
+    
+    const userCart = await Order.findOne({
+     
+      where: {
+        userId: req.params.userId,
+        isFulfilled: false,
+      },
+      attributes: ["subTotal", "numberOfItems"],
+      include: [
+        {
+          model: OrderDetails,
+          attributes: ["numberOfItems", "totalPrice"],
+          include: [{ model: Shell, attributes: ["name", "imageUrl"] }],
+        },
+      ],
+    });
+    console.log(userCart);
+    res.send(userCart);
+  } catch (err) {
+    next(err);
+  }
+});
+
+
 
 ordersRouter.post("/", async (req, res, next) => {
   const orderCookie = req.signedCookies["orderNumber"] || undefined;

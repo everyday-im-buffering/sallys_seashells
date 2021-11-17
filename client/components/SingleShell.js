@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useIsMounted } from "./NonPages/useIsMounted";
 import { fetchSingleShell } from "../store/singleShell";
 import { connect } from "react-redux";
-import { addShellToGuestCart, findOrCreateUserOrder } from "../store/cartReducer";
+import { addShellToGuestCart} from "../store/cartReducer";
+import {findOrCreateUserOrder } from "../store/userCart"
 
 import history from "../history";
 
