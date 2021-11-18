@@ -2,13 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import { authenticate } from "../../store";
 import * as Yup from "yup";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik } from 'formik';
 
 /**
  * COMPONENT
  */
 const AuthForm = (props) => {
-  // const [clearForm, setClearForm] = useState('');
+  // const [error, setError] = useState('');
   const { name, displayName, handleSubmit, error } = props
   return (
     <Formik
@@ -49,7 +49,7 @@ const AuthForm = (props) => {
                 onBlur={formik.handleBlur}
                 value={formik.values.email}
               />
-              {formik.touched.email && formik.errors.email ? <div>{formik.errors.email}</div> : null}
+              {formik.touched.email && formik.errors.email ? <div className="form-error-message">{formik.errors.email}</div> : null}
             </div>
             <div>
               <label htmlFor="password">
@@ -63,12 +63,12 @@ const AuthForm = (props) => {
                 onBlur={formik.handleBlur} // 
                 value={formik.values.password}
               />
-              {formik.touched.password && formik.errors.password ? <div>{formik.errors.password}</div> : null}
+              {formik.touched.password && formik.errors.password ? <div className="form-error-message">{formik.errors.password}</div> : null}
             </div>
             <div>
               <button type="submit">{displayName}</button>
             </div>
-            {error && error.response && <div> {error.response.data} </div>}
+            {error && error.response && <div className="form-error-message"> {error.response.data} </div>}
           </form>
         </div>
       )}
@@ -103,6 +103,7 @@ const mapDispatch = (dispatch) => {
   return {
     handleSubmit(evt) {
       evt.preventDefault()
+      // check if submit has no errors first - shouldn't submit form if error
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value

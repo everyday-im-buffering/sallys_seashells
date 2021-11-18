@@ -19,3 +19,10 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+.form-error-message {
+  font-size: 12px;
+  font-weight: 150;
+  margin-top: 16px;
+  color: red;
+}

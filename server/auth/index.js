@@ -10,7 +10,7 @@ router.post('/login', async (req, res, next) => {
     if (exists) {
       res.send({ token: await User.authenticate(req.body) });
     }
-    res.status(404).send('User Not Found');
+    res.status(404).send('User not found');
   } catch (err) {
     next(err)
   }
