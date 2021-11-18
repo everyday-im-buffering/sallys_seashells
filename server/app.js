@@ -6,7 +6,7 @@ const app = express();
 module.exports = app;
 const dotenv = require("dotenv").config();
 
-app.use(cookieParser("secret"));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 app.use(morgan("dev"));
 
