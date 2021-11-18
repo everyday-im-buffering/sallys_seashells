@@ -6,7 +6,7 @@ img {
     display: block;
     width:  500px;
     height: 500px;
-    border-radius: 15px;
+    border-radius: 50px;
     padding: 50px;
     object-fit: cover;
 }
