@@ -15,7 +15,6 @@ const requireToken = async (req, res, next) => {
 };
 
 const isAdmin = async (req, res, next) => {
-  //console.log("admin?");
   if (req.user.isAdmin) {
     next();
   } else {
