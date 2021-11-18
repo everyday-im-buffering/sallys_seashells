@@ -53,7 +53,12 @@ export const updateShell = (shell) => {
     try {
       const { data: updated } = await axios.put(
         `/api/admin/shells/${shell.id}`,
-        user
+        user,
+        {
+          headers: {
+            authorization: window.localStorage.getItem("token"),
+          },
+        }
       );
       dispatch(_updateShell(updated));
     } catch (err) {
@@ -65,7 +70,11 @@ export const updateShell = (shell) => {
 export const createNewShell = (shell) => {
   return async (dispatch) => {
     try {
-      const { data: created } = await axios.post(`/api/admin/shells`, shell);
+      const { data: created } = await axios.post(`/api/admin/shells`, shell, {
+        headers: {
+          authorization: window.localStorage.getItem("token"),
+        },
+      });
       dispatch(_createNewShell(created));
     } catch (err) {
       console.error("Oops! Error creating shell: ", err);
@@ -77,7 +86,12 @@ export const deleteShell = (shellId) => {
   return async (dispatch) => {
     try {
       const { data: deleted } = await axios.delete(
-        `/api/admin/shells/${shellId}`
+        `/api/admin/shells/${shellId}`,
+        {
+          headers: {
+            authorization: window.localStorage.getItem("token"),
+          },
+        }
       );
       dispatch(_deleteShell(deleted));
     } catch (err) {
