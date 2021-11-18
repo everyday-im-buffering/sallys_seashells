@@ -35,38 +35,44 @@ const AuthForm = (props) => {
     >
       {formik => (
         <div>
-          <h1>{displayName}</h1>
+          <h1 className="form-header">{displayName}</h1>
           <form onSubmit={handleSubmit} name={name}>
-            <div>
-              <label htmlFor="email">
-                <small>Email</small>
-              </label>
-              <input
-                name="email"
-                type="text"
-                // {...formik.getFieldProps("email")}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.email}
-              />
-              {formik.touched.email && formik.errors.email ? <div className="form-error-message">{formik.errors.email}</div> : null}
-            </div>
-            <div>
-              <label htmlFor="password">
-                <small>Password</small>
-              </label>
-              <input
-                name="password"
-                type="password"
-                // {...formik.getFieldProps("password")}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur} // 
-                value={formik.values.password}
-              />
-              {formik.touched.password && formik.errors.password ? <div className="form-error-message">{formik.errors.password}</div> : null}
-            </div>
-            <div>
-              <button type="submit">{displayName}</button>
+            <div style={{
+              display: "flex",
+              flexDirection: "column"
+            }}>
+              <div>
+                <label htmlFor="email">
+                  <small>Email</small>
+                </label>
+                <input className="input-field"
+                  name="email"
+                  type="text"
+                  // {...formik.getFieldProps("email")}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
+                  placeholder="Your Email Address"
+                />
+                {formik.touched.email && formik.errors.email ? <div className="form-error-message">{formik.errors.email}</div> : null}
+              </div>
+              <div>
+                <label htmlFor="password">
+                  <small>Password</small>
+                </label>
+                <input className="input-field"
+                  name="password"
+                  type="password"
+                  // {...formik.getFieldProps("password")}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur} // 
+                  value={formik.values.password}
+                />
+                {formik.touched.password && formik.errors.password ? <div className="form-error-message">{formik.errors.password}</div> : null}
+              </div>
+              <div>
+                <button className="submit-button" type="submit">{displayName}</button>
+              </div>
             </div>
             {error && error.response && <div className="form-error-message"> {error.response.data} </div>}
           </form>
