@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchAllShells } from "../store/allProducts";
-import { createGlobalStyle } from "../global.css"
+import { createGlobalStyle } from "../global.css";
 import { addShellToGuestCart } from "../store/cartReducer";
 
 // import relevant thunks from reducer
@@ -18,7 +18,7 @@ const IndivdidualShell = (props) => {
       <h3>{shell.name}</h3>
       <p>{shell.price}</p>
       <Link to={`/shop/${shell.id}`}>Details</Link>
-      <button>Add to Cart</button>
+      {/* <button>Add to Cart</button> */}
     </div>
   );
 };
@@ -157,7 +157,7 @@ class AllShells extends React.Component {
             <IndivdidualShell key={shell.id} shell={shell} />
           ))}
         </div>
-        </div>
+      </div>
     );
   }
 }
@@ -168,7 +168,8 @@ const mapState = (state) => ({
 
 const mapDispatch = (dispatch) => ({
   getAllShells: () => dispatch(fetchAllShells()),
-  addShell: (shell, newQuantity) => dispatch(addShellToGuestCart(shell, newQuantity))
+  addShell: (shell, newQuantity) =>
+    dispatch(addShellToGuestCart(shell, newQuantity)),
 });
 
 export default connect(mapState, mapDispatch)(AllShells);
