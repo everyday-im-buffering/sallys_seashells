@@ -4,8 +4,8 @@ import { createGlobalStyle } from 'styled-components'
 const GlobalStyle = createGlobalStyle`
 img {
     display: block;
-    width:  200px;
-    height: 200px;
+    width:  500px;
+    height: 500px;
     border-radius: 15px;
     padding: 50px;
     object-fit: cover;
