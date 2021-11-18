@@ -12,6 +12,25 @@ const Order_Details = db.define("order_details", {
   },
 });
 
+Order_Details.prototype.increment_or_decrement_quant_price = async function (
+  price,
+  category
+) {
+  if (category === "increment") {
+    const updatedDetails = await this.increment({
+      numberOfItems: 1,
+      totalPrice: price,
+    });
+  } else {
+    const updatedDetails = await this.decrement({
+      numberOfItems: 1,
+      totalPrice: price,
+    });
+  }
+
+  return this;
+};
+
 //class Methods
 //calculate price and numofitems
 

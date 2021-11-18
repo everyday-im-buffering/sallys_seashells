@@ -6,14 +6,13 @@ const UPDATE_SHELL = "UPDATE_SHELL";
 const CREATE_NEW_SHELL = "CREATE_NEW_SHELL";
 const DELETE_SHELL = "DELETE_SHELL";
 
-
 // Action Creators
 const getAllShells = (allShells) => {
   return {
     type: GET_ALL_SHELLS,
-    allShells
-  }
-}
+    allShells,
+  };
+};
 
 const _updateShell = (shell) => {
   return {
@@ -40,21 +39,26 @@ const _deleteShell = (shell) => {
 export const fetchAllShells = () => {
   return async (dispatch) => {
     try {
-      const { data: allShells } = await axios.get('/api/shells')
-      console.log(allShells)
-      dispatch(getAllShells(allShells))
+      const { data: allShells } = await axios.get("/api/shells");
+      console.log(allShells);
+      dispatch(getAllShells(allShells));
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
-}
+  };
+};
 // shell thunk creators
 export const updateShell = (shell) => {
   return async (dispatch) => {
     try {
       const { data: updated } = await axios.put(
         `/api/admin/shells/${shell.id}`,
-        user
+        user,
+        {
+          headers: {
+            authorization: window.localStorage.getItem("token"),
+          },
+        }
       );
       dispatch(_updateShell(updated));
     } catch (err) {
@@ -63,13 +67,15 @@ export const updateShell = (shell) => {
   };
 };
 
-export const createNewShell = (shell, history) => {
+export const createNewShell = (shell) => {
   return async (dispatch) => {
     try {
-      console.log('thunked on em')
-      const { data: created } = await axios.post(`/api/admin/shells`, shell);
+      const { data: created } = await axios.post(`/api/admin/shells`, shell, {
+        headers: {
+          authorization: window.localStorage.getItem("token"),
+        },
+      });
       dispatch(_createNewShell(created));
-      history.push('/admin')
     } catch (err) {
       console.error("Oops! Error creating shell: ", err);
     }
@@ -80,7 +86,12 @@ export const deleteShell = (shellId) => {
   return async (dispatch) => {
     try {
       const { data: deleted } = await axios.delete(
-        `/api/admin/shells/${shellId}`
+        `/api/admin/shells/${shellId}`,
+        {
+          headers: {
+            authorization: window.localStorage.getItem("token"),
+          },
+        }
       );
       dispatch(_deleteShell(deleted));
     } catch (err) {
@@ -93,14 +104,16 @@ export const deleteShell = (shellId) => {
 export default function allShellsReducer(state = [], action) {
   switch (action.type) {
     case GET_ALL_SHELLS:
-      return action.allShells
+      return action.allShells;
     case UPDATE_SHELL:
-      return state.map((shell) => {shell.id === action.shell.id ? action.shell : shell})
+      return state.map((shell) => {
+        shell.id === action.shell.id ? action.shell : shell;
+      });
     case CREATE_NEW_SHELL:
-      return [...state, action.shell]
+      return [...state, action.shell];
     case DELETE_SHELL:
-      return state.filter((shell) => shell.id !== action.shell.id)
+      return state.filter((shell) => shell.id !== action.shell.id);
     default:
-      return state
+      return state;
   }
 }

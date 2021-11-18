@@ -11,7 +11,11 @@ const _getSingleUser = (user) => {
 export const getSingleUser = (userId) => {
   return async (dispatch) => {
     try {
-      const { data: user } = await axios.get(`/api/admin/users/${userId}`);
+      const { data: user } = await axios.get(`/api/admin/users/${userId}`, {
+        headers: {
+          authorization: window.localStorage.getItem("token"),
+        },
+      });
       dispatch(_getSingleUser(user));
     } catch (err) {
       console.error("Oops! Error fetching that user: ", err);
