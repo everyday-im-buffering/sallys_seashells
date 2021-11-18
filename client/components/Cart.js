@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 // import { connect } from "react-redux";
-import { getShellsInGuestCart, updateCartQuantity } from "../store/cartReducer";
+import {
+  getShellsInGuestCart,
+  updateCartQuantity,
+  removeFromCart,
+} from "../store/cartReducer";
 import { useIsMounted } from "./NonPages/useIsMounted";
 import { getShellsInUserCart } from "../store/userCart";
 import { createBrowserHistory } from "history";
@@ -16,7 +20,6 @@ const Cart = (props) => {
   const dispatch = useDispatch();
 
   //local state
-  const [quantity, setQuantity] = useState(0);
 
   const isMounted = useIsMounted();
 
@@ -36,6 +39,10 @@ const Cart = (props) => {
 
   function updateOrder(shell, category) {
     dispatch(updateCartQuantity(shell, category, userId));
+  }
+
+  function deleteItem(Item) {
+    dispatch(removeFromCart(Item, userId));
   }
 
   console.log("Before:", isMounted.current);
@@ -61,17 +68,24 @@ const Cart = (props) => {
                 <li>Price:{Item.totalPrice}</li>
                 <button
                   onClick={() => {
-                    updateOrder({ ...Item }, 'increment');
+                    updateOrder({ ...Item }, "increment");
                   }}
                 >
-                  +1
+                  +
                 </button>
                 <button
                   onClick={() => {
-                    updateOrder({ ...Item }, 'decrement');
+                    updateOrder({ ...Item }, "decrement");
                   }}
                 >
-                  -1
+                  -
+                </button>
+                <button
+                  onClick={() => {
+                    deleteItem({ ...Item });
+                  }}
+                >
+                  Remove From Cart
                 </button>
               </ul>
             </div>
@@ -92,17 +106,24 @@ const Cart = (props) => {
                 <img width="120" height="100" src={Item.shell.imageUrl} />
                 <button
                   onClick={() => {
-                    updateOrder({ ...Item }, 'increment');
+                    updateOrder({ ...Item }, "increment");
                   }}
                 >
-                  +1
+                  +
                 </button>
                 <button
                   onClick={() => {
-                    updateOrder({ ...Item }, 'decrement');
+                    updateOrder({ ...Item }, "decrement");
                   }}
                 >
-                  -1
+                  -
+                </button>
+                <button
+                  onClick={() => {
+                    deleteItem({ ...Item });
+                  }}
+                >
+                  Remove From Cart
                 </button>
               </ul>
             </div>

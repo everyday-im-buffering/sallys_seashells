@@ -20,6 +20,7 @@ ordersRouter.get("/", async (req, res, next) => {
 //api route to query the order model, fetching the user's cart when they go to the cart component
 ordersRouter.get("/guestCart", async (req, res, next) => {
   try {
+
     const orderCookie = req.signedCookies["orderNumber"];
     const guestCart = await Order.findOne({
       where: {
@@ -107,45 +108,83 @@ ordersRouter.put("/updateCartQuantity", async (req, res, next) => {
     let info = {
       userId: req.body.userId,
       id: req.body.shellId,
-      price: (req.body.totalPrice /req.body.numberOfItems),
-      category: req.body.category
+      price: req.body.totalPrice / req.body.numberOfItems,
+      category: req.body.category,
     };
     const orderCookie = req.signedCookies["orderNumber"] || undefined;
 
     if (info.userId) {
-     const userOrderInstance = await Order.findOne({
+      const userOrderInstance = await Order.findOne({
         where: {
           userId: info.userId,
           isFulfilled: false,
         },
-        attributes: ["id"]
+        attributes: ["id"],
       });
-      
-      let orderId = userOrderInstance.dataValues.id
+
+      let orderId = userOrderInstance.dataValues.id;
       const orderDetailsInstanceByUser = await OrderDetails.findOne({
         where: {
           shellId: info.id,
-          orderId:orderId
+          orderId: orderId,
         },
-      })
+      });
 
-     let userResult = await orderDetailsInstanceByUser.increment_or_decrement_quant_price(info.price, info.category)
+      let userResult =
+        await orderDetailsInstanceByUser.increment_or_decrement_quant_price(
+          info.price,
+          info.category
+        );
       res.send(userResult);
     } else {
-
       const orderDetailsInstance = await OrderDetails.findOne({
         where: {
           shellId: info.id,
           orderId: orderCookie,
         },
-
       });
 
-      const result = await orderDetailsInstance.increment_or_decrement_quant_price(info.price, info.category)
+      const result =
+        await orderDetailsInstance.increment_or_decrement_quant_price(
+          info.price,
+          info.category
+        );
       res.send(result);
     }
+  } catch (err) {
+    next(err);
+  }
+});
 
+ordersRouter.put("/remove", async (req, res, next) => {
+  try {
+    const orderCookie = req.signedCookies["orderNumber"] || undefined;
+    let info = {
+      userId: req.body.userId,
+      id: req.body.shellId,
+      price: req.body.totalPrice 
+    };
     
+    if(info.userId){
+     const userOrderInstance = await Order.findOne({
+        where: {
+          userId: info.userId,
+          isFulfilled: false,
+        },
+      });
+      let deletedItem = await userOrder.removeFromCart(info)
+      await userOrderInstance.save()
+      res.send(userOrderInstance)
+    }else {
+      const guestOrder = await Order.findOne({ where: { id: orderCookie } });
+      let deletedItem = await guestOrder.removeFromCart(info)
+      console.log(deletedItem)
+      await guestOrder.save()
+      res.send(guestOrder)
+    }
+
+   
+
   } catch (err) {
     next(err);
   }

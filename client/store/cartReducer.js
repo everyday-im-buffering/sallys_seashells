@@ -79,6 +79,27 @@ export const updateCartQuantity = (shell, category,userId) => {
   }
 }
 
+export const removeFromCart = (shell, userId) => {
+  return async (dispatch) => {
+    
+    try {
+      const ItemInfo = {
+        ...shell,
+        userId
+      };
+      console.log("IT",ItemInfo)
+      const res = await axios.put("/api/orders/remove", ItemInfo);
+      if(userId){
+        dispatch(getShellsInUserCart(userId))
+       }else{
+         dispatch(getShellsInGuestCart())
+       }
+   
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
 
 
 
@@ -119,7 +140,7 @@ export const removeShell = (id) => {
 };
 
 // const cookie = sessionStorage.getItem('orderNumber')) will give us order details
-export const getShellsInGuestCart = (orderId) => {
+export const getShellsInGuestCart = () => {
   // get shells in guest cart
   try {
     return async (dispatch) => {
