@@ -58,9 +58,11 @@ class Routes extends Component {
         )}
         
         <Switch>
-        <Route exact path="/admin" component={AdminDash} />
-          <Route path="/admin/shop/:id/edit" component={EditShell} />
-          <Route path="/admin/users/:id" component={EditUser} />
+          <Route exact path="/cart" component={Cart} />
+          <Route exact path="/" component={Home} />
+          <Route exact path="/about" component={About} />
+          <Route exact path="/shop" component={AllShells} />
+          <Route path="/shop/:id" component={SingleShell} />
         </Switch>
       </div>
     );

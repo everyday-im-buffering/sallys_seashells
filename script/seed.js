@@ -12,6 +12,20 @@ const shells = require("./seedData/shells");
 
 let users = [
   {
+    firstName: 'ma',
+    lastName: 'pa',
+    email: 'mapa@gmail.com',
+    password: 'password',
+    isAdmin: true,
+  },
+  {
+    firstName: 'doodlebop',
+    lastName: 'senior',
+    email: 'doodblebopsenior@gmail.com',
+    password: '12345678',
+    isAdmin: false,
+  },
+  {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email(),

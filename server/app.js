@@ -3,11 +3,10 @@ const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const app = express();
-const { authRole } = require('./auth/basicAuth')
 module.exports = app;
 const dotenv = require("dotenv").config();
 
-app.use(cookieParser("secret")); // does this need to be relocated to an ENV variable?
+app.use(cookieParser(process.env.COOKIE_SECRET)); // does this need to be relocated to an ENV variable?
 
 app.use(morgan("dev"));
 
