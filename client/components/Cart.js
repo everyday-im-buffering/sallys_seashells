@@ -5,11 +5,12 @@ import {
   getShellsInGuestCart,
   updateCartQuantity,
   removeFromCart,
+  markOrderAsComplete
 } from "../store/cartReducer";
 import { useIsMounted } from "./NonPages/useIsMounted";
 import { getShellsInUserCart } from "../store/userCart";
 import { createBrowserHistory } from "history";
-
+import history from "../history"
 // NOT FUNCTIONAL YET
 
 const Cart = (props) => {
@@ -39,6 +40,12 @@ const Cart = (props) => {
 
   function updateOrder(shell, category) {
     dispatch(updateCartQuantity(shell, category, userId));
+  }
+
+  function checkout(){
+   dispatch(markOrderAsComplete(userId))
+
+   history.push("/checkout/order-confirmation")
   }
 
   function deleteItem(Item) {
@@ -92,7 +99,7 @@ const Cart = (props) => {
           ))}
 
           <p> SubTotal: {userCart.subTotal}</p>
-          <button style={{ width: "100px" }}> Continue to Checkout</button>
+          <button onClick={() => {(checkout())}} style={{ width: "100px" }}> Continue to Checkout</button>
         </div>
       ) : (
         <div className="cart">
@@ -130,27 +137,12 @@ const Cart = (props) => {
           ))}
 
           <p> SubTotal: {guestCart.subTotal}</p>
-          <button style={{ width: "100px" }}> Continue to Checkout</button>
+    
         </div>
       )}
     </div>
   );
 };
 
-// const mapState = (state) => {
-//   return {
-//     guestCart: state.cart,
-//     userCart: state.userCart,
-//     isUser:state.auth.id
-//   };
-// };
-
-// const mapDispatch = (dispatch) => {
-//   return {
-//     loadGuestCart: () => dispatch(getShellsInGuestCart()),
-//     loadUserCart: (id) => dispatch(getShellsInUserCart(id))
-//   };
-// };
-// export default connect(mapState, mapDispatch)(Cart);
 
 export default Cart;

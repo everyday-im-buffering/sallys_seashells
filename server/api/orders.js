@@ -20,7 +20,6 @@ ordersRouter.get("/", async (req, res, next) => {
 //api route to query the order model, fetching the user's cart when they go to the cart component
 ordersRouter.get("/guestCart", async (req, res, next) => {
   try {
-
     const orderCookie = req.signedCookies["orderNumber"];
     const guestCart = await Order.findOne({
       where: {
@@ -133,9 +132,21 @@ ordersRouter.put("/updateCartQuantity", async (req, res, next) => {
       let userResult =
         await orderDetailsInstanceByUser.increment_or_decrement_quant_price(
           info.price,
-          info.category
+          info.category,
+          orderCookie
         );
-      res.send(userResult);
+
+      if (info.category === "decrement") {
+        await userOrderInstance.decrement({
+          numberOfItems: 1,
+          subTotal: info.price,
+        });
+      } else {
+        await userOrderInstance.increment({
+          numberOfItems: 1,
+          subTotal: info.price,
+        });
+      }
     } else {
       const orderDetailsInstance = await OrderDetails.findOne({
         where: {
@@ -149,12 +160,37 @@ ordersRouter.put("/updateCartQuantity", async (req, res, next) => {
           info.price,
           info.category
         );
-      res.send(result);
     }
+
+    res.send("Succeful Update");
   } catch (err) {
     next(err);
   }
 });
+
+ordersRouter.put("/confirmed/:userId", async (req, res, next) => {
+  try {
+   
+    
+      const foundOrder = await Order.findOne({
+        where: {
+          userId: req.params.userId,
+          isFulfilled:false
+        },
+      });
+
+      console.log("FO",foundOrder)
+
+    foundOrder.isFulfilled = true;
+    await foundOrder.save();
+    //clear any cookies in Browser.
+    res.clearCookie("orderNumber");
+    res.status(201).send(foundOrder);
+  } catch (err) {
+    next(err);
+  }
+});
+
 
 ordersRouter.put("/remove", async (req, res, next) => {
   try {
@@ -162,29 +198,26 @@ ordersRouter.put("/remove", async (req, res, next) => {
     let info = {
       userId: req.body.userId,
       id: req.body.shellId,
-      price: req.body.totalPrice 
+      price: req.body.totalPrice,
     };
-    
-    if(info.userId){
-     const userOrderInstance = await Order.findOne({
+
+    if (info.userId) {
+      const userOrderInstance = await Order.findOne({
         where: {
           userId: info.userId,
           isFulfilled: false,
         },
       });
-      let deletedItem = await userOrder.removeFromCart(info)
-      await userOrderInstance.save()
-      res.send(userOrderInstance)
-    }else {
+      let deletedItem = await userOrderInstance.removeFromCart(info);
+      await userOrderInstance.save();
+      res.send(userOrderInstance);
+    } else {
       const guestOrder = await Order.findOne({ where: { id: orderCookie } });
-      let deletedItem = await guestOrder.removeFromCart(info)
-      console.log(deletedItem)
-      await guestOrder.save()
-      res.send(guestOrder)
+      let deletedItem = await guestOrder.removeFromCart(info);
+      console.log(deletedItem);
+      await guestOrder.save();
+      res.send(guestOrder);
     }
-
-   
-
   } catch (err) {
     next(err);
   }
@@ -204,21 +237,6 @@ ordersRouter.post("/userCart", async (req, res, next) => {
   }
 });
 
-ordersRouter.put("/confirmed/:orderId", async (req, res, next) => {
-  try {
-    const foundOrder = await Order.findOne({
-      where: {
-        id: req.params.orderId,
-      },
-    });
-    foundOrder.isFulfilled = true;
-    await foundOrder.save();
-    //clear any cookies in Browser.
-    res.clearCookie("orderNumber");
-    res.status(201).send(foundOrder);
-  } catch (err) {
-    next(err);
-  }
-});
+
 
 module.exports = ordersRouter;

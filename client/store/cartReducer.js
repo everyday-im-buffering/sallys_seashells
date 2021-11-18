@@ -103,10 +103,10 @@ export const removeFromCart = (shell, userId) => {
 
 
 
-export const markOrderAsComplete = (orderId) => {
+export const markOrderAsComplete = (userId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.put(`/api/orders/confirmed/${orderId}`);
+      const res = await axios.put(`/api/orders/confirmed/${userId}`);
       dispatch(setCompleteOrder(res));
     } catch (e) {
       console.log(e);

@@ -89,24 +89,24 @@ Order.prototype.addToCart = async function (shell) {
 // update shell qty from order
 Order.prototype.updateCartQty = async function (shell) {
   // like addToCart, shell will come with a qty property
-  const qty = shell.newQuantity || 1; // defaults to adding one shell
-  const allDetails = await this.getOrder_details();
-  const orderDetails = allDetails.filter(
-    (info) => info.dataValues.shellId === shell.id
-  );
-  const info = orderDetails[0].dataValues;
-    console.log("info",orderDetails )
-  const lineToUpdate = await Order_Details.findOne({
-    where: {
-      shellId: shell.id,
-      orderId: this.id,
-    },
-  });
+  // const qty = shell.newQuantity || 1; // defaults to adding one shell
+  // const allDetails = await this.getOrder_details();
+  // const orderDetails = allDetails.filter(
+  //   (info) => info.dataValues.shellId === shell.id
+  // );
+  // const info = orderDetails[0].dataValues;
+  //   console.log("info",orderDetails )
+  // const lineToUpdate = await Order_Details.findOne({
+  //   where: {
+  //     shellId: shell.id,
+  //     orderId: this.id,
+  //   },
+  // });
 
-  await lineToUpdate.update({
-    numberOfItems: info.numberOfItems + qty,
-    totalPrice: (info.totalPrice += qty * shell.price),
-  });
+  // await lineToUpdate.update({
+  //   numberOfItems: info.numberOfItems + qty,
+  //   totalPrice: (info.totalPrice += qty * shell.price),
+  // });
 
   await this.update({
     numberOfItems: this.numberOfItems + qty,
