@@ -34,36 +34,30 @@ class Routes extends Component {
       <div>
         {isLoggedIn ? (
           <Switch>
-            <Route exact path="/" component={Home} />
             <Route exact path="/account" component={AccountDetails} />
-            <Route exact path="/cart" component={Cart} />
             <Route exact path="/checkout" component={CheckOut} />
             <Route
               exact
               path="/checkout/order-confirmation"
               component={OrderConfirmation}
             />
-            <Route exact path="/" component={Home} />
-            <Route exact path="/shop" component={AllShells} />
-            <Route path="/shop/:id" component={SingleShell} />
-            <Route path="/login" component={LogIn} />
-            <Route path="/signup" component={SignUp} />
+            <Route path="/admin/shop/:id/edit" component={EditShell} />
+            <Route exact path="/admin" component={AdminDash} />
+            <Route path="/admin/users/:id" component={EditUser} />
           </Switch>
         ) : (
           <Switch>
-            <Route exact path="/about" component={About} />
             <Route path="/login" component={LogIn} />
             <Route path="/signup" component={SignUp} />
-            <Route exact path="/shop" component={AllShells} />
-            <Route path="/shop/:id" component={SingleShell} />
-            <Route exact path="/cart" component={Cart} />
           </Switch>
         )}
 
         <Switch>
-          <Route path="/admin/shop/:id/edit" component={EditShell} />
-          <Route exact path="/admin" component={AdminDash} />
-          <Route path="/admin/users/:id" component={EditUser} />
+          <Route exact path="/cart" component={Cart} />
+          <Route exact path="/" component={Home} />
+          <Route exact path="/about" component={About} />
+          <Route exact path="/shop" component={AllShells} />
+          <Route path="/shop/:id" component={SingleShell} />
         </Switch>
       </div>
     );
