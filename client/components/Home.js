@@ -12,17 +12,8 @@ export const Home = (props) => {
 
   return (
     <div>
-      <head>
-        <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-        />
-      </head>
       <body>
-        {/* <p class="lead">
-          Welcome, {username}
-        </p> */}
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+        <h1> sally? is that you?</h1>
       </body>
     </div>
   );

@@ -3,6 +3,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const app = express();
+const { authRole } = require('./auth/basicAuth')
 module.exports = app;
 const dotenv = require("dotenv").config();
 
@@ -20,6 +21,10 @@ app.use("/api", require("./api"));
 app.get("/", (req, res) =>
   res.sendFile(path.join(__dirname, "..", "public/index.html"))
 );
+
+// app.get('/admin', authRole(user), (req, res) =>{
+//   res.send('admin page')
+// })
 
 // static file-serving middleware
 app.use(express.static(path.join(__dirname, "..", "public")));

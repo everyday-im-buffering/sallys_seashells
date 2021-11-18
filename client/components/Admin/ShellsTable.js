@@ -1,54 +1,74 @@
-
 import React from "react";
 import { connect } from "react-redux";
 import {
   fetchAllShells,
   updateShell,
   deleteShell,
-  createNewShell,
 } from "../../store/allProducts";
+import { Link } from "react-router-dom";
 
-const SingleShells= (props) => {
-
+const SingleShells = (props) => {
   const shell = props.shell;
-  console.log(props.shells, 'shell')
+  const deleteShell = props.delete;
   return (
-    <tbody>
     <tr>
-     <td>{shell.id}</td>
+      <td>{shell.id}</td>
       <td>{shell.name}</td>
       <td>{shell.marineType}</td>
       <td>{shell.color}</td>
       <td>{shell.pattern}</td>
       <td>{shell.waterType}</td>
+      <td>
+        <Link to={`/admin/shop/${shell.id}/edit`}>Edit</Link>
+      </td>
+      <td>
+        <button 
+        type="button"
+        onClick={() =>{ 
+          if (
+          window.confirm("so you think you can get rid of me that easily?"
+          )
+          ){
+            deleteShell(shell.id)
+          }}}
+        >Delete</button>
+      </td>
     </tr>
-    </tbody>
   );
 };
 
 class ShellsTable extends React.Component {
+  constructor(){
+    super();
+    this.handleDelete = this.handleDelete.bind(this);
+  }
   componentDidMount() {
     this.props.getAll();
   }
 
+  handleDelete(id) {
+    this.props.delete(id);
+  }
+
   render() {
     let allShells = this.props.allShells || [];
-    console.log(this.props, 'props');
     return (
       <table>
-          <thead>
-        <tr>
-        <th>id</th>
-          <th>shell name</th>
-          <th>marine type</th>
-          <th>color</th>
-          <th>pattern</th>
-          <th>water type</th>
-        </tr>
-        {allShells.map((shell) => (
-          <SingleShells key={shell.id} shell={shell} />
-        ))}
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>shell name</th>
+            <th>marine type</th>
+            <th>color</th>
+            <th>pattern</th>
+            <th>water type</th>
+          </tr>
         </thead>
+        <tbody>
+          {allShells.map((shell) => (
+            <SingleShells key={shell.id} shell={shell} delete={this.handleDelete}/>
+          ))}
+        </tbody>
       </table>
     );
   }
@@ -56,7 +76,7 @@ class ShellsTable extends React.Component {
 
 const mapState = (state) => {
   return {
-    allShells: state.allShells
+    allShells: state.allShells,
   };
 };
 

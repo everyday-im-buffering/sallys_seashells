@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchAllShells } from "../store/allProducts";
+import { createGlobalStyle } from "../global.css"
 
 // import relevant thunks from reducer
 

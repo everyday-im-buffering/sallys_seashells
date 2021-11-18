@@ -1,11 +1,13 @@
 import React from "react";
 
 const About = () => {
+    return(
     <div>
         <h3>
-            hi
+            sally sells seashells by the seashore
         </h3>
     </div>
+    )
 };
 
 export default About;

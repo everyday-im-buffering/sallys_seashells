@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
-import Home from "./components/Home";
+import Home  from "./components/Home";
 import { me } from "./store";
+import { getSingleUser } from "./store/singleUser";
 import AllShells from "./components/AllShells.js";
 import SingleShell from "./components/SingleShell";
 import AdminDash from "./components/Admin/AdminDash";
@@ -59,10 +60,10 @@ class Routes extends Component {
             <Route exact path="/cart" component={Cart} />
           </Switch>
         )}
-
+        
         <Switch>
+        <Route exact path="/admin" component={AdminDash} />
           <Route path="/admin/shop/:id/edit" component={EditShell} />
-          <Route exact path="/admin" component={AdminDash} />
           <Route path="/admin/users/:id" component={EditUser} />
         </Switch>
       </div>

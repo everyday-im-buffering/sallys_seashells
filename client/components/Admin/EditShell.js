@@ -62,6 +62,7 @@ render(){
     const { handleSubmit, handleChange } = this;
 return (
     <div>
+    <p> shell: {shell.name}</p>
     <form id="create-form" onSubmit={handleSubmit}>
     <label> Edit Shell: </label>
     <input name="name" onChange={handleChange} />
@@ -72,6 +73,8 @@ return (
     <option value="gastropoda"> gastropoda </option>
     <option value="bivalvia">bivalvia </option>
     <option value="monoplacophora"> monoplacophora </option>
+    <option value="cephalopoda">cephalopoda</option>
+    <option value="cephalopoda">cephalopoda</option>
     <option value="cephalopoda">cephalopoda</option>
   </select>
   <select 
@@ -108,6 +111,7 @@ return (
     <button type="submit">Submit Shell </button>
 
     </form>
+    <a href="/admin"> back to dash </a>
     </div>
 )
 }
