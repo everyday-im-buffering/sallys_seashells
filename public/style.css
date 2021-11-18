@@ -19,3 +19,29 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+.form-error-message {
+  font-size: 12px;
+  font-weight: 150;
+  color: red;
+}
+
+.form-header {
+  margin: 16px;
+}
+
+.form-input {
+  flex: 1
+}
+
+.submit-button {
+  border-radius: 18px;
+  border: none;
+  padding: 12px;
+}
+
+.input-field {
+  border-radius: 16px;
+  border-width: 0.1px;
+  padding: 8px;
+}

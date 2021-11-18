@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { getShellsInUserCart } from "./userCart";
 const SET_GUEST_CART = "SET_GUEST_CART";
 const ADD_SHELL = "ADD_SHELL";
 const MINUS_SHELL = "MINUS_SHELL";
@@ -58,11 +58,55 @@ export const addShellToGuestCart = (shell, newQuantity) => {
 };
 
 
+export const updateCartQuantity = (shell, category,userId) => {
+  return async(dispatch) => {
+    try{
+      const productInfo = {
+        ...shell,
+        category,
+        userId
+      };
+      const res = await axios.put("/api/orders/updateCartQuantity", productInfo)
+      if(userId){
+       dispatch(getShellsInUserCart(userId))
+      }else{
+        dispatch(getShellsInGuestCart())
+      }
 
-export const markOrderAsComplete = (orderId) => {
+    }catch(e){
+      console.log(e)
+    }
+  }
+}
+
+export const removeFromCart = (shell, userId) => {
+  return async (dispatch) => {
+    
+    try {
+      const ItemInfo = {
+        ...shell,
+        userId
+      };
+      console.log("IT",ItemInfo)
+      const res = await axios.put("/api/orders/remove", ItemInfo);
+      if(userId){
+        dispatch(getShellsInUserCart(userId))
+       }else{
+         dispatch(getShellsInGuestCart())
+       }
+   
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
+
+
+export const markOrderAsComplete = (userId) => {
   return async (dispatch) => {
     try {
-      const res = await axios.put(`/api/orders/confirmed/${orderId}`);
+      const res = await axios.put(`/api/orders/confirmed/${userId}`);
       dispatch(setCompleteOrder(res));
     } catch (e) {
       console.log(e);
@@ -96,7 +140,7 @@ export const removeShell = (id) => {
 };
 
 // const cookie = sessionStorage.getItem('orderNumber')) will give us order details
-export const getShellsInGuestCart = (orderId) => {
+export const getShellsInGuestCart = () => {
   // get shells in guest cart
   try {
     return async (dispatch) => {
