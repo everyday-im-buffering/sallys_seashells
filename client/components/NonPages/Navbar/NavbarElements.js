@@ -68,7 +68,6 @@ export const NavMenu = styled.ul`
 
 export const NavItem = styled.ul`
 display: flex;
-
 `;
 
 export const NavLinks = styled(LinkR)`
@@ -79,9 +78,8 @@ export const NavLinks = styled(LinkR)`
     padding: 0 1rem;
     height: 100%
     list-styled: none;
-
-&.active {
-    border-bottom: 3px solid blue;
+&:active {
+    border-bottom: 3px solid #232ED1;
 }`;
 
 export const NavBtn = styled.nav`

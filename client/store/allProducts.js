@@ -51,6 +51,7 @@ export const fetchAllShells = () => {
 export const updateShell = (shell) => {
   return async (dispatch) => {
     try {
+      console.log('thunked on em');
       const { data: updated } = await axios.put(
         `/api/admin/shells/${shell.id}`,
         user,

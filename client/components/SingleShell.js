@@ -4,6 +4,7 @@ import { fetchSingleShell } from "../store/singleShell";
 import { connect } from "react-redux";
 import { addShellToGuestCart} from "../store/cartReducer";
 import {findOrCreateUserOrder } from "../store/userCart"
+import EditShell from "./Admin/EditShell"
 
 import history from "../history";
 
@@ -64,7 +65,6 @@ const SingleShell = (props) => {
         >
           Add To Cart
         </button>)}
-
     </div>
   );
 };

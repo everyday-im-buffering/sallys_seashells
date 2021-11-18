@@ -15,9 +15,9 @@ const Navbar = ({ toggle, isLoggedIn, handleClick }) => {
                     <MobileIcon onClick={toggle}>
                         <FaBars />
                     </MobileIcon>
-                    <MobileIcon onClick={toggle}>
+                    {/* <MobileIcon onClick={toggle}>
                         <BsFillCartFill />
-                    </MobileIcon>
+                    </MobileIcon> */}
                     <NavMenu>
                     <NavItem>
                         <NavLinks to='/about'> about </NavLinks>
@@ -36,7 +36,8 @@ const Navbar = ({ toggle, isLoggedIn, handleClick }) => {
                     </NavBtn>
                     <NavItem>
                     <NavLinks to='/signup'> signup </NavLinks>
-                     </NavItem></NavMenu>
+                     </NavItem>
+                     </NavMenu>
                     
                     )}
                     </NavMenu>

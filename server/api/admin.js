@@ -25,7 +25,7 @@ router.delete("/shells/:id", requireToken, isAdmin, async (req, res, next) => {
 });
 
 // update a shell
-router.put("/shells/:id", async (req, res, next) => {
+router.put("/shop/:id/edit", async (req, res, next) => {
   try {
     const shell = await Shell.findByPk(req.params.id);
     res.json(await shell.update(req.body));

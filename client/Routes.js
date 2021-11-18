@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter, Route, Switch, Redirect } from "react-router-dom";
-import Home from "./components/Home";
+import Home  from "./components/Home";
 import { me } from "./store";
+import { getSingleUser } from "./store/singleUser";
 import AllShells from "./components/AllShells.js";
 import SingleShell from "./components/SingleShell";
 import AdminDash from "./components/Admin/AdminDash";
@@ -28,7 +29,7 @@ class Routes extends Component {
   }
 
   render() {
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn, isAdmin } = this.props;
 
     return (
       <div>
@@ -41,9 +42,13 @@ class Routes extends Component {
               path="/checkout/order-confirmation"
               component={OrderConfirmation}
             />
-            <Route path="/admin/shop/:id/edit" component={EditShell} />
-            <Route exact path="/admin" component={AdminDash} />
-            <Route path="/admin/users/:id" component={EditUser} />
+            {isAdmin ? (
+              <Switch>
+                <Route path="/admin/shop/:id/edit" component={EditShell} />
+                <Route exact path="/admin" component={AdminDash} />
+                <Route path="/admin/users/:id" component={EditUser} />
+              </Switch>
+            ) : null}
           </Switch>
         ) : (
           <Switch>
@@ -51,7 +56,7 @@ class Routes extends Component {
             <Route path="/signup" component={SignUp} />
           </Switch>
         )}
-
+        
         <Switch>
           <Route exact path="/cart" component={Cart} />
           <Route exact path="/" component={Home} />
@@ -72,6 +77,7 @@ const mapState = (state) => {
     // Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
     isLoggedIn: !!state.auth.id,
+    isAdmin: !!state.auth.isAdmin,
   };
 };
 
