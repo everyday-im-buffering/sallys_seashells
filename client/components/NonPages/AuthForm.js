@@ -4,33 +4,28 @@ import { authenticate } from "../../store";
 import * as Yup from "yup";
 import { Formik } from 'formik';
 
-/**
- * COMPONENT
- */
+const initialValues = {
+  email: '',
+  password: ''
+}
+const validationSchema = Yup.object({
+  email: Yup.string().email('Invalid email address').required('Required'),
+  password: Yup.string()
+    .min(8, 'Must be at least 8 characters')
+    .required('Required'),
+})
+
 const AuthForm = (props) => {
-  // const [error, setError] = useState('');
   const { name, displayName, handleSubmit, error } = props
   return (
     <Formik
-      // const formik = useFormik({
-      initialValues={
-        {
-          email: '',
-          password: ''
-        }}
-      validationSchema={Yup.object({
-        email: Yup.string().email('Invalid email address').required('Required'),
-        password: Yup.string()
-          .min(8, 'Must be at least 8 characters')
-          .required('Required'),
-      })}
-    // onSubmit={({ setSubmitting }) => {
-    //   setTimeout(() => {
-    //     // alert(JSON.stringify(values, null, 2));
-    //     console.log('is anything happening here?')
-    //     setSubmitting(false);
-    //     resetForm();
-    //   }, 400);
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+    // cant get this to work
+    // onSubmit={async (values, { resetForm }) => {
+    //   authenticate(values);
+    //   // await onSubmit(values)
+    //   resetForm()
     // }}
     >
       {formik => (
@@ -109,11 +104,9 @@ const mapDispatch = (dispatch) => {
   return {
     handleSubmit(evt) {
       evt.preventDefault()
-      // check if submit has no errors first - shouldn't submit form if error
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
-      console.log(formName, email, password)
       dispatch(authenticate(email, password, formName));
     }
   }
