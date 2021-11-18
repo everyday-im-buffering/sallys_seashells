@@ -6,7 +6,11 @@ const app = express();
 module.exports = app;
 const dotenv = require("dotenv").config();
 
+<<<<<<< HEAD
 app.use(cookieParser(process.env.COOKIE_SECRET));
+=======
+app.use(cookieParser("secret")); // does this need to be relocated to an ENV variable?
+>>>>>>> de83a9e2af92da5ffe524d047f5368ab0fb1a76e
 
 app.use(morgan("dev"));
 

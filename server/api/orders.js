@@ -20,10 +20,8 @@ ordersRouter.get("/", async (req, res, next) => {
 //api route to query the order model, fetching the user's cart when they go to the cart component
 ordersRouter.get("/guestCart", async (req, res, next) => {
   try {
-
-    const orderCookie = req.signedCookies["orderNumber"]
+    const orderCookie = req.signedCookies["orderNumber"];
     const guestCart = await Order.findOne({
-     
       where: {
         id: orderCookie,
         isFulfilled: false,
@@ -32,7 +30,7 @@ ordersRouter.get("/guestCart", async (req, res, next) => {
       include: [
         {
           model: OrderDetails,
-          attributes: ["numberOfItems", "totalPrice"],
+          attributes: ["numberOfItems", "totalPrice", "shellId"],
           include: [{ model: Shell, attributes: ["name", "imageUrl"] }],
         },
       ],
@@ -50,9 +48,8 @@ ordersRouter.get("/:userId", async (req, res, next) => {
     //include the order details but is it a security issue to send back all of the attributes?
     //if the session id matches the user id or however we are verifying a logged in user else we just find by OrderId
     //if auth, add the user to the Order with addUser
-    
+
     const userCart = await Order.findOne({
-     
       where: {
         userId: req.params.userId,
         isFulfilled: false,
@@ -61,7 +58,7 @@ ordersRouter.get("/:userId", async (req, res, next) => {
       include: [
         {
           model: OrderDetails,
-          attributes: ["numberOfItems", "totalPrice"],
+          attributes: ["numberOfItems", "totalPrice", "shellId"],
           include: [{ model: Shell, attributes: ["name", "imageUrl"] }],
         },
       ],
@@ -72,8 +69,6 @@ ordersRouter.get("/:userId", async (req, res, next) => {
     next(err);
   }
 });
-
-
 
 ordersRouter.post("/", async (req, res, next) => {
   const orderCookie = req.signedCookies["orderNumber"] || undefined;
@@ -98,8 +93,130 @@ ordersRouter.post("/", async (req, res, next) => {
       console.log("foundOrder", foundOrder);
 
       //add to order details.
+
       await foundOrder.addToCart(req.body);
       res.send(foundOrder);
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+ordersRouter.put("/updateCartQuantity", async (req, res, next) => {
+  try {
+    let info = {
+      userId: req.body.userId,
+      id: req.body.shellId,
+      price: req.body.totalPrice / req.body.numberOfItems,
+      category: req.body.category,
+    };
+    const orderCookie = req.signedCookies["orderNumber"] || undefined;
+
+    if (info.userId) {
+      const userOrderInstance = await Order.findOne({
+        where: {
+          userId: info.userId,
+          isFulfilled: false,
+        },
+        attributes: ["id"],
+      });
+
+      let orderId = userOrderInstance.dataValues.id;
+      const orderDetailsInstanceByUser = await OrderDetails.findOne({
+        where: {
+          shellId: info.id,
+          orderId: orderId,
+        },
+      });
+
+      let userResult =
+        await orderDetailsInstanceByUser.increment_or_decrement_quant_price(
+          info.price,
+          info.category,
+          orderCookie
+        );
+
+      if (info.category === "decrement") {
+        await userOrderInstance.decrement({
+          numberOfItems: 1,
+          subTotal: info.price,
+        });
+      } else {
+        await userOrderInstance.increment({
+          numberOfItems: 1,
+          subTotal: info.price,
+        });
+      }
+    } else {
+      const orderDetailsInstance = await OrderDetails.findOne({
+        where: {
+          shellId: info.id,
+          orderId: orderCookie,
+        },
+      });
+
+      const result =
+        await orderDetailsInstance.increment_or_decrement_quant_price(
+          info.price,
+          info.category
+        );
+    }
+
+    res.send("Succeful Update");
+  } catch (err) {
+    next(err);
+  }
+});
+
+ordersRouter.put("/confirmed/:userId", async (req, res, next) => {
+  try {
+   
+    
+      const foundOrder = await Order.findOne({
+        where: {
+          userId: req.params.userId,
+          isFulfilled:false
+        },
+      });
+
+      console.log("FO",foundOrder)
+
+    foundOrder.isFulfilled = true;
+    await foundOrder.save();
+    //clear any cookies in Browser.
+    res.clearCookie("orderNumber");
+    res.status(201).send(foundOrder);
+  } catch (err) {
+    next(err);
+  }
+});
+
+
+ordersRouter.put("/remove", async (req, res, next) => {
+  try {
+    const orderCookie = req.signedCookies["orderNumber"] || undefined;
+    let info = {
+      userId: req.body.userId,
+      id: req.body.shellId,
+      price: req.body.totalPrice,
+    };
+
+    if (info.userId) {
+      const userOrderInstance = await Order.findOne({
+        where: {
+          userId: info.userId,
+          isFulfilled: false,
+        },
+      });
+      let deletedItem = await userOrderInstance.removeFromCart(info);
+      await userOrderInstance.save();
+      res.send(userOrderInstance);
+    } else {
+      const guestOrder = await Order.findOne({ where: { id: orderCookie } });
+      let deletedItem = await guestOrder.removeFromCart(info);
+      console.log(deletedItem);
+      await guestOrder.save();
+      res.send(guestOrder);
     }
   } catch (err) {
     next(err);
@@ -120,22 +237,6 @@ ordersRouter.post("/userCart", async (req, res, next) => {
   }
 });
 
-ordersRouter.put("/confirmed/:orderId", async (req, res, next) => {
-  try {
-    const foundOrder = await Order.findOne({
-      where: {
-        id: req.params.orderId
-      }
-    })
-    foundOrder.isFulfilled = true
-    await foundOrder.save();
-    //clear any cookies in Browser.
-    res.clearCookie("orderNumber");
-    res.status(201).send(foundOrder)
-  } catch (err) {
-    next(err);
-  }
-});
 
 
 module.exports = ordersRouter;
