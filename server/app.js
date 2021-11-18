@@ -7,7 +7,7 @@ const { authRole } = require('./auth/basicAuth')
 module.exports = app;
 const dotenv = require("dotenv").config();
 
-app.use(cookieParser("secret"));
+app.use(cookieParser("secret")); // does this need to be relocated to an ENV variable?
 
 app.use(morgan("dev"));
 

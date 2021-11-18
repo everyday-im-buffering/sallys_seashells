@@ -29,35 +29,31 @@ class Routes extends Component {
   }
 
   render() {
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn, isAdmin } = this.props;
 
     return (
       <div>
         {isLoggedIn ? (
           <Switch>
-            <Route exact path="/" component={Home} />
             <Route exact path="/account" component={AccountDetails} />
-            <Route exact path="/cart" component={Cart} />
             <Route exact path="/checkout" component={CheckOut} />
             <Route
               exact
               path="/checkout/order-confirmation"
               component={OrderConfirmation}
             />
-            <Route exact path="/" component={Home} />
-            <Route exact path="/shop" component={AllShells} />
-            <Route path="/shop/:id" component={SingleShell} />
-            <Route path="/login" component={LogIn} />
-            <Route path="/signup" component={SignUp} />
+            {isAdmin ? (
+              <Switch>
+                <Route path="/admin/shop/:id/edit" component={EditShell} />
+                <Route exact path="/admin" component={AdminDash} />
+                <Route path="/admin/users/:id" component={EditUser} />
+              </Switch>
+            ) : null}
           </Switch>
         ) : (
           <Switch>
-            <Route exact path="/about" component={About} />
             <Route path="/login" component={LogIn} />
             <Route path="/signup" component={SignUp} />
-            <Route exact path="/shop" component={AllShells} />
-            <Route path="/shop/:id" component={SingleShell} />
-            <Route exact path="/cart" component={Cart} />
           </Switch>
         )}
         
@@ -79,6 +75,7 @@ const mapState = (state) => {
     // Being 'logged in' for our purposes will be defined has having a state.auth that has a truthy id.
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
     isLoggedIn: !!state.auth.id,
+    isAdmin: !!state.auth.isAdmin,
   };
 };
 

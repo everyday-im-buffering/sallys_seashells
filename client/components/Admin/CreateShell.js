@@ -17,6 +17,7 @@ class CreateShell extends Component {
       price: 0,
     };
   }
+
   handleChange(evt) {
     this.setState({
       [evt.target.name]: evt.target.value,

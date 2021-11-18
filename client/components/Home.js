@@ -1,31 +1,20 @@
 import React from "react";
-import { connect } from "react-redux";
-// import Routes from "./Routes";
-// import Navbar from "./components/NonPages/Navbar";
-// import Footer from "./components/NonPages/Footer";
 
-/**
- * COMPONENT
- */
-export const Home = (props) => {
-  const { username } = props;
-
+export const Home = () => {
   return (
     <div>
-      <body>
-        <h1> sally? is that you?</h1>
-      </body>
+      <h1 style={{ textAlign: "center" }}>Welcome to Sally's Seashells</h1>
+      <img
+        src="logo.JPG"
+        style={{
+          width: "500px",
+          display: "block",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      />
     </div>
   );
 };
 
-/**
- * CONTAINER
- */
-const mapState = (state) => {
-  return {
-    username: state.auth.username,
-  };
-};
-
-export default connect(mapState)(Home);
+export default Home;

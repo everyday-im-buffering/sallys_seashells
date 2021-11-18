@@ -1,13 +1,15 @@
 import React from "react";
 
 const About = () => {
-    return(
+  return (
     <div>
-        <h3>
-            sally sells seashells by the seashore
-        </h3>
+      <p style={{ textAlign: "center" }}>
+        Sally's Seashells was developed by Liat Guvenc, Lauren Hale, Indi
+        Rinearson, and Emma Strickland for the Grace Hopper Program at Fullstack
+        Academy, November 2021.
+      </p>
     </div>
-    )
+  );
 };
 
 export default About;

@@ -6,7 +6,6 @@ const UPDATE_USER = "UPDATE_USER";
 const DELETE_USER = "DELETE_USER";
 // if admins should be able to create new users, that would go here too
 
-
 // user action creators
 const _getAllUsers = (users) => {
   return {
@@ -29,13 +28,15 @@ const _deleteUser = (user) => {
   };
 };
 
-
-
 // user thunk creators
 export const getAllUsers = () => {
   return async (dispatch) => {
     try {
-      const { data: users } = await axios.get("/api/admin/users");
+      const { data: users } = await axios.get("/api/admin/users", {
+        headers: {
+          authorization: window.localStorage.getItem("token"),
+        },
+      });
       dispatch(_getAllUsers(users));
     } catch (err) {
       console.error("Oops! Error fetching all users: ", err);
@@ -48,7 +49,12 @@ export const updateUser = (user) => {
     try {
       const { data: updated } = await axios.put(
         `/api/admin/users/${user.id}`,
-        user
+        user,
+        {
+          headers: {
+            authorization: window.localStorage.getItem("token"),
+          },
+        }
       );
       dispatch(_updateUser(updated));
     } catch (err) {
@@ -61,7 +67,12 @@ export const deleteUser = (userId) => {
   return async (dispatch) => {
     try {
       const { data: deleted } = await axios.delete(
-        `/api/admin/users/${userId}`
+        `/api/admin/users/${userId}`,
+        {
+          headers: {
+            authorization: window.localStorage.getItem("token"),
+          },
+        }
       );
       dispatch(_deleteUser(deleted));
     } catch (err) {
@@ -73,13 +84,13 @@ export const deleteUser = (userId) => {
 export default function userReducer(state = [], action) {
   switch (action.type) {
     case GET_ALL_USERS:
-      return action.users
+      return action.users;
     case UPDATE_USER:
       return state.map((user) =>
-          user.id === action.user.id ? action.user : user
-        )
+        user.id === action.user.id ? action.user : user
+      );
     case DELETE_USER:
-      return state.filter((user) => user.id !== action.user.id)
+      return state.filter((user) => user.id !== action.user.id);
     default:
       return state;
   }
